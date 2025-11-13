@@ -1,0 +1,8 @@
+.subckt cinv A OE VDD VSS X
+M5 net6 OE VSS VSS nmos w=2u l=1u
+M4 N002 OE VSS VSS nmos w=2u l=1u
+M3 X A N002 VSS nmos w=2u l=1u
+M2 net6 OE VDD VDD pmos w=6u l=1u
+M1 X A N001 VDD pmos w=6u l=1u
+M0 N001 net6 VDD VDD pmos w=6u l=1u
+.ends cinv

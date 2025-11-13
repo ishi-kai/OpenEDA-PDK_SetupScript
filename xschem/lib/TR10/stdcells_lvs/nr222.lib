@@ -1,0 +1,10 @@
+.subckt nr222 A0 A1 B0 B1 VDD VSS X
+M7 N001 A0 VSS VSS nmos w=2u l=1u
+M6 N002 B0 VSS VSS nmos w=2u l=1u
+M5 X B1 N002 VSS nmos w=2u l=1u
+M4 X A1 N001 VSS nmos w=2u l=1u
+M3 X B1 net31 VDD pmos w=6u l=1u
+M2 X B0 net31 VDD pmos w=6u l=1u
+M1 net31 A1 VDD VDD pmos w=6u l=1u
+M0 net31 A0 VDD VDD pmos w=6u l=1u
+.ends nr222

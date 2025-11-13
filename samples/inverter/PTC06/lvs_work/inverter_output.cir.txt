@@ -1,0 +1,17 @@
+* Created by KLayout
+
+* cell INVERTER
+* pin Q
+* pin A
+* pin VDD
+* pin VSS
+.SUBCKT INVERTER 1 2 3 4
+* net 1 Q
+* net 2 A
+* net 3 VDD
+* net 4 VSS
+* device instance $1 r0 *1 33.2,-11.05 PMOS
+M$1 1 2 3 3 PMOS L=1U W=3.3U AS=6.6P AD=6.6P PS=10.6U PD=10.6U
+* device instance $2 r0 *1 33.2,-30.1 NMOS
+M$2 1 2 4 4 NMOS L=1U W=2U AS=4P AD=4P PS=8U PD=8U
+.ENDS INVERTER

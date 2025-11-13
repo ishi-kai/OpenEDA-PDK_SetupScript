@@ -1,0 +1,6 @@
+.subckt nr21 A B VDD VSS X
+M3 N001 A VDD VDD pmos w=6u l=1u
+M2 X B N001 VDD pmos w=6u l=1u
+M1 X B VSS VSS nmos w=2u l=1u
+M0 X A VSS VSS nmos w=2u l=1u
+.ends nr21

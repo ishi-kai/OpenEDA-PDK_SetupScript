@@ -1,0 +1,70 @@
+** Resistor & Capacitor model
+** 3zki (github.com/3zki)
+** Fixme!
+*
+* Poly-Metal (ACTEG15) 3.06fF/um^2 (44pF, 120um/120um)
+.MODEL poly_cap C
++ tc1 = 0 
++ tc2 = 0
++ cox = 3.06e-15
++ capsw = 0
++ w = 0
++ l = 0
+*+ temp = 25.0
+*
+* nMOS Cap (ACTEG14) 5.42fF/um^2
+.MODEL ndiff_cap C
++ tc1 = 0 
++ tc2 = 0
++ cox = 5.42e-15
++ capsw = 0
++ w = 0
++ l = 0
+*+ temp = 25.0
+*
+* pMOS Cap (ACTEG07) 5.34fF/um^2
+.MODEL pdiff_cap C
++ tc1 = 0 
++ tc2 = 0
++ cox = 5.34e-15
++ capsw = 0
++ w = 0
++ l = 0
+*+ temp = 25.0
+*
+* Poly 20ohm/sq
+.MODEL r_poly R
++ tc1 = 0
++ tc2 = 0
++ rsh = 20
++ w = 0
++ l = 0
+*+ temp = 25.0
+*
+* Nwell 1.1kohm/sq
+.MODEL r_nwell R
++ tc1 = 0
++ tc2 = 0
++ rsh = 1100
++ w = 0
++ l = 0
+*+ temp = 25.0
+*
+* Pact 42ohm/sq
+.MODEL r_pdiff R
++ tc1 = 0
++ tc2 = 0
++ rsh = 41.7
++ w = 0
++ l = 0
+*+ temp = 25.0
+*
+* HPoly 7000ohm/sq?
+.MODEL hr_poly R
++ tc1 = 0
++ tc2 = 0
++ rsh = 7000
++ w = 0
++ l = 0
+*+ temp = 25.0
+*

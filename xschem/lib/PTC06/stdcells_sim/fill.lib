@@ -1,0 +1,2 @@
+.subckt fill VDD VSS
+.ends fill

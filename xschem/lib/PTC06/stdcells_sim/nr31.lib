@@ -1,0 +1,8 @@
+.subckt nr31 A B C VDD VSS X
+M5 X C VSS VSS nmos w=2u l=1u
+M4 X B VSS VSS nmos w=2u l=1u
+M3 X A VSS VSS nmos w=2u l=1u
+M2 X C N002 VDD pmos w=6u l=1u
+M1 N002 B N001 VDD pmos w=6u l=1u
+M0 N001 A VDD VDD pmos w=6u l=1u
+.ends nr31

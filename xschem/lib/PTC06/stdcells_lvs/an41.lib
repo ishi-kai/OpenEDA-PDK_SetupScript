@@ -1,0 +1,12 @@
+.subckt an41 A B C D VDD VSS Y
+M8 Y net44 VSS VSS nmos w=2u l=1u
+M7 N003 D VSS VSS nmos w=2u l=1u
+M6 N002 C N003 VSS nmos w=2u l=1u
+M5 N001 B N002 VSS nmos w=2u l=1u
+M4 net44 A N001 VSS nmos w=2u l=1u
+M9 Y net44 VDD VDD pmos w=6u l=1u
+M3 net44 A VDD VDD pmos w=6u l=1u
+M2 net44 B VDD VDD pmos w=6u l=1u
+M1 net44 C VDD VDD pmos w=6u l=1u
+M0 net44 D VDD VDD pmos w=6u l=1u
+.ends an41

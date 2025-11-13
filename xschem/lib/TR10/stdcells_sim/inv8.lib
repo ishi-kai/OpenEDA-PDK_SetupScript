@@ -1,0 +1,18 @@
+.subckt inv8 A VDD VSS X
+M17 X A VDD VDD pmos w=6u l=1u
+M15 X A VDD VDD pmos w=6u l=1u
+M12 X A VDD VDD pmos w=6u l=1u
+M10 X A VDD VDD pmos w=6u l=1u
+M8 X A VDD VDD pmos w=6u l=1u
+M6 X A VDD VDD pmos w=6u l=1u
+M4 X A VDD VDD pmos w=6u l=1u
+M3 X A VDD VDD pmos w=6u l=1u
+M16 X A VSS VSS nmos w=2u l=1u
+M14 X A VSS VSS nmos w=2u l=1u
+M13 X A VSS VSS nmos w=2u l=1u
+M11 X A VSS VSS nmos w=2u l=1u
+M9 X A VSS VSS nmos w=2u l=1u
+M7 X A VSS VSS nmos w=2u l=1u
+M5 X A VSS VSS nmos w=2u l=1u
+M0 X A VSS VSS nmos w=2u l=1u
+.ends inv8

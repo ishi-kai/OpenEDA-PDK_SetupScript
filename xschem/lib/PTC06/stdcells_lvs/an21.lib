@@ -1,0 +1,8 @@
+.subckt an21 A B VDD VSS Y
+M5 Y net26 VSS VSS nmos w=2u l=1u
+M4 N001 B VSS VSS nmos w=2u l=1u
+M3 net26 A N001 VSS nmos w=2u l=1u
+M2 Y net26 VDD VDD pmos w=6u l=1u
+M1 net26 A VDD VDD pmos w=6u l=1u
+M0 net26 B VDD VDD pmos w=6u l=1u
+.ends an21

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description>Get reference for OpenRule1um</description>
+ <version/>
+ <category/>
+ <prolog/>
+ <epilog/>
+ <doc/>
+ <autorun>false</autorun>
+ <autorun-early>false</autorun-early>
+ <priority>0</priority>
+ <shortcut/>
+ <show-in-menu>true</show-in-menu>
+ <group-name/>
+ <menu-path/>
+ <interpreter>ruby</interpreter>
+ <dsl-interpreter-name/>
+ <text># OpenRule1um lvs preprocessor v1.9, June 11th, 2022 copy right Seijiro Moriyama (Anagix Corp.)
+module MyMacro
+  include RBA
+  #include MinedaLVSpreprop
+            
+  MinedaLVS.new.lvs_go 'OpenRule1um', {
+    flatten_circuit: ['Nch*', 'Pch*', 'R_poly*', 'HR_poly'] 
+  }  
+end
+</text>
+</klayout-macro>

@@ -1,0 +1,337 @@
+# 3zki/LVS for OpenRule1um Aug. 1st, 2024 by M. Mori (ISHI-kai/3zki)
+# Source : LVS for OpenRule1um v1.42 Jan. 5th, 2023 copy left by S. Moriyama (Anagix Corporation)
+
+#================================================
+# ----------------- GET NETLIST -----------------
+#================================================
+
+class SubcircuitModelsReader < RBA::NetlistSpiceReaderDelegate
+  def parse_element(sup, element)
+    super
+  rescue StandardError
+    case element
+    when 'C'
+      super("#{sup} C=1e-15", element)
+    when 'R'
+      super("#{sup} R=1", element)
+    else
+      super
+    end
+  end
+
+  # Get capacitance and resistance from W/L in the netlist.
+  def element(circuit, ele, name, model, value, nets, params)
+    case ele
+    when 'C'
+      error('Capacitor must be two nodes') if nets.size != 2
+
+      # provide a device class
+      cls = circuit.netlist.device_class_by_name(model)
+      unless cls
+        cls = RBA::DeviceClassCapacitor.new
+        cls.name = model
+        circuit.netlist.add(cls)
+      end
+
+      # create a device
+      device = circuit.create_device(cls, name)
+
+      # ...and configure the device
+      %w[A B].each_with_index do |t, index|
+        device.connect_terminal(t, nets[index])
+      end
+
+      # model parameters are in micrometer units;
+      # need to translate the parameter from SI to um values
+      device.set_parameter('A', ((params['W'] || 0.0) * (params['L'] || 0.0)) * 1)
+      device.set_parameter('P', ((params['W'] || 0.0) + (params['L'] || 0.0)) * 2)
+      case model
+      when 'POLY_CAP'
+        device.set_parameter('C', ((params['W'] || 0.0) * (params['L'] || 0.0)) * 3.06 * 1e-15)
+      when 'NDIFF_CAP'
+        device.set_parameter('C', ((params['W'] || 0.0) * (params['L'] || 0.0)) * 5.42 * 1e-15)
+      when 'PDIFF_CAP'
+        device.set_parameter('C', ((params['W'] || 0.0) * (params['L'] || 0.0)) * 5.34 * 1e-15)
+      end
+
+    when 'R'
+      case nets.size
+      when 3
+        # provide a device class
+        cls = circuit.netlist.device_class_by_name(model)
+        unless cls
+          cls = RBA::DeviceClassResistorWithBulk.new
+          cls.name = model
+          circuit.netlist.add(cls)
+        end
+
+        # create a device
+        device = circuit.create_device(cls, name)
+
+        # and configure the device
+        %w[A B W].each_with_index do |t, index|
+          device.connect_terminal(t, nets[index])
+        end
+
+      when 2
+        # provide a device class
+        cls = circuit.netlist.device_class_by_name(model)
+        unless cls
+          cls = RBA::DeviceClassResistor.new
+          cls.name = model
+          circuit.netlist.add(cls)
+        end
+
+        # create a device
+        device = circuit.create_device(cls, name)
+
+        # and configure the device
+        %w[A B].each_with_index do |t, index|
+          device.connect_terminal(t, nets[index])
+        end
+
+      else
+        error('Resistor must be two or three nodes')
+
+      end
+
+      # model parameters are in micrometer units;
+      # need to translate the parameter from SI to um values
+      device.set_parameter('W', ((params['W'] || 0.0) * (params['PAR'] || 1.0)) * 1)
+      device.set_parameter('L', ((params['L'] || 0.0) * (params['S'] || 1.0)) * 1)
+      case model
+      when 'R_POLY'
+        device.set_parameter('R', ((params['R'] || 0.0) * 20 * ((params['L'] || 0.0) * (params['S'] || 1.0)) / ((params['W'] || 0.0) * (params['PAR'] || 1.0)) ))
+      when 'HR_POLY'
+        device.set_parameter('R', ((params['R'] || 0.0) * 7000 * ((params['L'] || 0.0) * (params['S'] || 1.0)) / ((params['W'] || 0.0) * (params['PAR'] || 1.0)) ))
+      when 'R_PDIFF'
+        device.set_parameter('R', ((params['R'] || 0.0) * 41.7 * ((params['L'] || 0.0) * (params['S'] || 1.0)) / ((params['W'] || 0.0) * (params['PAR'] || 1.0)) ))
+      when 'R_NDIFF' #not working for now
+        device.set_parameter('R', ((params['R'] || 0.0) * 0 * ((params['L'] || 0.0) * (params['S'] || 1.0)) / ((params['W'] || 0.0) * (params['PAR'] || 1.0)) )) #not working for now
+      when 'R_NWELL'
+        device.set_parameter('R', ((params['R'] || 0.0) * 1100 * ((params['L'] || 0.0) * (params['S'] || 1.0)) / ((params['W'] || 0.0) * (params['PAR'] || 1.0)) ))
+      end
+    else
+      return super
+
+    end
+    true
+  end
+end
+
+# Instantiate a reader using the new delegate
+reader = RBA::NetlistSpiceReader.new(SubcircuitModelsReader.new)
+
+#================================================
+#----------------- FILE SETUP -------------------
+#================================================
+deep
+report_lvs
+
+mi = MinedaCommon::MinedaInput::new source
+reference, output, settings = mi.start(input)
+if File.exist? reference
+  schematic(reference, reader)
+end
+
+#================================================
+# ------------------- LAYERS --------------------
+#================================================
+
+# Drawing layers
+
+nwl = input(1, 0)
+nwl_dp = input(2, 0)
+diff = input(3, 0) 
+pol = input(5, 0)
+hpol = input(6,0)
+cnt = input(7, 0)
+ml1 = input(8, 0)
+via1 = input(9, 0) 
+ml2 = input(10, 0)
+via2 = input(11, 0)
+ml3 = input(12, 0)
+text = input(13, 0)
+frame = input(14, 0)
+res = input(15, 0)
+cap = input(16, 0)
+dio = input(17, 0)
+parea = input(18, 0)
+narea = input(19, 0)
+pad = input(20, 0)
+dm_dcn = input(101, 0)
+dm_pcn = input(102, 0)
+dm_nscn = input(103, 0)
+dm_pscn = input(104, 0)
+dm_via1 = input(105, 0)
+dm_via2 = input(106, 0)
+
+# Special layer for bulk terminals
+
+bulk        = polygon_layer
+
+# Computed layers
+pol_in_hpol = pol & hpol
+pol_not_hpol = pol - hpol
+pol_not_res  = pol_not_hpol - res
+pol_in_res   = pol_not_hpol & res
+
+hpol_not_res  = pol_in_hpol - res
+hpol_in_res   = pol_in_hpol & res
+
+diff_not_res  = diff - res 
+diff_in_res   = diff & res
+
+ndiff_not_res = narea & diff_not_res.interacting(res)
+ndiff_in_res  = narea & diff_in_res
+
+pdiff_not_res = parea & diff_not_res.interacting(res)
+pdiff_in_res  = parea & diff_in_res
+
+cnt_in_cap = cnt & cap
+# pol_overlapping_cap = pol_not_res.overlapping(cap) - pol_not_res.inside(cap)
+pol_overlapping_cap = pol_not_res.overlapping(cap)
+
+diff_in_cap = diff.overlapping(cap)
+#diff_not_cap = diff - cap
+
+ndiff_overlapping_cap = narea & diff_in_cap
+pdiff_overlapping_cap = parea & diff_in_cap
+
+diff_in_nwl = diff & nwl
+pdiff       = diff_in_nwl - narea
+#pdiff       = diff_in_nwl & parea
+pgate       = pdiff & pol_not_res - cap
+psd         = pdiff - pgate - res
+ntie        = diff_in_nwl & narea
+# hv_pgate    = pgate & thickox
+# lv_pgate    = pgate - hv_pgate
+lv_pgate = pgate
+# hv_psd      = psd & thickox
+# lv_psd      = psd - thickox
+
+dualwell = narea - nwl
+
+diff_outside_nwl = diff - nwl
+ndiff      = diff_outside_nwl - parea
+#ndiff      = diff_outside_nwl & narea
+ngate      = ndiff & pol_not_res - cap 
+nsd        = ndiff - ngate - res
+ptie       = diff_outside_nwl & dm_pscn #& parea
+# hv_ngate   = ngate & thickox
+# lv_ngate   = ngate - hv_ngate
+lv_ngate = ngate
+# hv_nsd     = nsd & thickox
+# lv_nsd     = nsd - thickox
+
+
+
+#================================================
+#------------- DEVICES EXTRACTION ---------------
+#================================================
+# Poly_cap
+area_cap = 3.06e-15 # TO BE REVISITED!
+model_name = 'POLY_CAP'
+cap1 = ml1 & cap
+extract_devices(capacitor(model_name, area_cap), {'P1'=>pol_overlapping_cap, 'P2'=> cap1}) 
+
+model_name = 'NDIFF_CAP'
+area_cap = 5.42e-15
+cap2 = pol.overlapping(cap)
+#cap2.output(101)
+extract_devices(capacitor(model_name, area_cap), {'P1'=>ndiff_overlapping_cap, 'P2'=> cap2})  
+
+model_name = 'PDIFF_CAP'
+area_cap = 5.34e-15
+cap3 = pol.overlapping(cap)
+#cap2.output(101)
+extract_devices(capacitor(model_name, area_cap), {'P1'=>pdiff_overlapping_cap, 'P2'=> cap3})    
+
+# pts_np_b
+model_name = "PTS_NP_B"
+pplus = (pdiff - pdiff.interacting(pgate)) & dio 
+extract_devices(diode(model_name), { "P" => pplus, "N" => nwl })
+
+# R_poly
+sheet_rho = 20.0
+model_name = "R_POLY"
+bbox = (res | cnt).extents
+cap_layer = bbox - res
+extract_devices(resistor(model_name, sheet_rho), {"R" =>  pol_in_res, "C" => cap_layer, 'tA' => pol_not_res, 'tB'=>pol_not_res  })
+
+# HR_Poly
+sheet_rho = 7000.0
+model_name = "HR_POLY"
+#bbox = (res | cnt).extents
+#cap_layer = bbox - res
+#cap_layer = phd2 & pol
+cap_layer = hpol_not_res
+extract_devices(resistor(model_name, sheet_rho), {"R" =>  hpol_in_res, "C" =>cap_layer, 'tA' => hpol_not_res, 'tB'=>hpol_not_res  })
+
+# R_ndiff
+sheet_rho = 0 #WA
+model_name = "R_NDIFF"
+bbox = (res | cnt).extents
+cap_layer = bbox - res
+extract_devices(resistor(model_name, sheet_rho), {"R" =>  ndiff_in_res, "C" => cap_layer, 'tA' => ndiff_not_res, 'tB'=>ndiff_not_res  })
+
+# R_pdiff
+sheet_rho = 41.7
+model_name = "R_PDIFF"
+bbox = (res | cnt).extents
+cap_layer = bbox - res
+extract_devices(resistor(model_name, sheet_rho), {"R" =>  pdiff_in_res, "C" => cap_layer, 'tA' => pdiff_not_res, 'tB'=>pdiff_not_res  })
+
+
+# PMOS transistor device extraction
+extract_devices(mos4("PMOS"), { "SD" => psd, "G" => lv_pgate, "W" => nwl, "tS" => psd, "tD" => psd, "tG" =>pol_not_res, "tW" => nwl })
+# NMOS transistor device extraction
+extract_devices(mos4("NMOS"), { "SD" => nsd, "G" => lv_ngate, "W" => bulk, "tS" => nsd, "tD" => nsd, "tG" =>pol_not_res, "tW" => bulk })
+
+# Define connectivity for netlist extraction
+
+# Inter-layer
+connect(psd, cnt)
+connect(nsd, cnt)
+# connect(pol, cnt)
+connect(pol_not_res, cnt)
+connect(ndiff_not_res, cnt)
+connect(pdiff_not_res, cnt)
+connect(hpol_not_res, cnt)
+connect(pol_overlapping_cap, cnt)
+connect(pdiff_overlapping_cap, cnt)
+connect(ndiff_overlapping_cap, cnt)
+#connect(cap, cnt)
+connect(cap1, ml1)
+connect(cap2, cnt)
+connect(cap3, cnt)
+connect(pplus, cnt)
+
+connect(cnt, ntie)
+connect(nwl, ntie)
+connect(cnt, ptie)
+connect(cnt, ml1)
+connect(ml1, via1)
+connect(via1, ml2)
+connect(ml2, via2)
+connect(via2, ml3)
+
+# Global connections
+connect_global(ptie, "SUBSTRATE")
+connect_global(bulk, "SUBSTRATE")
+
+# -------------------------------------------------------------------
+# Netlist and compare
+
+netlist.purge
+# Hierarchy alignment (flatten out unmatched cells)
+
+target_netlist(output, write_spice, "Created by KLayout")
+
+mi.lvs(reference, output, lvs_data, l2n_data, is_deep?) {
+  if settings
+    lvs_settings
+  end
+  compare
+}
+mi.make_symlink output

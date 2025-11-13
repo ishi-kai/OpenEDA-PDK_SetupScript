@@ -1,0 +1,4 @@
+.subckt inv1 A VDD VSS X
+M3 X A VDD VDD pmos w=6u l=1u
+M0 X A VSS VSS nmos w=2u l=1u
+.ends inv1

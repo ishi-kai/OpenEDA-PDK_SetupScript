@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description>Make netlist for Klayout LVS</description>
+ <version/>
+ <category/>
+ <prolog/>
+ <epilog/>
+ <doc/>
+ <autorun>false</autorun>
+ <autorun-early>false</autorun-early>
+ <shortcut/>
+ <show-in-menu>true</show-in-menu>
+ <group-name/>
+ <menu-path>skymenu&gt;end("sky130 PDK").end</menu-path>
+ <interpreter>ruby</interpreter>
+ <dsl-interpreter-name/>
+ <text>module MyMacro
+ 
+  include RBA
+
+  # Options
+  schematic = "lvs_temp.cdl"
+  simpath = "~/.xschem/simulations"
+  # End Options
+
+  gds_base = File.basename(RBA::Application.instance.main_window.current_view.active_cellview.filename, ".*")
+  gds_dir = File.expand_path(File.dirname(RBA::Application.instance.main_window.current_view.active_cellview.filename))
+  cell_name = RBA::CellView::active.cell_name
+
+  system( "cp -f #{simpath}/#{gds_base}.spice #{gds_dir}/#{schematic}" )
+  system( "sed -i -e 's/#{gds_base}/#{cell_name}/g' #{gds_dir}/#{schematic}" )
+  system( "sed -i -e 's/ W=/u W=/g' #{gds_dir}/#{schematic}" )
+  system( "sed -i -e 's/ nf=/u nf=/g' #{gds_dir}/#{schematic}" )
+  system( "sed -i -e 's/XM/M/g' #{gds_dir}/#{schematic}" )
+  system( "gnome-terminal --title=Netlist --working-directory=#{gds_dir} -- sh -c 'cat #{gds_dir}/#{schematic}; read line'" )
+end
+</text>
+</klayout-macro>

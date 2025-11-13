@@ -1,0 +1,10 @@
+.subckt an31 A B C VDD VSS Y
+M7 Y net19 VDD VDD pmos w=6u l=1u
+M6 net19 A VDD VDD pmos w=6u l=1u
+M5 net19 B VDD VDD pmos w=6u l=1u
+M4 net19 C VDD VDD pmos w=6u l=1u
+M3 Y net19 VSS VSS nmos w=2u l=1u
+M2 net19 A N001 VSS nmos w=2u l=1u
+M1 N001 B N002 VSS nmos w=2u l=1u
+M0 N002 C VSS VSS nmos w=2u l=1u
+.ends an31

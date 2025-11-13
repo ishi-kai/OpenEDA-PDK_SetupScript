@@ -1,0 +1,12 @@
+.subckt exor A B VDD VSS X
+M9 net106 A VDD VDD pmos w=6u l=1u
+M8 net106 B VDD VDD pmos w=6u l=1u
+M7 X net134 net106 VDD pmos w=6u l=1u
+M6 N001 A VDD VDD pmos w=6u l=1u
+M5 net134 B N001 VDD pmos w=6u l=1u
+M4 X net134 VSS VSS nmos w=2u l=1u
+M3 N002 B VSS VSS nmos w=2u l=1u
+M2 X A N002 VSS nmos w=2u l=1u
+M1 net134 B VSS VSS nmos w=2u l=1u
+M0 net134 A VSS VSS nmos w=2u l=1u
+.ends exor

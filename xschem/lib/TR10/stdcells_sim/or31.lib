@@ -1,0 +1,10 @@
+.subckt or31 A B C VDD VSS X
+M7 X net075 VSS VSS nmos w=2u l=1u
+M5 net075 A VSS VSS nmos w=2u l=1u
+M4 net075 B VSS VSS nmos w=2u l=1u
+M3 net075 C VSS VSS nmos w=2u l=1u
+M6 X net075 VDD VDD pmos w=6u l=1u
+M2 net075 A N002 VDD pmos w=6u l=1u
+M1 N002 B N001 VDD pmos w=6u l=1u
+M0 N001 C VDD VDD pmos w=6u l=1u
+.ends or31

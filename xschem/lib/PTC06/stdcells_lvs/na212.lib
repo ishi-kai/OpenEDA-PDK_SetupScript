@@ -1,0 +1,8 @@
+.subckt na212 A0 A1 B0 VDD VSS X
+M5 net031 A1 VSS VSS nmos w=2u l=1u
+M4 net031 A0 VSS VSS nmos w=2u l=1u
+M3 X B0 net031 VSS nmos w=2u l=1u
+M2 X B0 VDD VDD pmos w=6u l=1u
+M1 X A1 N001 VDD pmos w=6u l=1u
+M0 N001 A0 VDD VDD pmos w=6u l=1u
+.ends na212

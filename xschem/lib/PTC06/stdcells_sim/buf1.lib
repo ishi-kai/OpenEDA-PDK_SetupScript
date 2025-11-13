@@ -1,0 +1,6 @@
+.subckt buf1 A VDD VSS Y
+M3 Y net13 VDD VDD pmos w=6u l=1u
+M2 net13 A VDD VDD pmos w=6u l=1u
+M1 net13 A VSS VSS nmos w=2u l=1u
+M0 Y net13 VSS VSS nmos w=2u l=1u
+.ends buf1

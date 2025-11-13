@@ -1,0 +1,20 @@
+.subckt buf8 A VDD VSS Y
+M17 Y net13 VDD VDD pmos w=6u l=1u
+M15 Y net13 VDD VDD pmos w=6u l=1u
+M12 Y net13 VDD VDD pmos w=6u l=1u
+M10 Y net13 VDD VDD pmos w=6u l=1u
+M8 Y net13 VDD VDD pmos w=6u l=1u
+M6 Y net13 VDD VDD pmos w=6u l=1u
+M4 Y net13 VDD VDD pmos w=6u l=1u
+M3 Y net13 VDD VDD pmos w=6u l=1u
+M2 net13 A VDD VDD pmos w=6u l=1u
+M16 Y net13 VSS VSS nmos w=2u l=1u
+M14 Y net13 VSS VSS nmos w=2u l=1u
+M13 Y net13 VSS VSS nmos w=2u l=1u
+M11 Y net13 VSS VSS nmos w=2u l=1u
+M9 Y net13 VSS VSS nmos w=2u l=1u
+M7 Y net13 VSS VSS nmos w=2u l=1u
+M5 Y net13 VSS VSS nmos w=2u l=1u
+M1 net13 A VSS VSS nmos w=2u l=1u
+M0 Y net13 VSS VSS nmos w=2u l=1u
+.ends buf8

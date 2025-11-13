@@ -1,0 +1,6 @@
+** Phenitec Diode spice model
+** ver1.00 by akita11 (170803)
+** - PTS_NP_B    = ACTEG03
+** - PTS_NP_SIDE = ACTEG04
+.model PTS_NP_B D(Is=5f IKF=0 RS=20 N=1)
+.model PTS_NP_SIDE D(Is=5f IKF=0 RS=20 N=1)

@@ -1,0 +1,7 @@
+** sch_path: /Users/noritsuna/MF20/new_file/inverter.sch
+.subckt inverter VDD VSS Q A
+*.PININFO VDD:B VSS:B Q:B A:B
+M1 Q A VDD VDD pch w=20u l=6u as=0 ps=0 ad=0 pd=0 m=1
+M2 Q A VSS VSS nch w=15u l=6u as=0 ps=0 ad=0 pd=0 m=1
+.ends
+.end

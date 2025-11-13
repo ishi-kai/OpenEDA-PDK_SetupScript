@@ -1,0 +1,12 @@
+.subckt exnr A B VDD VSS X
+M9 net18 A VSS VSS nmos w=2u l=1u
+M8 net18 B VSS VSS nmos w=2u l=1u
+M7 X net42 net18 VSS nmos w=2u l=1u
+M6 N002 A VSS VSS nmos w=2u l=1u
+M5 net42 B N002 VSS nmos w=2u l=1u
+M4 X net42 VDD VDD pmos w=6u l=1u
+M3 X A N001 VDD pmos w=6u l=1u
+M2 N001 B VDD VDD pmos w=6u l=1u
+M1 net42 A VDD VDD pmos w=6u l=1u
+M0 net42 B VDD VDD pmos w=6u l=1u
+.ends exnr

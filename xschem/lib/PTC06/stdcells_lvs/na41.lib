@@ -1,0 +1,10 @@
+.subckt na41 A B C D VDD VSS X
+M7 N003 A VSS VSS nmos w=2u l=1u
+M6 N002 B N003 VSS nmos w=2u l=1u
+M5 N001 C N002 VSS nmos w=2u l=1u
+M4 X D N001 VSS nmos w=2u l=1u
+M3 X D VDD VDD pmos w=6u l=1u
+M2 X C VDD VDD pmos w=6u l=1u
+M1 X B VDD VDD pmos w=6u l=1u
+M0 X A VDD VDD pmos w=6u l=1u
+.ends na41
