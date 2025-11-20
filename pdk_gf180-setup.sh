@@ -106,6 +106,10 @@ cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_io/gds/gf180mcu_fd_io.gds $HOME/.klayo
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_io/gds/gf180mcu_ef_io.gds $HOME/.klayout/libraries/
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds $HOME/.klayout/libraries/
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu9t5v0/gds/gf180mcu_fd_sc_mcu9t5v0.gds $HOME/.klayout/libraries/
+if [ ! -d "$HOME/.klayout/ruby/filler_generation/" ]; then
+  mkdir $HOME/.klayout/ruby/filler_generation/
+fi
+cp -f $PDK_ROOT/$PDK/libs.tech/klayout/tech/drc/filler_generation/* $HOME/.klayout/ruby/filler_generation/
 
 # Fix paths in xschemrc to point to correct PDK directory
 # -------------------------------------------------------
