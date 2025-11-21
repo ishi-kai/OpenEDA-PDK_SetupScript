@@ -68,6 +68,8 @@ fi
 
 # Install wafer.space PDK
 # -----------------------------------
+sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
+
 if [ ! -d "$TOOLS_ROOT" ]; then
   mkdir $TOOLS_ROOT
 fi
