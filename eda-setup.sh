@@ -32,7 +32,7 @@ export SRC_DIR="$HOME/src"
 my_path=$(realpath "$0")
 my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
-export KLAYOUT_VERSION=0.30.3
+export KLAYOUT_VERSION=0.30.5
 
 export TCL_VERSION=8.6.14
 export TK_VERSION=8.6.14
