@@ -68,7 +68,23 @@ fi
 
 # Install wafer.space PDK
 # -----------------------------------
-sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
+if [ "$(uname)" == 'Darwin' ]; then
+  OS='Mac'
+  brew install curl
+  sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+  OS='Linux'
+  sudo apt install curl
+  sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
+elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+  OS='Cygwin'
+  echo "Your platform ($(uname -a)) is not supported."
+  exit 1
+else
+  echo "Your platform ($(uname -a)) is not supported."
+  exit 1
+fi
+
 
 if [ ! -d "$TOOLS_ROOT" ]; then
   mkdir $TOOLS_ROOT
