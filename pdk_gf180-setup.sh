@@ -27,6 +27,7 @@ echo ""
 if [ ! -d "$HOME/.klayout" ]; then
 	mkdir $HOME/.klayout
 	mkdir $HOME/.klayout/libraries/
+	mkdir $HOME/.klayout/tech/
 	cp -f gf180/klayoutrc $HOME/.klayout/
 fi
 
