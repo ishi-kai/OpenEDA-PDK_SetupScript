@@ -15,7 +15,7 @@ my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
 export GF_PDK_OPTION=D
 export PDK=gf180mcuD
-export VOLARE_H=6d4d11780c40b20ee63cc98e645307a9bf2b2ab8
+export CIEL_H=6d4d11780c40b20ee63cc98e645307a9bf2b2ab8
 
 # --------
 echo ""
@@ -44,7 +44,33 @@ fi
 # -----------------------------------
 # pip install gdsfactory
 pip install gf180 --break-system-packages
-volare enable --pdk gf180mcu $VOLARE_H
+
+echo ">>>> Installing Ciel"
+if [ ! -d "$SRC_DIR/ciel" ]; then
+	git clone https://github.com/fossi-foundation/ciel "$SRC_DIR/ciel"
+	cd "$SRC_DIR/ciel" || exit
+else
+	echo ">>>> Updating ciel"
+	cd "$SRC_DIR/ciel" || exit
+	git pull
+fi
+if [ "$(uname)" == 'Darwin' ]; then
+	OS='Mac'
+	python3 -m pip install gf180mcu flayout pip-autoremove --break-system-packages
+	ciel enable --pdk gf180mcu $CIEL_H
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+	OS='Linux'
+	pip install gf180mcu flayout --break-system-packages
+	ciel enable --pdk gf180mcu $CIEL_H
+elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+	OS='Cygwin'
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+else
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+fi
+
 
 # Create .spiceinit
 # -----------------

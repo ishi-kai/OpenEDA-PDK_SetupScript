@@ -13,7 +13,8 @@ my_path=$(realpath "$0")
 my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
 export PDK=sky130A
-export VOLARE_H=6d4d11780c40b20ee63cc98e645307a9bf2b2ab8
+# ciel ls-remote --pdk sky130
+export CIEL_H=54435919abffb937387ec956209f9cf5fd2dfbee
 
 export TCL_VERSION=8.6.14
 export TK_VERSION=8.6.14
@@ -51,16 +52,17 @@ echo ""
 echo ">>>> Initializing..."
 echo ""
 
-echo ">>>> Installing Volare"
-if [ ! -d "$SRC_DIR/volare" ]; then
-	git clone https://github.com/efabless/volare.git "$SRC_DIR/volare"
-	cd "$SRC_DIR/volare" || exit
+echo ">>>> Installing Ciel"
+if [ ! -d "$SRC_DIR/ciel" ]; then
+	git clone https://github.com/fossi-foundation/ciel "$SRC_DIR/ciel"
+	cd "$SRC_DIR/ciel" || exit
 else
-	echo ">>>> Updating xschem"
-	cd "$SRC_DIR/volare" || exit
+	echo ">>>> Updating ciel"
+	cd "$SRC_DIR/ciel" || exit
 	git pull
 fi
-python3 -m pip install --upgrade --no-cache-dir volare --break-system-packages
+python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+
 
 # Copy KLayout Configurations
 # ----------------------------------
@@ -90,11 +92,11 @@ fi
 if [ "$(uname)" == 'Darwin' ]; then
 	OS='Mac'
 	python3 -m pip install sky130 flayout pip-autoremove --break-system-packages
-	volare enable --pdk sky130 $VOLARE_H
+	ciel enable --pdk sky130 $CIEL_H
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
 	pip install sky130 flayout --break-system-packages
-	volare enable --pdk sky130 $VOLARE_H
+	ciel enable --pdk sky130 $CIEL_H
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
 	OS='Cygwin'
 	echo "Your platform ($(uname -a)) is not supported."
