@@ -70,13 +70,16 @@ if [ ! -d "$HOME/.klayout" ]; then
 	# cp -rf klayout $HOME/.klayout
 	mkdir $HOME/.klayout
 	mkdir $HOME/.klayout/libraries
+	mkdir $HOME/.klayout/d25
+	mkdir $HOME/.klayout/drc
+	mkdir $HOME/.klayout/lvs
+	mkdir $HOME/.klayout/macros
+	mkdir $HOME/.klayout/pymacros
+	mkdir $HOME/.klayout/python
+	mkdir $HOME/.klayout/tech
 fi
 cd $my_dir
-cp -f sky130/klayoutrc $HOME/.klayout
-cp -rf sky130/macros $HOME/.klayout/macros
-# cp -rf sky130/drc $HOME/.klayout/drc
-cp -rf sky130/lvs $HOME/.klayout/lvs
-# cp -rf sky130/pymacros $HOME/.klayout/pymacros
+cp -f sky130/klayoutrc $HOME/.klayout/
 
 # Delete previous PDK
 # ---------------------------------------------
@@ -107,7 +110,6 @@ else
 fi
 
 
-
 # Create .spiceinit
 # -----------------
 {
@@ -116,8 +118,7 @@ fi
 	echo "set ng_nomodcheck"
 } > "$HOME/.spiceinit"
 
-# Create iic-init.sh
-# ------------------
+
 # Create iic-init.sh
 # ------------------
 if [ ! -d "$HOME/.xschem" ]; then
@@ -146,6 +147,8 @@ else
 	exit 1
 fi
 
+
+
 # Copy various things
 # -------------------
 export PDK_ROOT=$PDK_ROOT
@@ -154,29 +157,40 @@ export STD_CELL_LIBRARY=$MY_STDCELL
 cd $my_dir
 cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem
 cp -f $PDK_ROOT/$PDK/libs.tech/magic/$PDK.magicrc $HOME/.magicrc
-cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/drc $HOME/.klayout/drc
-# cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/lvs $HOME/.klayout/lvs
-# cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/pymacros $HOME/.klayout/pymacros
-# cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/scripts $HOME/.klayout/scripts
-mkdir $HOME/.klayout/tech/
-mkdir $HOME/.klayout/tech/sky130
-cp -f $PDK_ROOT/$PDK/libs.tech/klayout/tech/$PDK.lyp $HOME/.klayout/tech/sky130/$PDK.lyp
-cp -f $PDK_ROOT/$PDK/libs.tech/klayout/tech/$PDK.lyt $HOME/.klayout/tech/sky130/$PDK.lyt
-cp -f $PDK_ROOT/$PDK/libs.tech/klayout/tech/$PDK.map $HOME/.klayout/tech/sky130/$PDK.map
+
+cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/macros/* $HOME/.klayout/macros/
+cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/drc/* $HOME/.klayout/drc/
+cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/lvs/* $HOME/.klayout/lvs/
+cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/macros/* $HOME/.klayout/macros/
+cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/pymacros/* $HOME/.klayout/pymacros/
+cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/python/* $HOME/.klayout/python/
+cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/tech/* $HOME/.klayout/tech/
 cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_pr/gds/sky130_fd_pr.gds $HOME/.klayout/libraries/
 cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hd/gds/sky130_fd_sc_hd.gds $HOME/.klayout/libraries/
-cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hvl/gds/sky130_fd_sc_hvl.gds $HOME/.klayout/libraries/
+
+cd $my_dir
+cp -rf sky130/macros/* $HOME/.klayout/macros/
+
+
 
 # Fix paths in xschemrc to point to correct PDK directory
 # -------------------------------------------------------
 if [ "$(uname)" == 'Darwin' ]; then
 	OS='Mac'
+	echo 'set XSCHEM_LIBRARY_PATH {}' >> "$HOME/.xschem/xschemrc"
+	echo 'append XSCHEM_LIBRARY_PATH :$env(PWD)' >> "$HOME/.xschem/xschemrc"
+	echo 'append XSCHEM_LIBRARY_PATH :$env(PDK_ROOT)/$env(PDK)/libs.tech/xschem' >> "$HOME/.xschem/xschemrc"
+	echo 'append XSCHEM_LIBRARY_PATH :${XSCHEM_SHAREDIR}/xschem_library' >> "$HOME/.xschem/xschemrc"
 	sed -i -e '' 's/^set SKYWATER_MODELS/# set SKYWATER_MODELS/g' "$HOME/.xschem/xschemrc"
 	echo 'set SKYWATER_MODELS $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice' >> "$HOME/.xschem/xschemrc"
 	sed -i -e '' 's/^set SKYWATER_STDCELLS/# set SKYWATER_STD_CELLS/g' "$HOME/.xschem/xschemrc"
 	echo 'set SKYWATER_STDCELLS $env(PDK_ROOT)/$env(PDK)/libs.ref/sky130_fd_sc_hd/spice' >> "$HOME/.xschem/xschemrc"
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
+	echo 'set XSCHEM_LIBRARY_PATH {}' >> "$HOME/.xschem/xschemrc"
+	echo 'append XSCHEM_LIBRARY_PATH :$env(PWD)' >> "$HOME/.xschem/xschemrc"
+	echo 'append XSCHEM_LIBRARY_PATH :$env(PDK_ROOT)/$env(PDK)/libs.tech/xschem' >> "$HOME/.xschem/xschemrc"
+	echo 'append XSCHEM_LIBRARY_PATH :${XSCHEM_SHAREDIR}/xschem_library' >> "$HOME/.xschem/xschemrc"
 	sed -i -e 's/^set SKYWATER_MODELS/# set SKYWATER_MODELS/g' "$HOME/.xschem/xschemrc"
 	echo 'set SKYWATER_MODELS $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice' >> "$HOME/.xschem/xschemrc"
 	sed -i -e 's/^set SKYWATER_STDCELLS/# set SKYWATER_STD_CELLS/g' "$HOME/.xschem/xschemrc"
