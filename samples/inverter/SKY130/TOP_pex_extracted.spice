@@ -1,0 +1,13 @@
+* NGSPICE file created from TOP.ext - technology: sky130A
+
+.subckt TOP VDD A Q VSS
+X0 Q A VDD VDD sky130_fd_pr__pfet_01v8 ad=0.3 pd=2.6 as=0.3 ps=2.6 w=1 l=0.15
+X1 Q A VSS VSS sky130_fd_pr__nfet_01v8 ad=0.135 pd=1.5 as=0.135 ps=1.5 w=0.45 l=0.15
+C0 A Q 0.07367f
+C1 A VDD 0.13404f
+C2 Q VDD 0.15968f
+C3 A VSS 0.92349f
+C4 Q VSS 0.6095f
+C5 VDD VSS 0.68665f
+.ends
+
