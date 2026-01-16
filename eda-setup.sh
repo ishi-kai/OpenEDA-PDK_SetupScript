@@ -63,6 +63,9 @@ if [ "$(uname)" == 'Darwin' ]; then
       ;;
   esac
   export MAC_ARCH_NAME=`uname -m`
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+  OS='Linux'
+  VERSION_ID=`lsb_release -a`
 fi
 
 # ---------------

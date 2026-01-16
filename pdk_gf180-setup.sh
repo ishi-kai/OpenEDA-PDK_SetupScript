@@ -22,6 +22,37 @@ echo ""
 echo ">>>> Initializing..."
 echo ""
 
+# for Mac
+if [ "$(uname)" == 'Darwin' ]; then
+  VER=`sw_vers -productVersion | awk -F. '{ print $1 }'`
+  case $VER in
+    "14")
+      export MAC_OS_NAME=Sonoma
+      export CC_VERSION=-14
+      export CXX_VERSION=-14
+      ;;
+    "15")
+      export MAC_OS_NAME=Sequoia
+      export CC_VERSION=-14
+      export CXX_VERSION=-14
+      ;;
+    "26")
+      export MAC_OS_NAME=Tahoe
+      export CC_VERSION=-15
+      export CXX_VERSION=-15
+      ;;
+    *)
+      echo "Your Mac OS Version ($VER) is not supported."
+      exit 1
+      ;;
+  esac
+  export MAC_ARCH_NAME=`uname -m`
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+  OS='Linux'
+  VERSION_ID=`lsb_release -a`
+fi
+
+
 # Copy KLayout Configurations
 # ----------------------------------
 if [ ! -d "$HOME/.klayout" ]; then
