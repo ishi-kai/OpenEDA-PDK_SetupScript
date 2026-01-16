@@ -208,6 +208,7 @@ cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/pymacros/* $HOME/.klayout/pymacros/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/tech/* $HOME/.klayout/tech/
 cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_pr/gds/sky130_fd_pr.gds $HOME/.klayout/libraries/
 cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hd/gds/sky130_fd_sc_hd.gds $HOME/.klayout/libraries/
+cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hvl/gds/sky130_fd_sc_hvl.gds $HOME/.klayout/libraries/
 
 cd $my_dir
 cp -rf sky130/macros/* $HOME/.klayout/macros/
