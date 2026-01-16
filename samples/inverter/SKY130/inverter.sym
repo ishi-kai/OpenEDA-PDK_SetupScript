@@ -1,10 +1,11 @@
 v {xschem version=3.4.8RC file_version=1.3}
 G {}
 K {type=primitive
-format="@name @@VDD @@A @@Q @@VSS @prefix"
+format="@name @@Q @@A @@VSS @@VDD @prefix"
 template="name=x1 prefix=TOP"
 extra="prefix"
-highlight=true}
+highlight=true
+}
 V {}
 S {}
 F {}
