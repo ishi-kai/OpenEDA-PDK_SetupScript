@@ -303,7 +303,15 @@ if [ "$(uname)" == 'Darwin' ]; then
   chmod +x $HOME/bin/klayout.sh
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
-  pip install docopt pandas pip-autoremove --break-system-packages
+  if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+    pip install docopt pandas pip-autoremove
+  elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+    pip install docopt pandas pip-autoremove --break-system-packages
+  elif [ "$(expr substr $VERSION_ID 1 5)" == '26.04' ]; then
+    pip install docopt pandas pip-autoremove --break-system-packages
+  else
+    echo "Your platform Ubuntu $VERSION_ID is not supported."
+  fi
   if [ "$(expr substr $(arch) 1 6)" == 'x86_64' ]; then
     if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
       wget https://www.klayout.org/downloads/Ubuntu-22/klayout_$KLAYOUT_VERSION-1_amd64.deb
@@ -482,8 +490,20 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   sudo apt install libcurl4-openssl-dev
-  pip install ninja --break-system-packages
-  pip install gdsfactory --break-system-packages
+  if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+    sudo apt -qq install -y gnome-terminal
+    systemctl --user start gnome-terminal-server
+    pip install ninja
+    pip install gdsfactory
+  elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+    pip install ninja --break-system-packages
+    pip install gdsfactory --break-system-packages
+  elif [ "$(expr substr $VERSION_ID 1 5)" == '26.04' ]; then
+    pip install ninja --break-system-packages
+    pip install gdsfactory --break-system-packages
+  else
+    echo "Your platform Ubuntu $VERSION_ID is not supported."
+  fi
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
   OS='Cygwin'
   echo "Your platform ($(uname -a)) is not supported."

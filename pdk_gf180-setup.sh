@@ -40,28 +40,28 @@ if [ -d "$PDK_ROOT" ]; then
 	sudo chown "$USER:staff" "$PDK_ROOT"
 fi
 
-# Install GDSfactory and PDK
-# -----------------------------------
-# pip install gdsfactory
-pip install gf180 --break-system-packages
 
-echo ">>>> Installing Ciel"
-if [ ! -d "$SRC_DIR/ciel" ]; then
-	git clone https://github.com/fossi-foundation/ciel "$SRC_DIR/ciel"
-	cd "$SRC_DIR/ciel" || exit
-else
-	echo ">>>> Updating ciel"
-	cd "$SRC_DIR/ciel" || exit
-	git pull
-fi
+
+# Install PDK
+# -----------------------------------
 if [ "$(uname)" == 'Darwin' ]; then
 	OS='Mac'
 	python3 -m pip install gf180mcu flayout pip-autoremove --break-system-packages
 	ciel enable --pdk gf180mcu $CIEL_H
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
-	pip install gf180mcu flayout --break-system-packages
-	ciel enable --pdk gf180mcu $CIEL_H
+	if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+		pip install gf180mcu flayout
+		ciel enable --pdk gf180mcu $CIEL_H
+	elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+		pip install gf180mcu flayout --break-system-packages
+		ciel enable --pdk gf180mcu $CIEL_H
+	elif [ "$(expr substr $VERSION_ID 1 5)" == '26.04' ]; then
+		pip install gf180mcu flayout --break-system-packages
+		ciel enable --pdk gf180mcu $CIEL_H
+	else
+		echo "Your platform Ubuntu $VERSION_ID is not supported."
+	fi
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
 	OS='Cygwin'
 	echo "Your platform ($(uname -a)) is not supported."
@@ -70,6 +70,7 @@ else
 	echo "Your platform ($(uname -a)) is not supported."
 	exit 1
 fi
+
 
 
 # Create .spiceinit

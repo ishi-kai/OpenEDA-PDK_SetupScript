@@ -61,7 +61,30 @@ else
 	cd "$SRC_DIR/ciel" || exit
 	git pull
 fi
-python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+
+if [ "$(uname)" == 'Darwin' ]; then
+  OS='Mac'
+  python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+  OS='Linux'
+  sudo apt install libcurl4-openssl-dev
+  if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+    python3 -m pip install --upgrade --no-cache-dir ciel
+  elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+    python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+  elif [ "$(expr substr $VERSION_ID 1 5)" == '26.04' ]; then
+    python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+  else
+    echo "Your platform Ubuntu $VERSION_ID is not supported."
+  fi
+elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+  OS='Cygwin'
+  echo "Your platform ($(uname -a)) is not supported."
+  exit 1
+else
+  echo "Your platform ($(uname -a)) is not supported."
+  exit 1
+fi
 
 
 # Copy KLayout Configurations
@@ -98,8 +121,18 @@ if [ "$(uname)" == 'Darwin' ]; then
 	ciel enable --pdk sky130 $CIEL_H
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
-	pip install sky130 flayout --break-system-packages
-	ciel enable --pdk sky130 $CIEL_H
+	if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+		pip install sky130 flayout
+		ciel enable --pdk sky130 $CIEL_H
+	elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+		pip install sky130 flayout --break-system-packages
+		ciel enable --pdk sky130 $CIEL_H
+	elif [ "$(expr substr $VERSION_ID 1 5)" == '26.04' ]; then
+		pip install sky130 flayout --break-system-packages
+		ciel enable --pdk sky130 $CIEL_H
+	else
+		echo "Your platform Ubuntu $VERSION_ID is not supported."
+	fi
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
 	OS='Cygwin'
 	echo "Your platform ($(uname -a)) is not supported."
@@ -108,6 +141,7 @@ else
 	echo "Your platform ($(uname -a)) is not supported."
 	exit 1
 fi
+
 
 
 # Create .spiceinit
