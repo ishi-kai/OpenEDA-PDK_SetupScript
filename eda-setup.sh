@@ -196,7 +196,7 @@ if [ ! -d "$SRC_DIR/xschem" ]; then
   fi
   git clone https://github.com/StefanSchippers/xschem.git "$SRC_DIR/xschem"
   cd "$SRC_DIR/xschem" || exit
-  ./configure
+  ./configure CFLAGS="-Wno-error=implicit-function-declaration"
 else
   echo ">>>> Updating xschem"
   cd "$SRC_DIR/xschem" || exit
@@ -205,6 +205,7 @@ fi
 make clean
 make -j"$(nproc)" && sudo make install
 make clean
+
 
 
 # Install/update xschem-gaw
