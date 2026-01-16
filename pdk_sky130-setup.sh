@@ -226,20 +226,12 @@ if [ "$(uname)" == 'Darwin' ]; then
 	echo 'append XSCHEM_LIBRARY_PATH :$env(PWD)' >> "$HOME/.xschem/xschemrc"
 	echo 'append XSCHEM_LIBRARY_PATH :$env(PDK_ROOT)/$env(PDK)/libs.tech/xschem' >> "$HOME/.xschem/xschemrc"
 	echo 'append XSCHEM_LIBRARY_PATH :${XSCHEM_SHAREDIR}/xschem_library' >> "$HOME/.xschem/xschemrc"
-	sed -i -e '' 's/^set SKYWATER_MODELS/# set SKYWATER_MODELS/g' "$HOME/.xschem/xschemrc"
-	echo 'set SKYWATER_MODELS $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice' >> "$HOME/.xschem/xschemrc"
-	sed -i -e '' 's/^set SKYWATER_STDCELLS/# set SKYWATER_STD_CELLS/g' "$HOME/.xschem/xschemrc"
-	echo 'set SKYWATER_STDCELLS $env(PDK_ROOT)/$env(PDK)/libs.ref/sky130_fd_sc_hd/spice' >> "$HOME/.xschem/xschemrc"
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
 	echo 'set XSCHEM_LIBRARY_PATH {}' >> "$HOME/.xschem/xschemrc"
 	echo 'append XSCHEM_LIBRARY_PATH :$env(PWD)' >> "$HOME/.xschem/xschemrc"
 	echo 'append XSCHEM_LIBRARY_PATH :$env(PDK_ROOT)/$env(PDK)/libs.tech/xschem' >> "$HOME/.xschem/xschemrc"
 	echo 'append XSCHEM_LIBRARY_PATH :${XSCHEM_SHAREDIR}/xschem_library' >> "$HOME/.xschem/xschemrc"
-	sed -i -e 's/^set SKYWATER_MODELS/# set SKYWATER_MODELS/g' "$HOME/.xschem/xschemrc"
-	echo 'set SKYWATER_MODELS $env(PDK_ROOT)/$env(PDK)/libs.tech/ngspice' >> "$HOME/.xschem/xschemrc"
-	sed -i -e 's/^set SKYWATER_STDCELLS/# set SKYWATER_STD_CELLS/g' "$HOME/.xschem/xschemrc"
-	echo 'set SKYWATER_STDCELLS $env(PDK_ROOT)/$env(PDK)/libs.ref/sky130_fd_sc_hd/spice' >> "$HOME/.xschem/xschemrc"
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
 	OS='Cygwin'
 	echo "Your platform ($(uname -a)) is not supported."
