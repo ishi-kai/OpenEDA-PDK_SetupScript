@@ -65,6 +65,12 @@ if [ "$(uname)" == 'Darwin' ]; then
   export MAC_ARCH_NAME=`uname -m`
 fi
 
+# for Ubuntu
+if [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+  OS='Linux'
+  export UBUNTU_VERSION_ID=`lsb_release -r | awk -F: '{ print $2 }'`
+fi
+
 # ---------------
 # Now go to work!
 # ---------------

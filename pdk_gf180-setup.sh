@@ -47,9 +47,12 @@ if [ "$(uname)" == 'Darwin' ]; then
       ;;
   esac
   export MAC_ARCH_NAME=`uname -m`
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+fi
+
+# for Ubuntu
+if [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
-  VERSION_ID=`lsb_release -r | awk -F: '{ print $2 }'`
+  export UBUNTU_VERSION_ID=`lsb_release -r | awk -F: '{ print $2 }'`
 fi
 
 
@@ -81,17 +84,17 @@ if [ "$(uname)" == 'Darwin' ]; then
 	ciel enable --pdk gf180mcu $CIEL_H
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
-	if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+	if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
 		pip install gf180mcu flayout
 		ciel enable --pdk gf180mcu $CIEL_H
-	elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
 		pip install gf180mcu flayout --break-system-packages
 		ciel enable --pdk gf180mcu $CIEL_H
-	elif [ "$(expr substr $VERSION_ID 1 5)" == '26.04' ]; then
+	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
 		pip install gf180mcu flayout --break-system-packages
 		ciel enable --pdk gf180mcu $CIEL_H
 	else
-		echo "Your platform Ubuntu $VERSION_ID is not supported."
+		echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
 	fi
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
 	OS='Cygwin'

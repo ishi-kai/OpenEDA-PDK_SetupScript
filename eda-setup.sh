@@ -63,9 +63,12 @@ if [ "$(uname)" == 'Darwin' ]; then
       ;;
   esac
   export MAC_ARCH_NAME=`uname -m`
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+fi
+
+# for Ubuntu
+if [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
-  VERSION_ID=`lsb_release -r | awk -F: '{ print $2 }'`
+  export UBUNTU_VERSION_ID=`lsb_release -r | awk -F: '{ print $2 }'`
 fi
 
 
@@ -92,12 +95,12 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   . /etc/os-release
-  if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
-    echo "Your platform is Ubuntu $VERSION_ID."
-  elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
-    echo "Your platform is Ubuntu $VERSION_ID."
+  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
+    echo "Your platform is Ubuntu $UBUNTU_VERSION_ID."
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
+    echo "Your platform is Ubuntu $UBUNTU_VERSION_ID."
   else
-    echo "Your platform Ubuntu $VERSION_ID is not supported."
+    echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
     exit 1
   fi
   sudo sed -i 's/# deb-src/deb-src/g' /etc/apt/sources.list
@@ -308,22 +311,22 @@ if [ "$(uname)" == 'Darwin' ]; then
   chmod +x $HOME/bin/klayout.sh
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
-  if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
     pip install docopt pandas pip-autoremove
-  elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
     pip install docopt pandas pip-autoremove --break-system-packages
-  elif [ "$(expr substr $VERSION_ID 1 5)" == '26.04' ]; then
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
     pip install docopt pandas pip-autoremove --break-system-packages
   else
-    echo "Your platform Ubuntu $VERSION_ID is not supported."
+    echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
   fi
   if [ "$(expr substr $(arch) 1 6)" == 'x86_64' ]; then
-    if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+    if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
       wget https://www.klayout.org/downloads/Ubuntu-22/klayout_$KLAYOUT_VERSION-1_amd64.deb
-    elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+    elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
       wget https://www.klayout.org/downloads/Ubuntu-24/klayout_$KLAYOUT_VERSION-1_amd64.deb
     else
-      echo "Your platform Ubuntu $VERSION_ID is not supported."
+      echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
       exit 1
     fi
     sudo apt -qq install -y ./klayout_$KLAYOUT_VERSION-1_amd64.deb
@@ -473,13 +476,13 @@ if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
-  if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
     sudo apt -qq install -y gnome-terminal
     systemctl --user start gnome-terminal-server
-  elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
     echo "gnome-terminal-server is not supported."
   else
-    echo "Your platform Ubuntu $VERSION_ID is not supported."
+    echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
     exit 1
   fi
 
@@ -495,19 +498,19 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   sudo apt install libcurl4-openssl-dev
-  if [ "$(expr substr $VERSION_ID 1 5)" == '22.04' ]; then
+  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
     sudo apt -qq install -y gnome-terminal
     systemctl --user start gnome-terminal-server
     pip install ninja
     pip install gdsfactory
-  elif [ "$(expr substr $VERSION_ID 1 5)" == '24.04' ]; then
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
     pip install ninja --break-system-packages
     pip install gdsfactory --break-system-packages
-  elif [ "$(expr substr $VERSION_ID 1 5)" == '26.04' ]; then
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
     pip install ninja --break-system-packages
     pip install gdsfactory --break-system-packages
   else
-    echo "Your platform Ubuntu $VERSION_ID is not supported."
+    echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
   fi
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
   OS='Cygwin'
