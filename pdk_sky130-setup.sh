@@ -231,6 +231,7 @@ cp -rf sky130/macros/* $HOME/.klayout/macros/
 cp -rf sky130/pymacros/* $HOME/.klayout/pymacros/
 rm -rf $HOME/.klayout/pymacros/sky130_pcells.lym
 rm -rf $HOME/.klayout/pymacros/sky130_import_netlist.lym
+rm -rf $HOME/.klayout/pymacros/run_lvs.lym
 rm -rf $HOME/.klayout/lvs/sky130.lylvs
 
 
