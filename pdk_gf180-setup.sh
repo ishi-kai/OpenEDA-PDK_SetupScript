@@ -60,9 +60,30 @@ fi
 # ----------------------------------
 if [ ! -d "$HOME/.klayout" ]; then
 	mkdir $HOME/.klayout
-	mkdir $HOME/.klayout/libraries/
-	mkdir $HOME/.klayout/tech/
-	cp -f gf180/klayoutrc $HOME/.klayout/
+fi
+if [ ! -d "$HOME/.klayout/libraries" ]; then
+	mkdir $HOME/.klayout/libraries
+fi
+if [ ! -d "$HOME/.klayout/d25" ]; then
+	mkdir $HOME/.klayout/d25
+fi
+if [ ! -d "$HOME/.klayout/drc" ]; then
+	mkdir $HOME/.klayout/drc
+fi
+if [ ! -d "$HOME/.klayout/lvs" ]; then
+	mkdir $HOME/.klayout/lvs
+fi
+if [ ! -d "$HOME/.klayout/macros" ]; then
+	mkdir $HOME/.klayout/macros
+fi
+if [ ! -d "$HOME/.klayout/pymacros" ]; then
+	mkdir $HOME/.klayout/pymacros
+fi
+if [ ! -d "$HOME/.klayout/python" ]; then
+	mkdir $HOME/.klayout/python
+fi
+if [ ! -d "$HOME/.klayout/tech" ]; then
+	mkdir $HOME/.klayout/tech
 fi
 
 # Delete previous PDK

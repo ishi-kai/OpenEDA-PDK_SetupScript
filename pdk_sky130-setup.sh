@@ -15,6 +15,7 @@ export SCRIPT_DIR="$my_dir"
 export PDK=sky130A
 # ciel ls-remote --pdk sky130
 export CIEL_H=54435919abffb937387ec956209f9cf5fd2dfbee
+export CIEL_H_ANALOG_FIX=0fe599b2afb6708d281543108caf8310912f54af
 
 export TCL_VERSION=8.6.14
 export TK_VERSION=8.6.14
@@ -97,15 +98,30 @@ fi
 # Copy KLayout Configurations
 # ----------------------------------
 if [ ! -d "$HOME/.klayout" ]; then
-	# cp -rf klayout $HOME/.klayout
 	mkdir $HOME/.klayout
+fi
+if [ ! -d "$HOME/.klayout/libraries" ]; then
 	mkdir $HOME/.klayout/libraries
+fi
+if [ ! -d "$HOME/.klayout/d25" ]; then
 	mkdir $HOME/.klayout/d25
+fi
+if [ ! -d "$HOME/.klayout/drc" ]; then
 	mkdir $HOME/.klayout/drc
+fi
+if [ ! -d "$HOME/.klayout/lvs" ]; then
 	mkdir $HOME/.klayout/lvs
+fi
+if [ ! -d "$HOME/.klayout/macros" ]; then
 	mkdir $HOME/.klayout/macros
+fi
+if [ ! -d "$HOME/.klayout/pymacros" ]; then
 	mkdir $HOME/.klayout/pymacros
+fi
+if [ ! -d "$HOME/.klayout/python" ]; then
 	mkdir $HOME/.klayout/python
+fi
+if [ ! -d "$HOME/.klayout/tech" ]; then
 	mkdir $HOME/.klayout/tech
 fi
 cd $my_dir
@@ -129,13 +145,13 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
 	if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
-		pip install "sky130==0.10.1" "kfactory==0.11.4" flayout
+		pip install "sky130==0.12.2" flayout
 		ciel enable --pdk sky130 $CIEL_H
 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-		pip install "sky130==0.10.1" "kfactory==0.11.4" flayout --break-system-packages
+		pip install "sky130==0.12.2" flayout --break-system-packages
 		ciel enable --pdk sky130 $CIEL_H
 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-		pip install "sky130==0.10.1" "kfactory==0.11.4" flayout --break-system-packages
+		pip install "sky130==0.12.2" flayout --break-system-packages
 		ciel enable --pdk sky130 $CIEL_H
 	else
 		echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
@@ -203,7 +219,7 @@ cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/macros/* $HOME/.klayout/macros/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/drc/* $HOME/.klayout/drc/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/lvs/* $HOME/.klayout/lvs/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/macros/* $HOME/.klayout/macros/
-cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/pymacros/* $HOME/.klayout/pymacros/
+# cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/pymacros/* $HOME/.klayout/pymacros/
 # cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/python/* $HOME/.klayout/python/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/tech/* $HOME/.klayout/tech/
 cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_pr/gds/sky130_fd_pr.gds $HOME/.klayout/libraries/
@@ -212,8 +228,8 @@ cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hvl/gds/sky130_fd_sc_hvl.gds $HOME/.k
 
 cd $my_dir
 cp -rf sky130/macros/* $HOME/.klayout/macros/
-cp -rf sky130/python/* $HOME/.klayout/python/
-rm -rf $HOME/.klayout/pymacros/sky130_pcells.lym
+cp -rf sky130/pymacros/* $HOME/.klayout/pymacros/
+#rm -rf $HOME/.klayout/pymacros/sky130_pcells.lym
 rm -rf $HOME/.klayout/lvs/sky130.lylvs
 
 
