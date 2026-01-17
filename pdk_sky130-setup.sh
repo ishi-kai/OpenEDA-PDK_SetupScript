@@ -219,7 +219,7 @@ cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/macros/* $HOME/.klayout/macros/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/drc/* $HOME/.klayout/drc/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/lvs/* $HOME/.klayout/lvs/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/macros/* $HOME/.klayout/macros/
-# cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/pymacros/* $HOME/.klayout/pymacros/
+cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/pymacros/* $HOME/.klayout/pymacros/
 # cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/python/* $HOME/.klayout/python/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/tech/* $HOME/.klayout/tech/
 cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_pr/gds/sky130_fd_pr.gds $HOME/.klayout/libraries/
@@ -229,7 +229,8 @@ cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hvl/gds/sky130_fd_sc_hvl.gds $HOME/.k
 cd $my_dir
 cp -rf sky130/macros/* $HOME/.klayout/macros/
 cp -rf sky130/pymacros/* $HOME/.klayout/pymacros/
-#rm -rf $HOME/.klayout/pymacros/sky130_pcells.lym
+rm -rf $HOME/.klayout/pymacros/sky130_pcells.lym
+rm -rf $HOME/.klayout/pymacros/sky130_import_netlist.lym
 rm -rf $HOME/.klayout/lvs/sky130.lylvs
 
 
