@@ -142,22 +142,18 @@ fi
 # -----------------------------------
 if [ "$(uname)" == 'Darwin' ]; then
 	OS='Mac'
-	python3 -m pip install "sky130==0.12.2" flayout pip-autoremove --break-system-packages
-	python3 -m pip install --upgrade --force-reinstall gdsfactory --break-system-packages
+	python3 -m pip install "sky130==0.12.2" "gdsfactory==8.5.2" flayout pip-autoremove --break-system-packages
 	ciel enable --pdk sky130 $CIEL_H
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
 	if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
-		pip install "sky130==0.12.2" flayout
-		pip install --upgrade --force-reinstall gdsfactory
+		pip install "sky130==0.12.2" "gdsfactory==8.5.2" flayout
 		ciel enable --pdk sky130 $CIEL_H
 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-		pip install "sky130==0.12.2" flayout --break-system-packages
-		pip install --upgrade --force-reinstall gdsfactory --break-system-packages
+		pip install "sky130==0.12.2" "gdsfactory==8.5.2" flayout --break-system-packages
 		ciel enable --pdk sky130 $CIEL_H
 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-		pip install "sky130==0.12.2" flayout --break-system-packages
-		pip install --upgrade --force-reinstall gdsfactory --break-system-packages
+		pip install "sky130==0.12.2" "gdsfactory==8.5.2" flayout --break-system-packages
 		ciel enable --pdk sky130 $CIEL_H
 	else
 		echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
