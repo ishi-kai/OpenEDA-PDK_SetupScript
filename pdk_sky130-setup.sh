@@ -15,7 +15,9 @@ export SCRIPT_DIR="$my_dir"
 export PDK=sky130A
 # ciel ls-remote --pdk sky130
 export CIEL_H=54435919abffb937387ec956209f9cf5fd2dfbee
-export CIEL_H_ANALOG_FIX=0fe599b2afb6708d281543108caf8310912f54af
+# Analog Env Fix version
+# pip install volare
+# volare enable --pdk sky130 0fe599b2afb6708d281543108caf8310912f54af
 
 export TCL_VERSION=8.6.14
 export TK_VERSION=8.6.14
@@ -140,18 +142,22 @@ fi
 # -----------------------------------
 if [ "$(uname)" == 'Darwin' ]; then
 	OS='Mac'
-	python3 -m pip install sky130 flayout pip-autoremove --break-system-packages
+	python3 -m pip install "sky130==0.12.2" flayout pip-autoremove --break-system-packages
+	python3 -m pip install --upgrade --force-reinstall gdsfactory --break-system-packages
 	ciel enable --pdk sky130 $CIEL_H
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
 	if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
 		pip install "sky130==0.12.2" flayout
+		pip install --upgrade --force-reinstall gdsfactory
 		ciel enable --pdk sky130 $CIEL_H
 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
 		pip install "sky130==0.12.2" flayout --break-system-packages
+		pip install --upgrade --force-reinstall gdsfactory --break-system-packages
 		ciel enable --pdk sky130 $CIEL_H
 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
 		pip install "sky130==0.12.2" flayout --break-system-packages
+		pip install --upgrade --force-reinstall gdsfactory --break-system-packages
 		ciel enable --pdk sky130 $CIEL_H
 	else
 		echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
