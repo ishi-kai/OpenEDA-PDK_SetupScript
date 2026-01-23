@@ -57,6 +57,9 @@ Depending on your WSL environment, installation may not be possible; therefore, 
 - [Image for WSL version of TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ubuntu2204_ishi-kai_EDA.WSL_TR10.tar.xz)
     - ID: ishi-kai
     - Pass: ishi-kai
+- [Image for WSL version of SKY130 (TinyTapeout)](https://www.noritsuna.jp/download/ubuntu2204_ishi-kai_EDA.WSL_SKY130.tar.xz)
+    - ID: ishi-kai
+    - Pass: ishi-kai
 
 ### Installing WSL Images
 `wsl --import-in-place ubuntu2204_ishi-kai_EDA .\ubuntu2204_ishi-kai_EDA\ext4.vhdx`
