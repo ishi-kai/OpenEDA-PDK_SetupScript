@@ -113,13 +113,14 @@ else
 fi
 
 cd $my_dir
-cp $SRC_DIR/TR-1um/xschem/xschemrc $HOME/.xschem/
-cp $SRC_DIR/TR-1um/xschem/top.sch $HOME/.xschem/
+cp $SRC_DIR/TR-1um/libs.tech/xschem/xschemrc $HOME/.xschem/
+cp $SRC_DIR/TR-1um/libs.tech/xschem/top.sch $HOME/.xschem/
 
 cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/* $HOME/.klayout/salt/TR-1um/
-cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/klayoutrc
+cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
+cp -f $SRC_DIR/TR-1um/libs.tech/klayout/tech/TR-1um.lyp $HOME/.klayout/
 
-cp -aR $SRC_DIR/TR-1um/ $PDK_ROOT/
+cp -aR $SRC_DIR/TR-1um $PDK_ROOT/
 
 
 # Add export
@@ -152,5 +153,5 @@ fi
 # Finished
 # --------
 echo ""
-echo ">>>> All done."
+echo ">>>> All done. Please restart or re-read .bashrc"
 echo ""
