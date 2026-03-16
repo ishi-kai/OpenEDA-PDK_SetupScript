@@ -120,8 +120,8 @@ cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/* $HOME/.klayout/salt/$PDK/
 cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
 cp -f $SRC_DIR/TR-1um/libs.tech/klayout/tech/TR-1um.lyp $HOME/.klayout/
 
-if [ -d "$PDK_ROOT/$PDK" ]; then
-	mkdir "$PDK_ROOT/$PDK"
+if [ ! -d "$PDK_ROOT/$PDK" ]; then
+	mkdir -p "$PDK_ROOT/$PDK"
 fi
 cp -aR $SRC_DIR/TR-1um/* $PDK_ROOT/$PDK/
 
