@@ -116,11 +116,14 @@ cd $my_dir
 cp $SRC_DIR/TR-1um/libs.tech/xschem/xschemrc $HOME/.xschem/
 cp $SRC_DIR/TR-1um/libs.tech/xschem/top.sch $HOME/.xschem/
 
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/* $HOME/.klayout/salt/TR-1um/
+cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/* $HOME/.klayout/salt/$PDK/
 cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
 cp -f $SRC_DIR/TR-1um/libs.tech/klayout/tech/TR-1um.lyp $HOME/.klayout/
 
-cp -aR $SRC_DIR/TR-1um $PDK_ROOT/
+if [ -d "$PDK_ROOT/$PDK" ]; then
+	mkdir "$PDK_ROOT/$PDK"
+fi
+cp -aR $SRC_DIR/TR-1um/* $PDK_ROOT/$PDK/
 
 
 # Add export

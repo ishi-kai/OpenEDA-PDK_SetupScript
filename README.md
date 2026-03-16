@@ -18,6 +18,9 @@ In the case of changing the PDK, please delete it once and then reinstall it.
 ### In the case of the Tokai Rika Shuttle PDK
 `bash pdk_TR10-setup.sh`
 
+### In the case of the OpenSUSI for Tokai Rika Shuttle PDK
+`bash pdk_OpenSUSI-TR10-setup.sh`
+
 ### In the case of the Minimal Fab Shuttle PDK
 `bash pdk_MF20-setup.sh`
 
@@ -40,11 +43,13 @@ macOS installations may fail due to subtle version differences.
 Furthermore, as various tools and libraries are installed directly into your environment, this may impact your development setup. If you wish to avoid this, a VMware image is provided for your use.  
 - [Image for Apple Silicon version of OR1 (Phenitec)](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_OR1.tar.xz)
 - [Image for Apple Silicon version of TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_TR10.tar.xz)
+- [Image for Apple Silicon version of OpenSUSI-TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_OpenSUSI-TR10.tar.xz)
 - [Image for Apple Silicon version of MF20](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_MF20.tar.xz)
 - [Image for Apple Silicon version of IHP](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_iHP130.tar.xz)
 - [Image for Apple Silicon version of TinyTapeout](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_TT.tar.xz)
 - [Image for Intel-based OR1 (Phenetic)](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm.tar.xz)
 - [Image for Intel version of TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm_TR10.tar.xz)
+- [Image for Intel version of OpenSUSI-TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm_OpenSUSI-TR10.tar.xz)
     - ID: ishi-kai
     - Pass: ishi-kai
 
@@ -55,6 +60,9 @@ Depending on your WSL environment, installation may not be possible; therefore, 
     - ID: ishi-kai
     - Pass: ishi-kai
 - [Image for WSL version of TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ubuntu2204_ishi-kai_EDA.WSL_TR10.tar.xz)
+    - ID: ishi-kai
+    - Pass: ishi-kai
+- [Image for WSL version of OpenSUSI-TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ubuntu2404_ishi-kai_EDA.WSL_OpenSUSI-TR10.tar.xz)
     - ID: ishi-kai
     - Pass: ishi-kai
 - [Image for WSL version of SKY130 (TinyTapeout)](https://www.noritsuna.jp/download/ubuntu2204_ishi-kai_EDA.WSL_SKY130.tar.xz)
