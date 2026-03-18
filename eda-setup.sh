@@ -160,6 +160,7 @@ if [ ! -d "$SRC_DIR/xschem" ]; then
     brew install gawk
     brew install macvim
     brew install dbus
+    brew install wget
     brew install --cask xquartz
     brew install libglu freeglut
 
@@ -179,9 +180,14 @@ if [ ! -d "$SRC_DIR/xschem" ]; then
     rm tk$TK_VERSION-src.tar.gz
     cd tk$TK_VERSION/unix
     ./configure
+    #sed -i '' "s/-sectcreate __TEXT __info_plist Tk-Info.plist/-Wl,-sectcreate,__TEXT,__info_plist,Tk-Info.plist/g" Makefile
+    sed -i '' $'280i\\\nTK_SHLIB_LD_EXTRAS = -sectcreate __TEXT __info_plist Tk-Info.plist\n' Makefile
     make -j$(nproc)
     sudo make install
     make clean
+    
+    echo 'export DYLD_LIBRARY_PATH="/usr/local/lib:$DYLD_LIBRARY_PATH"' >> ~/.zshrc
+    
   elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     OS='Linux'
     sudo apt -qq install -y xterm graphicsmagick ghostscript \
@@ -200,6 +206,9 @@ if [ ! -d "$SRC_DIR/xschem" ]; then
   git clone https://github.com/StefanSchippers/xschem.git "$SRC_DIR/xschem"
   cd "$SRC_DIR/xschem" || exit
   ./configure CFLAGS="-Wno-error=implicit-function-declaration"
+  if [ "$(uname)" == 'Darwin' ]; then
+    sed -i '' "s/-ltcl8.5 -ltk8.5/-ltcl8.6 -ltk8.6/g" Makefile.conf
+  fi  
 else
   echo ">>>> Updating xschem"
   cd "$SRC_DIR/xschem" || exit
@@ -225,7 +234,7 @@ if [ ! -d "$SRC_DIR/xschem-gaw" ]; then
     export PATH="$(brew --prefix m4)/bin:$PATH"
 
     cd $SRC_DIR
-    wget https://download.gnome.org/sources/gtk+/3.24/gtk%2B-$GTK_VERSION.tar.xz
+    wget https://download.gnome.org/sources/gtk+/3.24/gtk+-$GTK_VERSION.tar.xz
     tar xfj gtk+-$GTK_VERSION.tar.xz
     rm gtk+-$GTK_VERSION.tar.xz
     cd gtk+-$GTK_VERSION/
@@ -293,9 +302,10 @@ if [ "$(uname)" == 'Darwin' ]; then
     fi
     brew link qt --force
     brew install libgit2
-    brew install ruby
+    brew install ruby@3.4
     git clone --depth 1 https://github.com/KLayout/klayout.git "$SRC_DIR/klayout"
     cd "$SRC_DIR/klayout" || exit
+    echo 'export PATH="$HOME/bin/:/usr/local/bin/:$PATH"' >> ~/.zshrc
   else
     echo ">>>> Updating klayout"
     cd "$SRC_DIR/klayout" || exit
@@ -305,7 +315,6 @@ if [ "$(uname)" == 'Darwin' ]; then
   rm -fr $HOME/bin/klayout.app
   mkdir -p $HOME/bin/klayout.app
   cp -aR $SRC_DIR/klayout/qt6Brew.bin.macos-$MAC_OS_NAME-release-Rhb34Phbauto/* $HOME/bin/klayout.app/
-  echo 'export PATH="$HOME/bin/:$PATH"' >> ~/.zshrc
   export PATH="$HOME/bin/:$PATH"
   cp $my_dir/klayout.sh $HOME/bin/
   chmod +x $HOME/bin/klayout.sh
@@ -418,6 +427,7 @@ if [ ! -d "$SRC_DIR/ngspice" ]; then
     brew install flex
     brew install lex
     brew install fontconfig
+    brew install gcc
     export PATH="$(brew --prefix bison)/bin:$PATH"
     brew link bison --force
     brew install libomp
@@ -441,7 +451,7 @@ if [ ! -d "$SRC_DIR/ngspice" ]; then
 
   if [ "$(uname)" == 'Darwin' ]; then
     OS='Mac'
-    ./configure --disable-debug --with-readline=no --enable-openmp  --enable-osdi --with-x CXX="g++$CXX_VERSION" CC="gcc$CC_VERSION" CFLAGS="-m64 -O2 -Wno-error=implicit-function-declaration -Wno-error=implicit-int" CPPFLAGS="-I$(brew --prefix freetype2)/include/freetype2/ -I$(brew --prefix libomp)/include/" LDFLAGS="-m64 -s -L$(brew --prefix freetype2)/lib/ -L$(brew --prefix fontconfig)/lib/ -L$(brew --prefix libomp)/lib/ -L/usr/X11/lib/"
+    ./configure --disable-debug --with-readline=no --enable-openmp  --enable-osdi --with-x CXX="g++$CXX_VERSION" CC="gcc$CC_VERSION" CFLAGS="-m64 -O2 -Wno-error=implicit-function-declaration -Wno-error=implicit-int -Xpreprocessor" CPPFLAGS="-I$(brew --prefix freetype2)/include/freetype2/ -I$(brew --prefix libomp)/include/" LDFLAGS="-m64 -s -L$(brew --prefix freetype2)/lib/ -L$(brew --prefix fontconfig)/lib/ -L$(brew --prefix libomp)/lib/ -L/usr/X11/lib/"
     sed -i '' 's/TCGETS/TIOCMGET/g' src/frontend/parser/complete.c
     sed -i '' 's/TCSETS/TIOCMSET/g' src/frontend/parser/complete.c
     sed -i '' 's/LEX = :/LEX = lex/g' src/xspice/cmpp/Makefile
@@ -486,39 +496,6 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     exit 1
   fi
 
-fi
-
-
-# Install GDSfactory
-# -----------------------------------
-if [ "$(uname)" == 'Darwin' ]; then
-  OS='Mac'
-  python3 -m pip install ninja pip-autoremove --break-system-packages
-  python3 -m pip install gdsfactory pip-autoremove --break-system-packages
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
-  OS='Linux'
-  sudo apt install libcurl4-openssl-dev
-  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
-    sudo apt -qq install -y gnome-terminal
-    systemctl --user start gnome-terminal-server
-    pip install ninja
-    pip install gdsfactory
-  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-    pip install ninja --break-system-packages
-    pip install gdsfactory --break-system-packages
-  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-    pip install ninja --break-system-packages
-    pip install gdsfactory --break-system-packages
-  else
-    echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
-  fi
-elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
-  OS='Cygwin'
-  echo "Your platform ($(uname -a)) is not supported."
-  exit 1
-else
-  echo "Your platform ($(uname -a)) is not supported."
-  exit 1
 fi
 
 
