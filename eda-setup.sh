@@ -29,6 +29,7 @@
 # Define setup environment
 # ------------------------
 export SRC_DIR="$HOME/src"
+export BIN_DIR="$HOME/bin"
 my_path=$(realpath "$0")
 my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
@@ -115,6 +116,7 @@ else
   exit 1
 fi
 mkdir $SRC_DIR
+mkdir $BIN_DIR
 cd $SRC_DIR
 
 
@@ -312,12 +314,12 @@ if [ "$(uname)" == 'Darwin' ]; then
     git pull
   fi
   python3 build4mac.py -r HB34 -p HBAuto -q Qt6Brew -m ‘—jobs=8’ -n -u
-  rm -fr $HOME/bin/klayout.app
-  mkdir -p $HOME/bin/klayout.app
-  cp -aR $SRC_DIR/klayout/qt6Brew.bin.macos-$MAC_OS_NAME-release-Rhb34Phbauto/* $HOME/bin/klayout.app/
+  rm -fr $BIN_DIR/klayout.app
+  mkdir -p $BIN_DIR/klayout.app
+  cp -aR $SRC_DIR/klayout/qt6Brew.bin.macos-$MAC_OS_NAME-release-Rhb34Phbauto/* $BIN_DIR/klayout.app/
   export PATH="$HOME/bin/:$PATH"
-  cp $my_dir/klayout.sh $HOME/bin/
-  chmod +x $HOME/bin/klayout.sh
+  cp $my_dir/klayout.sh $BIN_DIR
+  chmod +x $BIN_DIR/klayout.sh
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
@@ -346,8 +348,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     git clone --depth 1 https://github.com/KLayout/klayout.git "$SRC_DIR/klayout"
     cd "$SRC_DIR/klayout"
     ./build.sh
-    rm -fr $HOME/bin/klayout
-    mv $SRC_DIR/klayout/bin-release/ $HOME/bin/klayout/
+    rm -fr $BIN_DIR/klayout
+    mv $SRC_DIR/klayout/bin-release/ $BIN_DIR/klayout/
     echo 'export PATH="$HOME/bin/klayout/:$PATH"' >> ~/.bashrc
     echo 'export LD_LIBRARY_PATH="$HOME/bin/klayout/:$LD_LIBRARY_PATH"' >> ~/.bashrc
   fi
@@ -457,7 +459,11 @@ if [ ! -d "$SRC_DIR/ngspice" ]; then
     sed -i '' 's/LEX = :/LEX = lex/g' src/xspice/cmpp/Makefile
   elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     OS='Linux'
-    ./configure --disable-debug --with-readline=yes --enable-openmp --enable-osdi CFLAGS="-m64 -O2" LDFLAGS="-m64 -s" 
+    if [ "$(expr substr $(arch) 1 6)" == 'x86_64' ]; then
+      ./configure --disable-debug --with-readline=yes --enable-openmp --enable-osdi CFLAGS="-m64 -O2" LDFLAGS="-m64 -s" 
+    elif [ "$(expr substr $(arch) 1 7)" == 'aarch64' ]; then
+      ./configure --disable-debug --with-readline=yes --enable-openmp --enable-osdi 
+    fi
   elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then                                                                                           
     OS='Cygwin'
     echo "Your platform ($(uname -a)) is not supported."
