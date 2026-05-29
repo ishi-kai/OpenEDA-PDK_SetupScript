@@ -144,7 +144,7 @@ Mr.URA has provided the schematic for the first part of the contest; please use 
 
 # klayout
 ## Technology Selection
-### In the case of the Phenitec Shuttle PDK and Tokai Rika Shuttle PDK
+### In the case of the Phenitec Shuttle PDK
 Select "OpenRule1umPDK" under Technology.
 
 ![Technology Selection](./images/klayout_tech_OR1.png)
@@ -153,6 +153,14 @@ Select "OpenRule1umPDK" under Technology.
 Select 'ICPS2023_5' via the technology.
 
 ![Technology Selection](./images/klayout_tech_MF20.png)
+
+
+### In the case of the Tokai Rika Shuttle PDK
+Select "IP62" under Technology.
+
+
+### In the case of the OpenSUSI-TR10 Shuttle PDK
+Select "TR-1um" under Technology.
 
 
 ## Frame
