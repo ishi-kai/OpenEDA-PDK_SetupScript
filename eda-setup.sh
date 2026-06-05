@@ -33,7 +33,7 @@ export BIN_DIR="$HOME/bin"
 my_path=$(realpath "$0")
 my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
-export KLAYOUT_VERSION=0.30.7
+export KLAYOUT_VERSION=0.30.9
 
 export TCL_VERSION=8.6.14
 export TK_VERSION=8.6.14
@@ -269,7 +269,7 @@ if [ ! -d "$SRC_DIR/xschem-gaw" ]; then
     aclocal -I m4 && automake --add-missing && autoconf
     sed -i '' "s/GETTEXT_MACRO_VERSION = 0.18/GETTEXT_MACRO_VERSION = $GETTEXT_VERSION/g" po/Makefile.in.in
     sed -i '' "s/linux/netinet/g" lib/sockcon.c
-    ./configure --enable-gawsound=no LDFLAGS="-L/usr/X11/lib"
+    ./configure --enable-gawsound=no LDFLAGS="-L/usr/X11/lib" CFLAGS="-Wno-error=incompatible-function-pointer-types -std=gnu89"
   elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     OS='Linux'
     aclocal && automake --add-missing && autoconf
