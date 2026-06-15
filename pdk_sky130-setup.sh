@@ -14,7 +14,8 @@ my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
 export PDK=sky130A
 # ciel ls-remote --pdk sky130
-export CIEL_H=54435919abffb937387ec956209f9cf5fd2dfbee
+# export CIEL_H=54435919abffb937387ec956209f9cf5fd2dfbee
+export CIEL_H=8afc8346a57fe1ab7934ba5a6056ea8b43078e71
 # Analog Env Fix version
 # pip install volare
 # volare enable --pdk sky130 0fe599b2afb6708d281543108caf8310912f54af
@@ -231,11 +232,12 @@ cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hvl/gds/sky130_fd_sc_hvl.gds $HOME/.k
 cd $my_dir
 cp -rf sky130/macros/* $HOME/.klayout/macros/
 cp -rf sky130/pymacros/* $HOME/.klayout/pymacros/
-rm -rf $HOME/.klayout/pymacros/sky130_pcells.lym
-rm -rf $HOME/.klayout/pymacros/sky130_import_netlist.lym
-rm -rf $HOME/.klayout/pymacros/run_lvs.lym
-rm -rf $HOME/.klayout/lvs/sky130.lylvs
+#rm -rf $HOME/.klayout/pymacros/sky130_pcells.lym
+#rm -rf $HOME/.klayout/pymacros/sky130_import_netlist.lym
+#rm -rf $HOME/.klayout/pymacros/run_lvs.lym
+#rm -rf $HOME/.klayout/lvs/sky130.lylvs
 
+# ~/pdk/sky130A/libs.tech/klayout/*
 
 
 # Fix paths in xschemrc to point to correct PDK directory
