@@ -131,6 +131,13 @@ mv     $HOME/.klayout/salt/$PDK/TR-1um.lyt $HOME/.klayout/salt/$PDK/tech/
 cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/* $HOME/.klayout/salt/$PDK/libraries/
 cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/grain.xml $HOME/.klayout/salt/$PDK/
 cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
+rm -fr $HOME/.klayout/salt/$PDK/drc/run_IP62.drc
+rm -fr $HOME/.klayout/salt/$PDK/drc/drc_IP62.lydrc
+rm -fr $HOME/.klayout/salt/$PDK/drc/IP62/
+rm -fr $HOME/.klayout/salt/$PDK/drc/drc.lydrc
+rm -fr $HOME/.klayout/salt/$PDK/lvs/IP62/
+rm -fr $HOME/.klayout/salt/$PDK/lvs/lvs.lylvs
+
 
 if [ ! -d "$PDK_ROOT/$PDK" ]; then
 	mkdir -p "$PDK_ROOT/$PDK"
