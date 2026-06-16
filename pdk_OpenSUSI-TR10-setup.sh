@@ -122,11 +122,13 @@ fi
 if [ ! -d "$HOME/.klayout/salt/$PDK/tech/" ]; then
 	mkdir -p "$HOME/.klayout/salt/$PDK/tech/"
 fi
-
+if [ ! -d "$HOME/.klayout/salt/$PDK/libraries/" ]; then
+	mkdir -p "$HOME/.klayout/salt/$PDK/libraries/"
+fi
 cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/tech/* $HOME/.klayout/salt/$PDK/
 mv     $HOME/.klayout/salt/$PDK/TR-1um.lyp $HOME/.klayout/salt/$PDK/tech/
 mv     $HOME/.klayout/salt/$PDK/TR-1um.lyt $HOME/.klayout/salt/$PDK/tech/
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/ $HOME/.klayout/salt/$PDK/
+cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/* $HOME/.klayout/salt/$PDK/libraries/
 cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/grain.xml $HOME/.klayout/salt/$PDK/
 cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
 
