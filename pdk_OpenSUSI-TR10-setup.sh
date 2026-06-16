@@ -116,7 +116,15 @@ cd $my_dir
 cp $SRC_DIR/TR-1um/libs.tech/xschem/xschemrc $HOME/.xschem/
 cp $SRC_DIR/TR-1um/libs.tech/xschem/top.sch $HOME/.xschem/
 
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/* $HOME/.klayout/salt/$PDK/
+if [ ! -d "$HOME/.klayout/salt/$PDK/" ]; then
+	mkdir -p "$HOME/.klayout/salt/$PDK/"
+	mkdir -p "$HOME/.klayout/salt/$PDK/tech/"
+fi
+cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/tech/* 
+mv     $HOME/.klayout/salt/$PDK/TR-1um.lyp $HOME/.klayout/salt/$PDK/tech/
+mv     $HOME/.klayout/salt/$PDK/TR-1um.lyt $HOME/.klayout/salt/$PDK/tech/
+cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/ $HOME/.klayout/salt/$PDK/
+cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/grain.xml $HOME/.klayout/salt/$PDK/
 cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
 
 if [ ! -d "$PDK_ROOT/$PDK" ]; then
