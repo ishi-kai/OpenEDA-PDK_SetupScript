@@ -118,8 +118,11 @@ cp $SRC_DIR/TR-1um/libs.tech/xschem/top.sch $HOME/.xschem/
 
 if [ ! -d "$HOME/.klayout/salt/$PDK/" ]; then
 	mkdir -p "$HOME/.klayout/salt/$PDK/"
+fi
+if [ ! -d "$HOME/.klayout/salt/$PDK/tech/" ]; then
 	mkdir -p "$HOME/.klayout/salt/$PDK/tech/"
 fi
+
 cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/tech/* $HOME/.klayout/salt/$PDK/
 mv     $HOME/.klayout/salt/$PDK/TR-1um.lyp $HOME/.klayout/salt/$PDK/tech/
 mv     $HOME/.klayout/salt/$PDK/TR-1um.lyt $HOME/.klayout/salt/$PDK/tech/
