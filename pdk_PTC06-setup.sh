@@ -90,7 +90,9 @@ cd $my_dir
 if [ ! -d "$HOME/.klayout" ]; then
   mkdir -p $HOME/.klayout/
 fi
-cp -f ./klayout/klayoutrc $HOME/.klayout/klayoutrc
+if [ ! -f "$HOME/.klayout/klayoutrc" ]; then
+	cp -f ./klayout/klayoutrc $HOME/.klayout/
+fi
 
 # setup OpenRule1umPDK
 # ----------------------------------

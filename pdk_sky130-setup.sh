@@ -128,7 +128,9 @@ if [ ! -d "$HOME/.klayout/tech" ]; then
 	mkdir $HOME/.klayout/tech
 fi
 cd $my_dir
-cp -f sky130/klayoutrc $HOME/.klayout/
+if [ ! -f "$HOME/.klayout/klayoutrc" ]; then
+	cp -f sky130/klayoutrc $HOME/.klayout/
+fi
 
 # Delete previous PDK
 # ---------------------------------------------
