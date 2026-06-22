@@ -2,7 +2,7 @@
 # ========================================================================
 # Initialization of IIC Open-Source EDA Environment for OpenSUSI-TR10 PDK
 #
-# SPDX-FileCopyrightText: 2023-2025 Mori Mizuki, Noritsuna Imamura 
+# SPDX-FileCopyrightText: 2023-2026 Mori Mizuki, Noritsuna Imamura, D. Bailey
 # ISHI-KAI
 # 
 # SPDX-FileCopyrightText: 2021-2022 Harald Pretl, Johannes Kepler 
