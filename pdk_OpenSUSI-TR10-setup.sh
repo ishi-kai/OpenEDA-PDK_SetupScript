@@ -125,6 +125,9 @@ fi
 if [ ! -d "$HOME/.klayout/salt/$PDK/libraries/" ]; then
 	mkdir -p "$HOME/.klayout/salt/$PDK/libraries/"
 fi
+if [ ! -d "$HOME/.klayout/salt/libraries/" ]; then
+	mkdir -p "$HOME/.klayout/salt/libraries/"
+fi
 
 if [ ! -f "$HOME/.klayout/klayoutrc" ]; then
 	cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
@@ -133,6 +136,7 @@ cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/tech/* $HOME/.klayout/salt/$PDK/
 mv     $HOME/.klayout/salt/$PDK/TR-1um.lyp $HOME/.klayout/salt/$PDK/tech/
 mv     $HOME/.klayout/salt/$PDK/TR-1um.lyt $HOME/.klayout/salt/$PDK/tech/
 cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/* $HOME/.klayout/salt/$PDK/libraries/
+cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/* $HOME/.klayout/salt/libraries/
 cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/grain.xml $HOME/.klayout/salt/$PDK/
 rm -fr $HOME/.klayout/salt/$PDK/drc/run_IP62.drc
 rm -fr $HOME/.klayout/salt/$PDK/drc/drc_IP62.lydrc
