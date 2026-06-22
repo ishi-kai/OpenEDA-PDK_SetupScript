@@ -133,7 +133,7 @@ else
 	exit 1
 fi
 
-grep -qxF 'source $HOME/current_pdk' "$startup" || \
+tail -1 "$startup" | grep -qxF 'source $HOME/current_pdk' - || \
     echo 'source $HOME/current_pdk' >> "$startup"
 
 cat > "$HOME/current_pdk" <<EOF
