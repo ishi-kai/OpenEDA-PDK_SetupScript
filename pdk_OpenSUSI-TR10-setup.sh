@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ========================================================================
 # Initialization of IIC Open-Source EDA Environment for OpenRule1umPDK
 #
-# SPDX-FileCopyrightText: 2023-2025 Mori Mizuki, Noritsuna Imamura 
+# SPDX-FileCopyrightText: 2023-2026 Mori Mizuki, Noritsuna Imamura, D. Bailey
 # ISHI-KAI
 # 
 # SPDX-FileCopyrightText: 2021-2022 Harald Pretl, Johannes Kepler 
@@ -26,15 +26,13 @@
 # This script supports WSL(Windows Subsystem for Linux), Ubuntu 22.04, macOS.
 # ========================================================================
 
+set -euo pipefail
+
 # Define setup environment
 # ------------------------
 export PDK_ROOT="$HOME/pdk"
 export PDK=TR-1um
 
-export SRC_DIR="$HOME/src"
-my_path=$(realpath "$0")
-my_dir=$(dirname "$my_path")
-export SCRIPT_DIR="$my_dir"
 export KLAYOUT_VERSION=0.30.7
 
 export TCL_VERSION=8.6.14
@@ -42,7 +40,7 @@ export TK_VERSION=8.6.14
 export GTK_VERSION=3.24.42
 
 # for Mac
-if [ "$(uname)" == 'Darwin' ]; then
+if [[ "$(uname)" == 'Darwin' ]]; then
   VER=`sw_vers -productVersion | awk -F. '{ print $1 }'`
   case $VER in
     "14")
@@ -69,100 +67,64 @@ if [ "$(uname)" == 'Darwin' ]; then
 fi
 
 # for Ubuntu
-if [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+if [[ "$(uname -s)" == Linux* ]]; then
   OS='Linux'
   export UBUNTU_VERSION_ID=`lsb_release -r | awk -F: '{ print $2 }'`
 fi
 
-# ---------------
-# Now go to work!
-# ---------------
-if [ ! -d "$HOME/.xschem/symbols" ]; then
-  mkdir -p $HOME/.xschem/symbols
-  mkdir -p $HOME/.xschem/lib
-fi
-
-cd $my_dir
-if [ ! -d "$HOME/.klayout" ]; then
-  mkdir -p $HOME/.klayout/
-fi
-
-
-# Delete previous PDK
-# ---------------------------------------------
-if [ -d "$PDK_ROOT" ]; then
-	echo ">>>> Delete previous PDK"
-	sudo rm -rf "$PDK_ROOT"
-	sudo mkdir "$PDK_ROOT"
-	sudo chown "$USER:staff" "$PDK_ROOT"
-fi
-
-
 # setup OpenSUSI-TR10
 # ----------------------------------
-if [ ! -d "$HOME/.klayout/salt/TR-1um" ]; then
-  mkdir -p $HOME/.klayout/salt/TR-1um
-fi
-if [ ! -d "$SRC_DIR/TR-1um" ]; then
-  cd $SRC_DIR
-  git clone  https://github.com/OpenSUSI/TR-1um.git
+if [[ ! -d "$PDK_ROOT/$PDK" ]]; then
+	mkdir -p "$PDK_ROOT"
+	cd "$PDK_ROOT"
+  	git clone https://github.com/OpenSUSI/TR-1um.git "$PDK"
 else
-  echo ">>>> Updating OpenSUSI-TR10"
-  cd $SRC_DIR/TR-1um || exit
-  git pull
+	echo ">>>> Updating OpenSUSI-TR10"
+	cd "$PDK_ROOT/$PDK" || exit
+	git pull
 fi
 
-cd $my_dir
-cp $SRC_DIR/TR-1um/libs.tech/xschem/xschemrc $HOME/.xschem/
-cp $SRC_DIR/TR-1um/libs.tech/xschem/top.sch $HOME/.xschem/
-
-if [ ! -d "$HOME/.klayout/salt/$PDK/" ]; then
-	mkdir -p "$HOME/.klayout/salt/$PDK/"
+if [[ ! -d "$HOME/.xschem" ]]; then
+	mkdir "$HOME/.xschem"
 fi
-if [ ! -d "$HOME/.klayout/salt/$PDK/tech/" ]; then
-	mkdir -p "$HOME/.klayout/salt/$PDK/tech/"
-fi
-if [ ! -d "$HOME/.klayout/salt/$PDK/libraries/" ]; then
-	mkdir -p "$HOME/.klayout/salt/$PDK/libraries/"
-fi
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/tech/* $HOME/.klayout/salt/$PDK/
-mv     $HOME/.klayout/salt/$PDK/TR-1um.lyp $HOME/.klayout/salt/$PDK/tech/
-mv     $HOME/.klayout/salt/$PDK/TR-1um.lyt $HOME/.klayout/salt/$PDK/tech/
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/* $HOME/.klayout/salt/$PDK/libraries/
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/grain.xml $HOME/.klayout/salt/$PDK/
-cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
-rm -fr $HOME/.klayout/salt/$PDK/drc/run_IP62.drc
-rm -fr $HOME/.klayout/salt/$PDK/drc/drc_IP62.lydrc
-rm -fr $HOME/.klayout/salt/$PDK/drc/IP62/
-rm -fr $HOME/.klayout/salt/$PDK/drc/drc.lydrc
-rm -fr $HOME/.klayout/salt/$PDK/lvs/IP62/
-rm -fr $HOME/.klayout/salt/$PDK/lvs/lvs.lylvs
+cp "$PDK_ROOT/$PDK/libs.tech/xschem/xschemrc" "$HOME/.xschem/"
+cp "$PDK_ROOT/$PDK/libs.tech/xschem/top.sch" "$HOME/.xschem/"
 
+# Add the klayout technology
+tmp_py=$(mktemp /tmp/import_klayout_tech.XXXXXX).py
 
-if [ ! -d "$PDK_ROOT/$PDK" ]; then
-	mkdir -p "$PDK_ROOT/$PDK"
-fi
-cp -aR $SRC_DIR/TR-1um/* $PDK_ROOT/$PDK/
+cat > "$tmp_py" <<'PY'
+import pya
+app = pya.Application.instance()
 
+tech = pya.Technology()
+tech.load(tech_file)
+name = tech.name
+if name in pya.Technology.technology_names():
+    pya.Technology.remove_technology(name)
+pya.Technology.create_technology(name).load(tech_file)
+
+app.set_config("technology-data", pya.Technology.technologies_to_xml())
+
+print("Imported", name)
+PY
+
+klayout -zz \
+	-c $HOME/.klayout/klayoutrc \
+	-rd tech_file="$PDK_ROOT/$PDK/libs.tech/klayout/tech/TR-1um.lyt" \
+	-rm "$tmp_py" 
+
+rm -f "$tmp_py"
 
 # Add export
 # ------------------
-if [ ! -d "$HOME/.xschem" ]; then
-	mkdir "$HOME/.xschem"
-fi
-if [ "$(uname)" == 'Darwin' ]; then
+if [[ "$(uname)" == 'Darwin' ]]; then
 	OS='Mac'
-	{
-		echo "export PDK_ROOT=$PDK_ROOT"
-		echo "export PDK=$PDK"
-	} >> "$HOME/.zshrc"
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+	startup="$HOME/.zshrc"
+elif [[ "$(uname -s)" == Linux* ]]; then
 	OS='Linux'
-	{
-		echo "export PDK_ROOT=$PDK_ROOT"
-		echo "export PDK=$PDK"
-	} >> "$HOME/.bashrc"
-elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+	startup="$HOME/.bashrc"
+elif [[ "$(uname -s)" == MINGW32_NT* ]]; then
 	OS='Cygwin'
 	echo "Your platform ($(uname -a)) is not supported."
 	exit 1
@@ -171,9 +133,17 @@ else
 	exit 1
 fi
 
+grep -qxF 'source $HOME/current_pdk' "$startup" || \
+    echo 'source $HOME/current_pdk' >> "$startup"
+
+cat > "$HOME/current_pdk" <<EOF
+export PDK_ROOT="$PDK_ROOT"
+export PDK="$PDK"
+EOF
+source "$HOME/current_pdk"
 
 # Finished
 # --------
 echo ""
-echo ">>>> All done. Please restart or re-read .bashrc"
+echo ">>>> All done."
 echo ""
