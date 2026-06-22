@@ -85,6 +85,8 @@ fi
 cd $my_dir
 if [ ! -d "$HOME/.klayout" ]; then
   mkdir -p $HOME/.klayout/
+else
+  rm -fr $HOME/.klayout/salt/$PDK/
 fi
 
 
