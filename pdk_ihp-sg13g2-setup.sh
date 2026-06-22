@@ -262,13 +262,37 @@ cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem/
 if [ ! -d "$HOME/.xschem" ]; then
 	mkdir "$HOME/.xschem"
 fi
-{
-	echo "export PDK_ROOT=$PDK_ROOT"
-	echo "export PDK=$PDK"
-	echo "export STD_CELL_LIBRARY=$MY_STDCELL"
-	echo "export PYTHONPYCACHEPREFIX=/tmp"
-	echo 'export PATH="$HOME/bin:$PATH"'
-} >> "$HOME/.bashrc"
+
+
+# Add export
+# ------------------
+if [[ "$(uname)" == 'Darwin' ]]; then
+	OS='Mac'
+	startup="$HOME/.zshrc"
+elif [[ "$(uname -s)" == Linux* ]]; then
+	OS='Linux'
+	startup="$HOME/.bashrc"
+elif [[ "$(uname -s)" == MINGW32_NT* ]]; then
+	OS='Cygwin'
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+else
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+fi
+
+tail -1 "$startup" | grep -qxF 'source $HOME/current_pdk' - || \
+    echo 'source $HOME/current_pdk' >> "$startup"
+
+cat > "$HOME/current_pdk" <<EOF
+export PDK_ROOT="$PDK_ROOT"
+export PDK="$PDK"
+export STD_CELL_LIBRARY="$MY_STDCELL"
+export PYTHONPYCACHEPREFIX="/tmp"
+export PATH="$HOME/bin:$PATH"
+EOF
+source "$HOME/current_pdk"
+
 
 
 # Fix paths in xschemrc to point to correct PDK directory
@@ -277,7 +301,7 @@ fi
 # Finished
 # --------
 echo ""
-echo ">>>> All done. Please restart or re-read .bashrc"
+echo ">>>> All done."
 echo ">>>> "
 echo '>>>> Xyce on xschem Usage: mpirun /usr/local/bin/Xyce -plugin $env(PDK_ROOT)/$env(PDK)/libs.tech/xyce/adms/Xyce_Plugin_PSP103_VA.so "$N"'
 echo ""

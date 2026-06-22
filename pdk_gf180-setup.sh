@@ -141,12 +141,36 @@ fi
 if [ ! -d "$HOME/.xschem" ]; then
 	mkdir "$HOME/.xschem"
 fi
-{
-	echo "export PDK_ROOT=$PDK_ROOT"
-	echo "export PDK=$PDK"
-	echo "export GF_PDK_OPTION=$GF_PDK_OPTION"
-	echo "export STD_CELL_LIBRARY=$MY_STDCELL"
-} >> "$HOME/.bashrc"
+
+
+# Add export
+# ------------------
+if [[ "$(uname)" == 'Darwin' ]]; then
+	OS='Mac'
+	startup="$HOME/.zshrc"
+elif [[ "$(uname -s)" == Linux* ]]; then
+	OS='Linux'
+	startup="$HOME/.bashrc"
+elif [[ "$(uname -s)" == MINGW32_NT* ]]; then
+	OS='Cygwin'
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+else
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+fi
+
+tail -1 "$startup" | grep -qxF 'source $HOME/current_pdk' - || \
+    echo 'source $HOME/current_pdk' >> "$startup"
+
+cat > "$HOME/current_pdk" <<EOF
+export PDK_ROOT="$PDK_ROOT"
+export PDK="$PDK"
+export GF_PDK_OPTION="$GF_PDK_OPTION"
+export STD_CELL_LIBRARY="$MY_STDCELL"
+EOF
+source "$HOME/current_pdk"
+
 
 
 # Install wafer.space PDK
@@ -248,5 +272,5 @@ chmod +x  $TOOLS_ROOT/gf180mcu-precheck/run_precheck.sh
 # Finished
 # --------
 echo ""
-echo ">>>> All done. Please restart or re-read .bashrc"
+echo ">>>> All done."
 echo ""

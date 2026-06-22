@@ -1,6 +1,6 @@
 #!/bin/bash
 # ========================================================================
-# Initialization of IIC Open-Source EDA Environment for OpenRule1umPDK
+# Initialization of IIC Open-Source EDA Environment for OpenSUSI-TR10 PDK
 #
 # SPDX-FileCopyrightText: 2023-2025 Mori Mizuki, Noritsuna Imamura 
 # ISHI-KAI
@@ -116,60 +116,68 @@ cd $my_dir
 cp $SRC_DIR/TR-1um/libs.tech/xschem/xschemrc $HOME/.xschem/
 cp $SRC_DIR/TR-1um/libs.tech/xschem/top.sch $HOME/.xschem/
 
-if [ ! -d "$HOME/.klayout/salt/$PDK/" ]; then
-	mkdir -p "$HOME/.klayout/salt/$PDK/"
-fi
-if [ ! -d "$HOME/.klayout/salt/$PDK/tech/" ]; then
-	mkdir -p "$HOME/.klayout/salt/$PDK/tech/"
-fi
-if [ ! -d "$HOME/.klayout/salt/$PDK/libraries/" ]; then
-	mkdir -p "$HOME/.klayout/salt/$PDK/libraries/"
-fi
-if [ ! -d "$HOME/.klayout/salt/libraries/" ]; then
-	mkdir -p "$HOME/.klayout/salt/libraries/"
-fi
 
+# Add the klayout technology
+tmp_py=$(mktemp /tmp/import_klayout_tech.XXXXXX).py
+
+cat > "$tmp_py" <<'PY'
+import pya
+app = pya.Application.instance()
+
+tech = pya.Technology()
+tech.load(tech_file)
+name = tech.name
+if name in pya.Technology.technology_names():
+    pya.Technology.remove_technology(name)
+pya.Technology.create_technology(name).load(tech_file)
+
+app.set_config("technology-data", pya.Technology.technologies_to_xml())
+
+print("Imported", name)
+PY
+
+
+if [ ! -d "$HOME/.klayout" ]; then
+  mkdir -p $HOME/.klayout/
+fi
 if [ ! -f "$HOME/.klayout/klayoutrc" ]; then
 	cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
 fi
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/tech/* $HOME/.klayout/salt/$PDK/
-mv     $HOME/.klayout/salt/$PDK/TR-1um.lyp $HOME/.klayout/salt/$PDK/tech/
-mv     $HOME/.klayout/salt/$PDK/TR-1um.lyt $HOME/.klayout/salt/$PDK/tech/
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/* $HOME/.klayout/salt/$PDK/libraries/
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/libraries/* $HOME/.klayout/salt/libraries/
-cp -aR $SRC_DIR/TR-1um/libs.tech/klayout/grain.xml $HOME/.klayout/salt/$PDK/
-rm -fr $HOME/.klayout/salt/$PDK/drc/run_IP62.drc
-rm -fr $HOME/.klayout/salt/$PDK/drc/drc_IP62.lydrc
-rm -fr $HOME/.klayout/salt/$PDK/drc/IP62/
-rm -fr $HOME/.klayout/salt/$PDK/drc/drc.lydrc
-rm -fr $HOME/.klayout/salt/$PDK/lvs/IP62/
-rm -fr $HOME/.klayout/salt/$PDK/lvs/lvs.lylvs
-
-
-if [ ! -d "$PDK_ROOT/$PDK" ]; then
-	mkdir -p "$PDK_ROOT/$PDK"
+if [[ "$(uname)" == 'Darwin' ]]; then
+	OS='Mac'
+	export DYLD_LIBRARY_PATH="$(brew --prefix ruby@3.3)/lib:$DYLD_LIBRARY_PATH"
+	export PATH="$(brew --prefix ruby@3.3)/bin:$PATH"
+	cd $HOME/bin/klayout.app/
+	./klayout.app/Contents/MacOS/klayout -zz \
+		-c $HOME/.klayout/klayoutrc \
+		-rd tech_file="$PDK_ROOT/$PDK/libs.tech/klayout/tech/TR-1um.lyt" \
+		-rm "$tmp_py" 
+elif [[ "$(uname -s)" == Linux* ]]; then
+	OS='Linux'
+	klayout -zz \
+		-c $HOME/.klayout/klayoutrc \
+		-rd tech_file="$PDK_ROOT/$PDK/libs.tech/klayout/tech/TR-1um.lyt" \
+		-rm "$tmp_py" 
+elif [[ "$(uname -s)" == MINGW32_NT* ]]; then
+	OS='Cygwin'
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+else
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
 fi
-cp -aR $SRC_DIR/TR-1um/* $PDK_ROOT/$PDK/
+rm -f "$tmp_py"
 
 
 # Add export
 # ------------------
-if [ ! -d "$HOME/.xschem" ]; then
-	mkdir "$HOME/.xschem"
-fi
-if [ "$(uname)" == 'Darwin' ]; then
+if [[ "$(uname)" == 'Darwin' ]]; then
 	OS='Mac'
-	{
-		echo "export PDK_ROOT=$PDK_ROOT"
-		echo "export PDK=$PDK"
-	} >> "$HOME/.zshrc"
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+	startup="$HOME/.zshrc"
+elif [[ "$(uname -s)" == Linux* ]]; then
 	OS='Linux'
-	{
-		echo "export PDK_ROOT=$PDK_ROOT"
-		echo "export PDK=$PDK"
-	} >> "$HOME/.bashrc"
-elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+	startup="$HOME/.bashrc"
+elif [[ "$(uname -s)" == MINGW32_NT* ]]; then
 	OS='Cygwin'
 	echo "Your platform ($(uname -a)) is not supported."
 	exit 1
@@ -178,9 +186,18 @@ else
 	exit 1
 fi
 
+tail -1 "$startup" | grep -qxF 'source $HOME/current_pdk' - || \
+    echo 'source $HOME/current_pdk' >> "$startup"
+
+cat > "$HOME/current_pdk" <<EOF
+export PDK_ROOT="$PDK_ROOT"
+export PDK="$PDK"
+EOF
+source "$HOME/current_pdk"
+
 
 # Finished
 # --------
 echo ""
-echo ">>>> All done. Please restart or re-read .bashrc"
+echo ">>>> All done."
 echo ""
