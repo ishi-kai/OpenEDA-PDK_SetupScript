@@ -147,10 +147,7 @@ if [ ! -f "$HOME/.klayout/klayoutrc" ]; then
 fi
 if [[ "$(uname)" == 'Darwin' ]]; then
 	OS='Mac'
-	export DYLD_LIBRARY_PATH="$(brew --prefix ruby@3.3)/lib:$DYLD_LIBRARY_PATH"
-	export PATH="$(brew --prefix ruby@3.3)/bin:$PATH"
-	cd $HOME/bin/klayout.app/
-	./klayout.app/Contents/MacOS/klayout -zz \
+	klayout.sh -zz \
 		-c $HOME/.klayout/klayoutrc \
 		-rd tech_file="$PDK_ROOT/$PDK/libs.tech/klayout/tech/TR-1um.lyt" \
 		-rm "$tmp_py" 
