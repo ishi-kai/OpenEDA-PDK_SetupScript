@@ -102,9 +102,6 @@ fi
 
 # setup OpenSUSI-TR10
 # ----------------------------------
-if [ ! -d "$HOME/.klayout/salt/TR-1um" ]; then
-  mkdir -p $HOME/.klayout/salt/TR-1um
-fi
 if [ ! -d "$SRC_DIR/TR-1um" ]; then
   cd $SRC_DIR
   git clone  https://github.com/OpenSUSI/TR-1um.git
@@ -117,7 +114,6 @@ fi
 cd $my_dir
 cp $SRC_DIR/TR-1um/libs.tech/xschem/xschemrc $HOME/.xschem/
 cp $SRC_DIR/TR-1um/libs.tech/xschem/top.sch $HOME/.xschem/
-
 
 # Add the klayout technology
 tmp_py=$(mktemp /tmp/import_klayout_tech.XXXXXX).py
@@ -145,6 +141,11 @@ fi
 if [ ! -f "$HOME/.klayout/klayoutrc" ]; then
 	cp -f $SRC_DIR/TR-1um/libs.tech/klayout/klayoutrc $HOME/.klayout/
 fi
+if [ ! -d "$PDK_ROOT/$PDK" ]; then
+       mkdir -p "$PDK_ROOT/$PDK"
+fi
+cp -aR $SRC_DIR/TR-1um/* $PDK_ROOT/$PDK/
+
 if [[ "$(uname)" == 'Darwin' ]]; then
 	OS='Mac'
 	klayout.sh -zz \
