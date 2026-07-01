@@ -30,6 +30,7 @@
 # ------------------------
 export PDK_ROOT="$HOME/pdk"
 export PDK=TR-1um
+export PDK_VERSION="v1.2609.0"
 
 export SRC_DIR="$HOME/src"
 my_path=$(realpath "$0")
@@ -104,7 +105,7 @@ fi
 # ----------------------------------
 if [ ! -d "$SRC_DIR/TR-1um" ]; then
   cd $SRC_DIR
-  git clone  https://github.com/OpenSUSI/TR-1um.git
+  git clone  https://github.com/OpenSUSI/TR-1um.git -b $PDK_VERSION
 else
   echo ">>>> Updating OpenSUSI-TR10"
   cd $SRC_DIR/TR-1um || exit
