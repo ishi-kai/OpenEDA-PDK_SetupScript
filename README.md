@@ -194,8 +194,11 @@ There are no frames provided for the iHP shuttle. You will need to design your o
 
 
 ### TinyTapeout(Skywater130) PDK
-* [GDS file for frames](TT/gds/tt_um_username_projectname.gds)
-![GDS file for frames](./images/TT_frame.png)
+* [GDS file for 1x2 frames](./GDS/SKY130/TinyTapeout/tt_analog_1x2.gds)
+* [GDS file for 1x2 & 3.3V frames](./GDS/SKY130/TinyTapeout/tt_analog_1x2_3v3.gds)
+* [GDS file for 2x2 frames](./GDS/SKY130/TinyTapeout/tt_analog_2x2.gds)
+* [GDS file for 2x2 & 3.3V frames](./GDS/SKY130/TinyTapeout/tt_analog_2x2_3v3.gds)
+![GDS file for 1x2 & 3.3V frames](./images/TT_frame.png)
 
 
 ## Filler
@@ -250,6 +253,16 @@ bash eda-Qucs-S-option.sh
 ```
 bash eda-xyce-option.sh
 ```
+
+
+
+# Documents
+## TinyTapeout(Skywater130)
+- [Setup Document](./docs/TinyTapeout_sky130.pptx)
+
+## TinyTapeout(IHP130)
+- [Setup Document](./docs/TinyTapeout_ihp.pptx)
+
 
 
 # LICENSE
