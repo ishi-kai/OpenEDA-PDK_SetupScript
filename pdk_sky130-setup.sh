@@ -15,7 +15,7 @@ export SCRIPT_DIR="$my_dir"
 export PDK=sky130A
 # ciel ls-remote --pdk sky130
 # export CIEL_H=54435919abffb937387ec956209f9cf5fd2dfbee
-export CIEL_H=8afc8346a57fe1ab7934ba5a6056ea8b43078e71
+export CIEL_H=3e0e31dcce8519a7dbb82590346db16d91b7244f
 # Analog Env Fix version
 # pip install volare
 # volare enable --pdk sky130 0fe599b2afb6708d281543108caf8310912f54af
@@ -146,18 +146,22 @@ fi
 if [ "$(uname)" == 'Darwin' ]; then
 	OS='Mac'
 	python3 -m pip install "sky130==0.12.2" "gdsfactory==8.5.2" flayout pip-autoremove --break-system-packages
-	ciel enable --pdk sky130 $CIEL_H
+#	ciel enable --pdk sky130 $CIEL_H
+	ciel enable --pdk-family sky130 --data-source "static-web:https://chipfoundry.github.io/ciel-releases" $CIEL_H
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
 	if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
 		pip install "sky130==0.12.2" "gdsfactory==8.5.2" flayout
-		ciel enable --pdk sky130 $CIEL_H
+#		ciel enable --pdk sky130 $CIEL_H
+		ciel enable --pdk-family sky130 --data-source "static-web:https://chipfoundry.github.io/ciel-releases" $CIEL_H
 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
 		pip install "sky130==0.12.2" "gdsfactory==8.5.2" flayout --break-system-packages
-		ciel enable --pdk sky130 $CIEL_H
+#		ciel enable --pdk sky130 $CIEL_H
+		ciel enable --pdk-family sky130 --data-source "static-web:https://chipfoundry.github.io/ciel-releases" $CIEL_H
 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
 		pip install "sky130==0.12.2" "gdsfactory==8.5.2" flayout --break-system-packages
-		ciel enable --pdk sky130 $CIEL_H
+#		ciel enable --pdk sky130 $CIEL_H
+		ciel enable --pdk-family sky130 --data-source "static-web:https://chipfoundry.github.io/ciel-releases" $CIEL_H
 	else
 		echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
 	fi
