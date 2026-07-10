@@ -69,7 +69,7 @@ plot i(vd)
 wrdata ~/inverter_tb.txt v(vout)
 write inverter_tb.raw
 .endc"}
-C {devices/code_shown.sym} 390 -40 0 0 {name=measure only_toplevel=false value=".measure dc Vinv when v(vout)=2.5"}
+C {devices/code_shown.sym} 390 -40 0 0 {name=measure only_toplevel=false value=".measure dc Vin when v(vout)=2.5"}
 C {devices/ammeter.sym} 190 -350 0 0 {name=Vd savecurrent=true spice_ignore=0}
 C {devices/capa.sym} 300 -70 0 0 {name=Cload
 m=1
