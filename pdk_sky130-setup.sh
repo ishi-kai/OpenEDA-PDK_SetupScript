@@ -216,7 +216,8 @@ export PDK_ROOT=$PDK_ROOT
 export PDK=$PDK
 export STD_CELL_LIBRARY=$MY_STDCELL
 cd $my_dir
-cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem
+mkdir $HOME/.xschem/
+cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem/
 cp -f $PDK_ROOT/$PDK/libs.tech/magic/$PDK.magicrc $HOME/.magicrc
 
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/macros/* $HOME/.klayout/macros/
