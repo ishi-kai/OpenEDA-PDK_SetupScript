@@ -29,13 +29,22 @@
 
   system( "cp -f #{simpath}/#{gds_base}.spice #{gds_dir}/#{schematic}" )
   system( "sed -i -e 's/#{gds_base}/#{cell_name}/g' #{gds_dir}/#{schematic}" )
-  system( "sed -i -e 's/ W=/u W=/g' #{gds_dir}/#{schematic}" )
-  system( "sed -i -e 's/ nf=/u nf=/g' #{gds_dir}/#{schematic}" )
-  system( "sed -i -e 's/XM/M/g' #{gds_dir}/#{schematic}" )
-  system( "sed -i -e 's/^[[:space:]]X\([0-9]\+\)/M\1/g' '#{gds_dir}/#{schematic}'" )
-  system( "sed -i -e 's/w=\([0-9][0-9]\)0000u/w=0.\1u/g' #{gds_dir}/#{schematic}" )
-  system( "sed -i -e 's/l=\([0-9][0-9]\)0000u/l=0.\1u/g' #{gds_dir}/#{schematic}" )
-  system( "sed -i -e 's/w=1e+06u/w=1.0u/g' #{gds_dir}/#{schematic}" )
+
+  system( "sed -i -E 's/w=1e\\+06u?/w=1.0u/g' '#{gds_dir}/#{schematic}'" )
+
+  system( "sed -i -E 's/w=([0-9.]+)[uU]?/w=\\1/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/l=([0-9.]+)[uU]?/l=\\1/g' '#{gds_dir}/#{schematic}'" )
+
+  system( "sed -i -E 's/w=([0-9.]+)/w=\\1u/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/l=([0-9.]+)/l=\\1u/g' '#{gds_dir}/#{schematic}'" )
+  
+  system( "sed -i -E 's/XM/M/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/^[[:space:]]*X([0-9]+)/M\\1/g' '#{gds_dir}/#{schematic}'" )
+
+  system( "sed -i -E 's/w=([0-9][0-9])0000u/w=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/l=([0-9][0-9])0000u/l=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/w=([0-9][0-9])0000/w=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/l=([0-9][0-9])0000/l=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
   system( "gnome-terminal --title=Netlist --working-directory=#{gds_dir} -- sh -c 'cat #{gds_dir}/#{schematic}; read line'" )
 end
 </text>
