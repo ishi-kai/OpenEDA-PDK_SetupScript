@@ -56,6 +56,41 @@ if [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 fi
 
 
+echo ">>>> Installing Ciel"
+if [ ! -d "$SRC_DIR/ciel" ]; then
+	git clone https://github.com/fossi-foundation/ciel "$SRC_DIR/ciel"
+	cd "$SRC_DIR/ciel" || exit
+else
+	echo ">>>> Updating ciel"
+	cd "$SRC_DIR/ciel" || exit
+	git pull
+fi
+
+if [ "$(uname)" == 'Darwin' ]; then
+  OS='Mac'
+  python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+  OS='Linux'
+  sudo apt install libcurl4-openssl-dev
+  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
+    python3 -m pip install --upgrade --no-cache-dir ciel
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
+    python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
+    python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+  else
+    echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
+  fi
+elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+  OS='Cygwin'
+  echo "Your platform ($(uname -a)) is not supported."
+  exit 1
+else
+  echo "Your platform ($(uname -a)) is not supported."
+  exit 1
+fi
+
+
 # Copy KLayout Configurations
 # ----------------------------------
 if [ ! -d "$HOME/.klayout" ]; then
@@ -91,9 +126,9 @@ fi
 if [ -d "$PDK_ROOT" ]; then
 	echo ">>>> Delete previous PDK"
 	sudo rm -rf "$PDK_ROOT"
-	sudo mkdir "$PDK_ROOT"
-	sudo chown "$USER:staff" "$PDK_ROOT"
 fi
+sudo mkdir "$PDK_ROOT"
+sudo chown "$USER:staff" "$PDK_ROOT"
 
 
 
@@ -231,6 +266,11 @@ cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_io/gds/gf180mcu_fd_io.gds $HOME/.klayo
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_io/gds/gf180mcu_ef_io.gds $HOME/.klayout/libraries/
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds $HOME/.klayout/libraries/
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu9t5v0/gds/gf180mcu_fd_sc_mcu9t5v0.gds $HOME/.klayout/libraries/
+
+cp -f $my_dir/gf180/cells/gf180mcu_as_sc_mcu7t3v3/gf180mcu_as_sc_mcu7t3v3.gds $HOME/.klayout/libraries/
+cp -f $my_dir/gf180/cells/gf180mcu_ocd_io/gf180mcu_ocd_io.gds $HOME/.klayout/libraries/
+
+
 if [ ! -d "$HOME/.klayout/ruby/filler_generation/" ]; then
   mkdir -p $HOME/.klayout/ruby/filler_generation/
 fi
@@ -247,7 +287,7 @@ echo 'puts stderr "180MCU_STDCELLS: $180MCU_STDCELLS"' >> "$HOME/.xschem/xschemr
 # Install precheck tool
 # -----------------------------------
 if [ ! -d "$TOOLS_ROOT/gf180mcu-precheck" ]; then
-  sudo apt install nix-shell
+#  sudo apt install nix-shell
   git clone https://github.com/wafer-space/gf180mcu-precheck.git "$TOOLS_ROOT/gf180mcu-precheck"
 
   git clone https://github.com/librelane/librelane.git "$TOOLS_ROOT/gf180mcu-precheck/librelane"

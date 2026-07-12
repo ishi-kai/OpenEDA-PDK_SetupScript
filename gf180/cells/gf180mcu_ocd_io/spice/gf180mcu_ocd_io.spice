@@ -1,0 +1,945 @@
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/asig_5p0/gf180mcu_ocd_io__asig_5p0.sch
+.subckt gf180mcu_ocd_io__asig_5p0 ASIG5V DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B ASIG5V:B
+D1 DVSS DVDD diode_nd2ps_06v0 area='1u * 40u ' pj='2*1u + 2*40u ' m=4
+D2 DVSS ASIG5V diode_nd2ps_06v0 area='3u * 50u ' pj='2*3u + 2*50u ' m=4
+D3 ASIG5V DVDD diode_pd2nw_06v0 area='3u * 50u ' pj='2*3u + 2*50u ' m=4
+XC1 DVDD DVSS cap_nmos_06v0 c_width=15e-6 c_length=15e-6 m=36
+* noconn VDD
+* noconn VSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/bi_24t/gf180mcu_ocd_io__bi_24t.sch
+.subckt gf180mcu_ocd_io__bi_24t A CS DVDD DVSS IE OE PAD PD PU SL VDD VSS Y
+*.PININFO A:I VDD:B Y:O VSS:B DVDD:B DVSS:B PU:I PD:I SL:I OE:I CS:I IE:I PAD:B
+XR206 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR207 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR209 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR1 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+x28 OE A SL PAD DVDD DVSS VDD VSS net2 net3 io_out_24
+x29 net1 IE CS Y DVDD DVSS VDD VSS io_in
+x30 DVDD DVSS PU PD net1 VDD VSS io_pupd
+XC1 DVDD DVSS cap_nmos_06v0 c_width=3e-6 c_length=3e-6 m=4
+XC2 DVDD DVSS cap_nmos_06v0 c_width=5e-6 c_length=1.5e-6 m=8
+D3 DVSS net1 diode_nd2ps_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+D2 net1 DVDD diode_pd2nw_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+XR2 net2 VDD VDD ppolyf_u r_width=0.8e-6 r_length=1.6e-6 m=1
+XR3 net3 VDD VDD ppolyf_u r_width=0.8e-6 r_length=1.6e-6 m=1
+D1 VSS OE diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=3
+D7 A VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D4 CS VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D5 IE VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D6 PD VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D8 PU VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D9 SL VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D10 VSS VDD diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+D11 VSS net2 diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+D12 VSS net3 diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+.ends
+
+* expanding   symbol:  io_out_24.sym # of pins=10
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out_24.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out_24.sch
+.subckt io_out_24 OE A SL PAD DVDD DVSS VDD VSS PDRV0 PDRV1
+*.PININFO OE:I VDD:B PAD:O A:I SL:I PDRV0:I PDRV1:I VSS:B DVDD:B DVSS:B
+x1 A net10 OE VDD VSS io_nand2_1
+x2 net11 net12 DVDD DVSS io_inv_2
+x3 net12 net2 DVDD DVSS io_inv_2
+x5 SL net13 VDD VSS io_inv_1
+x6 net14 net1 DVDD DVSS io_inv_2
+x7 PDRV0 net15 OE VDD VSS io_nand2_1
+x8 net16 net3 DVDD DVSS io_inv_2
+x10 PDRV1 net17 OE VDD VSS io_nand2_1
+x11 net18 net9 DVDD DVSS io_inv_2
+x13 VDD net19 OE VDD VSS io_nand2_1
+x14 net20 net6 DVDD DVSS io_inv_2
+x9 net1 net8 DVDD DVSS io_inv_2
+x17 net3 net4 DVDD DVSS io_inv_2
+x18 net9 net5 DVDD DVSS io_inv_2
+x19 net6 net7 DVDD DVSS io_inv_2
+x20 DVDD VDD net19 net20 VSS DVSS io_lvlshft
+x21 DVDD VDD net17 net18 VSS DVSS io_lvlshft
+x22 DVDD VDD net15 net16 VSS DVSS io_lvlshft
+x23 DVDD VDD net13 net14 VSS DVSS io_lvlshft
+x24 DVDD VDD net10 net11 VSS DVSS io_lvlshft
+x4 net1 net2 net3 PAD net8 DVDD DVSS net4 drive_select_24
+x12 net1 net2 net9 PAD net8 DVDD DVSS net5 drive_select_24
+x15 net1 net2 net9 PAD net8 DVDD DVSS net5 drive_select_24
+x16 net1 net2 net6 PAD net8 DVDD DVSS net7 drive_select_24
+.ends
+
+
+* expanding   symbol:  io_in.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sch
+.subckt io_in PAD IE CS Y DVDD DVSS VDD VSS
+*.PININFO IE:I Y:O CS:I PAD:I VDD:B VSS:B DVDD:B DVSS:B
+x4 IE net9 VDD VSS io_inv_1
+x5 net10 net8 DVDD DVSS io_inv_2
+x6 net1 net2 DVDD DVSS io_inv_3
+XI157 net4 net1 DVDD DVDD pfet_06v0 L=0.70u W=3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI171 net6 net2 DVSS DVSS nfet_06v0 L=0.70u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+x7 net4 net5 net2 net1 DVDD DVSS io_xfer_1i
+x8 net5 net6 net2 net1 DVDD DVSS io_xfer_1i
+x9 net5 net11 DVDD DVSS io_inv_1i
+x10 net11 net12 VDD VSS DVDD DVSS io_inv_2i
+x11 net12 Y VDD VSS io_inv_3i
+x12 net8 net13 DVDD DVSS io_inv_2
+x13 CS net14 VDD VSS io_inv_1
+x14 net15 net1 DVDD DVSS io_inv_2
+XI160 net5 net8 DVDD DVDD pfet_06v0 L=0.70u W=6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI165 net7 PAD net16 DVSS nfet_06v0 L=0.70u W=10.6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI163 net5 PAD net3 DVDD pfet_06v0 L=0.70u W=4.3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI158 net3 PAD DVDD DVDD pfet_06v0 L=0.70u W=3.8u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI159 DVSS net4 net3 DVDD pfet_06v0 L=0.70u W=3.8u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI164 net16 net8 DVSS DVSS nfet_06v0 L=0.70u W=16u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI170 DVDD net6 net7 DVSS nfet_06v0 L=0.70u W=1.3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+x15 net1 net17 DVDD DVSS io_inv_2
+* noconn #net17
+* noconn #net13
+XI1 net5 PAD net7 DVSS nfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+x1 DVDD VDD net14 net15 VSS DVSS io_lvlshft
+x2 DVDD VDD net9 net10 VSS DVSS io_lvlshft
+.ends
+
+
+* expanding   symbol:  io_pupd.sym # of pins=7
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sch
+.subckt io_pupd DVDD DVSS PU PD PAD VDD VSS
+*.PININFO PU:I PD:I PAD:O VDD:B VSS:B DVDD:B DVSS:B
+x16 PU net2 PD net6 VDD VSS io_xfer_1
+x17 net1 net2 net6 PD VDD VSS io_xfer_1
+x18 PU net1 VDD VSS io_inv_1
+x19 PD net6 VDD VSS io_inv_1
+x20 net2 net7 PU VDD VSS io_nand2_1
+x21 net2 net8 PD VDD VSS io_nand2_1
+x22 net7 net9 VDD VSS io_inv_1
+x23 net10 net5 DVDD DVSS io_inv_2
+x24 net5 net11 DVDD DVSS io_inv_2
+x25 net8 net12 VDD VSS io_inv_1
+x26 net13 net14 DVDD DVSS io_inv_2
+x27 net14 net3 DVDD DVSS io_inv_2
+XI202 net4 net3 DVSS DVSS nfet_06v0 L=0.70u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI203 net4 net5 DVDD DVDD pfet_06v0 L=0.70u W=3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XR201 net15 net4 DVDD ppolyf_u r_width=0.8e-6 r_length=35.7e-6 m=1
+XR200 net16 net15 DVDD ppolyf_u r_width=0.8e-6 r_length=35.7e-6 m=1
+XR199 net17 net16 DVDD ppolyf_u r_width=0.8e-6 r_length=35.7e-6 m=1
+XR198 net18 net17 DVDD ppolyf_u r_width=0.8e-6 r_length=35.7e-6 m=1
+XR197 net19 net18 DVDD ppolyf_u r_width=0.8e-6 r_length=35.7e-6 m=1
+XR196 net20 net19 DVDD ppolyf_u r_width=0.8e-6 r_length=35.7e-6 m=1
+XR195 net21 net20 DVDD ppolyf_u r_width=0.8e-6 r_length=35.7e-6 m=1
+XR194 PAD net21 DVDD ppolyf_u r_width=0.8e-6 r_length=23e-6 m=1
+* noconn #net11
+x1 DVDD VDD net12 net13 VSS DVSS io_lvlshft
+x2 DVDD VDD net9 net10 VSS DVSS io_lvlshft
+.ends
+
+
+* expanding   symbol:  io_nand2_1.sym # of pins=5
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sch
+.subckt io_nand2_1 IN0 OUT IN1 VDD VSS
+*.PININFO OUT:O IN0:I IN1:I VDD:B VSS:B
+XM5 net1 IN1 VSS VSS nfet_03v3 L=0.28u W=0.6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM6 OUT IN1 VDD VDD pfet_03v3 L=0.28u W=1.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM1 OUT IN0 net1 VSS nfet_03v3 L=0.28u W=0.6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM2 OUT IN0 VDD VDD pfet_03v3 L=0.28u W=1.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_inv_2.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sch
+.subckt io_inv_2 IN OUT VDD VSS
+*.PININFO OUT:O IN:I VDD:B VSS:B
+XM1 OUT IN VDD VDD pfet_06v0 L=0.70u W=6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 OUT IN VSS VSS nfet_06v0 L=0.70u W=3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_inv_1.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sch
+.subckt io_inv_1 IN OUT VDD VSS
+*.PININFO OUT:O IN:I VDD:B VSS:B
+XM2 OUT IN VSS VSS nfet_03v3 L=0.28u W=0.6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM4 OUT IN VDD VDD pfet_03v3 L=0.28u W=1.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_lvlshft.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sch
+.subckt io_lvlshft DVDD VDD IN OUT VSS DVSS
+*.PININFO OUT:O IN:I VDD:B VSS:B DVSS:B DVDD:B
+XM2 INB IN VSS VSS nfet_03v3 L=0.28u W=0.6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM4 INB IN VDD VDD pfet_03v3 L=0.28u W=1.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM1 net1 IN DVSS DVSS nfet_06v0 L=0.7u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 OUT net1 DVDD DVDD pfet_06v0 L=0.7u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM5 OUT INB DVSS DVSS nfet_06v0 L=0.7u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM6 net1 OUT DVDD DVDD pfet_06v0 L=0.7u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  drive_select_24.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select_24.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select_24.sch
+.subckt drive_select_24 FAST_N IN ENABLE OUT FAST VDD VSS ENABLE_N
+*.PININFO IN:I ENABLE:I FAST:I FAST_N:I OUT:O VDD:B VSS:B ENABLE_N:I
+XI121 net1 ENABLE VDD VDD pfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI125 net1 IN VDD VDD pfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI126 net3 ENABLE_N net1 VDD pfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI119 net1 ENABLE net3 VSS nfet_06v0 L=0.70u W=6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI117 net3 IN VSS VSS nfet_06v0 L=0.70u W=6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI118 net3 ENABLE_N VSS VSS nfet_06v0 L=0.70u W=6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+x2 net1 net5 VDD VSS io_inv_4
+XI120 net5 FAST_N net2 VDD pfet_06v0 L=0.7u W=24u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+Xx20 OUT net2 VSS VSS nfet_06v0_dss L=0.8u W=37u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 d_sab=3.78u s_sab=0.28u m=1
+XI114 net2 net1 VSS VSS nfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI124 net2 VSS net5 VDD pfet_06v0 L=0.7u W=1.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+Xx19 OUT net5 VSS VSS nfet_06v0_dss L=0.8u W=37u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 d_sab=3.78u s_sab=0.28u m=1
+x3 net3 net4 VDD VSS io_inv_4
+XI113 net6 VDD net4 VSS nfet_06v0 L=0.7u W=01.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM18 OUT net6 VDD VDD pfet_06v0_dss L=0.7u W=120u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 d_sab=2.78u s_sab=0.28u m=1
+XI127 net6 net3 VDD VDD pfet_06v0 L=0.7u W=024u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM21 OUT net4 VDD VDD pfet_06v0_dss L=0.7u W=60u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 d_sab=2.78u s_sab=0.28u m=1
+XI112 net4 FAST net6 VSS nfet_06v0 L=0.7u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_inv_3.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sch
+.subckt io_inv_3 IN OUT VDD VSS
+*.PININFO OUT:O IN:I VDD:B VSS:B
+XM1 OUT IN VDD VDD pfet_06v0 L=0.70u W=8u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 OUT IN VSS VSS nfet_06v0 L=0.70u W=4u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_xfer_1i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sch
+.subckt io_xfer_1i IN OUT P N VDD VSS
+*.PININFO OUT:O IN:I N:I P:I VDD:B VSS:B
+XM1 OUT P IN VDD pfet_06v0 L=0.70u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 OUT N IN VSS nfet_06v0 L=0.70u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_inv_1i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sch
+.subckt io_inv_1i IN OUT VDD VSS
+*.PININFO OUT:O IN:I VDD:B VSS:B
+XM1 OUT IN VDD VDD pfet_06v0 L=0.70u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 OUT IN VSS VSS nfet_06v0 L=0.70u W=8u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_inv_2i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sch
+.subckt io_inv_2i IN OUT VDD VSS DVDD DVSS
+*.PININFO OUT:O IN:I VDD:B VSS:B DVDD:B DVSS:B
+XM1 OUT IN VDD DVDD pfet_06v0 L=0.70u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 OUT IN VSS DVSS nfet_06v0 L=0.70u W=2.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_inv_3i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sch
+.subckt io_inv_3i IN OUT VDD VSS
+*.PININFO OUT:O IN:I VDD:B VSS:B
+XM2 OUT IN VDD VDD pfet_03v3 L=0.28u W=8.4u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM4 OUT IN VSS VSS nfet_03v3 L=0.28u W=3.6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_xfer_1.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sch
+.subckt io_xfer_1 IN OUT P N VDD VSS
+*.PININFO OUT:O IN:I N:I P:I VDD:B VSS:B
+XM2 OUT N IN VSS nfet_03v3 L=0.28u W=0.6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM4 OUT P IN VDD pfet_03v3 L=0.28u W=1.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_inv_4.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sch
+.subckt io_inv_4 IN OUT VDD VSS
+*.PININFO OUT:O IN:I VDD:B VSS:B
+XM1 OUT IN VDD VDD pfet_06v0 L=0.70u W=24u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 OUT IN VSS VSS nfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+.GLOBAL DVSS
+.GLOBAL DVDD
+.GLOBAL VDD
+.GLOBAL VSS
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/bi_a/gf180mcu_ocd_io__bi_a.sch
+.subckt gf180mcu_ocd_io__bi_a A ANA CS DVDD DVSS IE OE PAD PD PDRV0 PDRV1 PU SL VDD VSS Y
+*.PININFO A:I VDD:B Y:O VSS:B DVDD:B DVSS:B PU:I PD:I PDRV0:I PDRV1:I SL:I OE:I CS:I IE:I PAD:B ANA:B
+XR206 PAD ANA DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR207 PAD ANA DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR209 PAD ANA DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR1 PAD ANA DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+x28 OE A SL PDRV0 PDRV1 PAD DVDD DVSS VDD VSS io_out
+x29 ANA IE CS Y DVDD DVSS VDD VSS io_in
+x30 DVDD DVSS PU PD ANA VDD VSS io_pupd
+XC1 DVDD DVSS cap_nmos_06v0 c_width=3e-6 c_length=3e-6 m=4
+XC2 DVDD DVSS cap_nmos_06v0 c_width=5e-6 c_length=1.5e-6 m=10
+D3 DVSS ANA diode_nd2ps_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+D2 ANA DVDD diode_pd2nw_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+D1 A VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D7 VSS OE diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=3
+D4 CS VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D5 IE VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D6 PD VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D8 PU VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D9 SL VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D10 VSS PDRV0 diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+D11 VSS PDRV1 diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+D12 VSS VDD diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+.ends
+
+* expanding   symbol:  io_out.sym # of pins=10
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out.sch
+.subckt io_out OE A SL PDRV0 PDRV1 PAD DVDD DVSS VDD VSS
+*.PININFO OE:I VDD:B PAD:O A:I SL:I PDRV0:I PDRV1:I VSS:B DVDD:B DVSS:B
+x1 A net10 OE VDD VSS io_nand2_1
+x2 net11 net12 DVDD DVSS io_inv_2
+x3 net12 net2 DVDD DVSS io_inv_2
+x4 net1 net2 net3 PAD net8 DVDD DVSS net4 drive_select
+x5 SL net13 VDD VSS io_inv_1
+x6 net14 net1 DVDD DVSS io_inv_2
+x7 PDRV0 net15 OE VDD VSS io_nand2_1
+x8 net16 net3 DVDD DVSS io_inv_2
+x10 PDRV1 net17 OE VDD VSS io_nand2_1
+x11 net18 net9 DVDD DVSS io_inv_2
+x13 VDD net19 OE VDD VSS io_nand2_1
+x14 net20 net6 DVDD DVSS io_inv_2
+x9 net1 net8 DVDD DVSS io_inv_2
+x12 net1 net2 net9 PAD net8 DVDD DVSS net5 drive_select
+x15 net1 net2 net9 PAD net8 DVDD DVSS net5 drive_select
+x16 net1 net2 net6 PAD net8 DVDD DVSS net7 drive_select
+x17 net3 net4 DVDD DVSS io_inv_2
+x18 net9 net5 DVDD DVSS io_inv_2
+x19 net6 net7 DVDD DVSS io_inv_2
+x20 DVDD VDD net19 net20 VSS DVSS io_lvlshft
+x21 DVDD VDD net17 net18 VSS DVSS io_lvlshft
+x22 DVDD VDD net15 net16 VSS DVSS io_lvlshft
+x23 DVDD VDD net13 net14 VSS DVSS io_lvlshft
+x24 DVDD VDD net10 net11 VSS DVSS io_lvlshft
+.ends
+
+
+* expanding   symbol:  io_in.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sch
+* expanding   symbol:  io_pupd.sym # of pins=7
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sch
+* expanding   symbol:  io_nand2_1.sym # of pins=5
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sch
+* expanding   symbol:  io_inv_2.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sch
+* expanding   symbol:  drive_select.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select.sch
+.subckt drive_select FAST_N IN ENABLE OUT FAST VDD VSS ENABLE_N
+*.PININFO IN:I ENABLE:I FAST:I FAST_N:I OUT:O VDD:B VSS:B ENABLE_N:I
+XI121 net1 ENABLE VDD VDD pfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI125 net1 IN VDD VDD pfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI126 net3 ENABLE_N net1 VDD pfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI119 net1 ENABLE net3 VSS nfet_06v0 L=0.70u W=6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI117 net3 IN VSS VSS nfet_06v0 L=0.70u W=6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI118 net3 ENABLE_N VSS VSS nfet_06v0 L=0.70u W=6u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+x2 net1 net5 VDD VSS io_inv_4
+XI120 net5 FAST_N net2 VDD pfet_06v0 L=0.7u W=24u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+Xx20 OUT net2 VSS VSS nfet_06v0_dss L=1.15u W=38u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 d_sab=3.78u s_sab=0.28u m=1
+XI114 net2 net1 VSS VSS nfet_06v0 L=0.70u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XI124 net2 VSS net5 VDD pfet_06v0 L=0.7u W=1.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+Xx19 OUT net5 VSS VSS nfet_06v0_dss L=1.15u W=38u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 d_sab=3.78u s_sab=0.28u m=1
+x3 net3 net4 VDD VSS io_inv_4
+XI113 net6 VDD net4 VSS nfet_06v0 L=0.7u W=01.2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM18 OUT net6 VDD VDD pfet_06v0_dss L=0.7u W=80u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 d_sab=2.78u s_sab=0.28u m=1
+XI127 net6 net3 VDD VDD pfet_06v0 L=0.7u W=024u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM21 OUT net4 VDD VDD pfet_06v0_dss L=0.7u W=40u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 d_sab=2.78u s_sab=0.28u m=1
+XI112 net4 FAST net6 VSS nfet_06v0 L=0.7u W=12u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  io_inv_1.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sch
+* expanding   symbol:  io_lvlshft.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sch
+* expanding   symbol:  io_inv_3.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sch
+* expanding   symbol:  io_xfer_1i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sch
+* expanding   symbol:  io_inv_1i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sch
+* expanding   symbol:  io_inv_2i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sch
+* expanding   symbol:  io_inv_3i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sch
+* expanding   symbol:  io_xfer_1.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sch
+* expanding   symbol:  io_inv_4.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sch
+.GLOBAL DVSS
+.GLOBAL DVDD
+.GLOBAL VDD
+.GLOBAL VSS
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/bi_t/gf180mcu_ocd_io__bi_t.sch
+.subckt gf180mcu_ocd_io__bi_t A CS DVDD DVSS IE OE PAD PD PDRV0 PDRV1 PU SL VDD VSS Y
+*.PININFO A:I VDD:B Y:O VSS:B DVDD:B DVSS:B PU:I PD:I PDRV0:I PDRV1:I SL:I OE:I CS:I IE:I PAD:B
+XR206 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR207 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR209 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR1 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+x28 OE A SL PDRV0 PDRV1 PAD DVDD DVSS VDD VSS io_out
+x29 net1 IE CS Y DVDD DVSS VDD VSS io_in
+x30 DVDD DVSS PU PD net1 VDD VSS io_pupd
+XC1 DVDD DVSS cap_nmos_06v0 c_width=3e-6 c_length=3e-6 m=4
+XC2 DVDD DVSS cap_nmos_06v0 c_width=5e-6 c_length=1.5e-6 m=10
+D3 DVSS net1 diode_nd2ps_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+D2 net1 DVDD diode_pd2nw_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+D1 A VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D7 VSS OE diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=3
+D4 CS VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D5 IE VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D6 PD VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D8 PU VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D9 SL VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D10 VSS PDRV0 diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+D11 VSS PDRV1 diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+D12 VSS VDD diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+.ends
+
+* expanding   symbol:  io_out.sym # of pins=10
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out.sch
+* expanding   symbol:  io_in.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sch
+* expanding   symbol:  io_pupd.sym # of pins=7
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sch
+* expanding   symbol:  io_nand2_1.sym # of pins=5
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sch
+* expanding   symbol:  io_inv_2.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sch
+* expanding   symbol:  drive_select.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select.sch
+* expanding   symbol:  io_inv_1.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sch
+* expanding   symbol:  io_lvlshft.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sch
+* expanding   symbol:  io_inv_3.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sch
+* expanding   symbol:  io_xfer_1i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sch
+* expanding   symbol:  io_inv_1i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sch
+* expanding   symbol:  io_inv_2i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sch
+* expanding   symbol:  io_inv_3i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sch
+* expanding   symbol:  io_xfer_1.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sch
+* expanding   symbol:  io_inv_4.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sch
+.GLOBAL DVSS
+.GLOBAL DVDD
+.GLOBAL VDD
+.GLOBAL VSS
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/brk2/gf180mcu_ocd_io__brk2.sch
+.subckt gf180mcu_ocd_io__brk2 VSS
+*.PININFO VSS:B
+* noconn VSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/brk5/gf180mcu_ocd_io__brk5.sch
+.subckt gf180mcu_ocd_io__brk5 VSS
+*.PININFO VSS:B
+* noconn VSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/cor/gf180mcu_ocd_io__cor.sch
+.subckt gf180mcu_ocd_io__cor DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VSS:B VDD:B
+XC1 DVDD DVSS cap_nmos_06v0 c_width=25e-6 c_length=10e-6 m=70
+XM1 n4 n6 DVDD DVDD pfet_06v0 L=0.7u W=120u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM2 n7 n8 DVDD DVDD pfet_06v0 L=0.7u W=20u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 n6 n7 DVDD DVDD pfet_06v0 L=0.7u W=15u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XC2 n8 DVSS cap_nmos_06v0 c_width=25e-6 c_length=10e-6 m=8
+XM4 DVDD n4 DVSS DVSS nfet_06v0 L=0.70u W=4m nf=80 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM5 n7 n8 DVSS DVSS nfet_06v0 L=0.70u W=5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM6 n4 n6 DVSS DVSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM7 n6 n7 DVSS DVSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XR1 n8 DVDD DVDD ppolyf_u r_width=0.8e-6 r_length=766.26e-6 m=1
+XM8 n25 n27 VDD VDD pfet_06v0 L=0.7u W=120u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM9 n28 n29 VDD VDD pfet_06v0 L=0.7u W=20u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM10 n27 n28 VDD VDD pfet_06v0 L=0.7u W=15u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XC3 n29 VSS cap_nmos_06v0 c_width=25e-6 c_length=10e-6 m=8
+XM11 VDD n25 VSS VSS nfet_06v0 L=0.70u W=4m nf=80 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM12 n28 n29 VSS VSS nfet_06v0 L=0.70u W=5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM13 n25 n27 VSS VSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM14 n27 n28 VSS VSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XR2 n29 VDD VDD ppolyf_u r_width=0.8e-6 r_length=766.26e-6 m=1
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/dvdd/gf180mcu_ocd_io__dvdd.sch
+.subckt gf180mcu_ocd_io__dvdd DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B
+D1 DVSS DVDD diode_nd2ps_06v0 area='40u * 1u ' pj='2*40u + 2*1u ' m=4
+XC1 DVDD DVSS cap_nmos_06v0 c_width=15e-6 c_length=15e-6 m=4
+* noconn VDD
+XM1 n4 n6 DVDD DVDD pfet_06v0 L=0.7u W=120u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM2 n7 n8 DVDD DVDD pfet_06v0 L=0.7u W=20u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 n6 n7 DVDD DVDD pfet_06v0 L=0.7u W=15u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XC2 n8 DVSS cap_nmos_06v0 c_width=25e-6 c_length=10e-6 m=8
+XM4 DVDD n4 DVSS DVSS nfet_06v0 L=0.70u W=4m nf=80 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM5 n7 n8 DVSS DVSS nfet_06v0 L=0.70u W=5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM6 n4 n6 DVSS DVSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM7 n6 n7 DVSS DVSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XR1 n8 DVDD DVDD ppolyf_u r_width=0.8e-6 r_length=766.26e-6 m=1
+* noconn VSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/dvss/gf180mcu_ocd_io__dvss.sch
+.subckt gf180mcu_ocd_io__dvss DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B
+D1 DVSS DVDD diode_nd2ps_06v0 area='1u * 40u ' pj='2*1u + 2*40u ' m=4
+XC1 DVDD DVSS cap_nmos_06v0 c_width=15e-6 c_length=15e-6 m=4
+* noconn VDD
+XM1 n4 n6 DVDD DVDD pfet_06v0 L=0.7u W=120u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM2 n7 n8 DVDD DVDD pfet_06v0 L=0.7u W=20u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 n6 n7 DVDD DVDD pfet_06v0 L=0.7u W=15u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XC2 n8 DVSS cap_nmos_06v0 c_width=25e-6 c_length=10e-6 m=8
+XM4 DVDD n4 DVSS DVSS nfet_06v0 L=0.70u W=4m nf=80 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM5 n7 n8 DVSS DVSS nfet_06v0 L=0.70u W=5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM6 n4 n6 DVSS DVSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM7 n6 n7 DVSS DVSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XR1 n8 DVDD DVDD ppolyf_u r_width=0.8e-6 r_length=766.26e-6 m=1
+* noconn VSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/fill1/gf180mcu_ocd_io__fill1.sch
+.subckt gf180mcu_ocd_io__fill1 DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B
+* noconn VDD
+* noconn VSS
+* noconn DVDD
+* noconn DVSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/fill5/gf180mcu_ocd_io__fill5.sch
+.subckt gf180mcu_ocd_io__fill5 DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B
+* noconn VDD
+* noconn VSS
+* noconn DVDD
+* noconn DVSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/fill10/gf180mcu_ocd_io__fill10.sch
+.subckt gf180mcu_ocd_io__fill10 DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B
+* noconn VDD
+* noconn VSS
+* noconn DVDD
+* noconn DVSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/fillnc/gf180mcu_ocd_io__fillnc.sch
+.subckt gf180mcu_ocd_io__fillnc DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B
+* noconn VDD
+* noconn VSS
+* noconn DVDD
+* noconn DVSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/in_c/gf180mcu_ocd_io__in_c.sch
+.subckt gf180mcu_ocd_io__in_c DVDD DVSS PAD PD PU VDD VSS Y
+*.PININFO VDD:B Y:O VSS:B DVDD:B DVSS:B PU:I PD:I PAD:B
+XR206 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR207 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR209 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR1 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+x28 tiel tiel tiel tiel tiel PAD DVDD DVSS VDD VSS io_out
+x29 net1 tieh tiel Y DVDD DVSS VDD VSS io_in
+x30 DVDD DVSS PU PD net1 VDD VSS io_pupd
+XC1 DVDD DVSS cap_nmos_06v0 c_width=3e-6 c_length=3e-6 m=4
+XC2 DVDD DVSS cap_nmos_06v0 c_width=5e-6 c_length=1.5e-6 m=8
+D3 DVSS net1 diode_nd2ps_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+D2 net1 DVDD diode_pd2nw_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+XR2 tieh VDD VDD ppolyf_u r_width=0.8e-6 r_length=3.9e-6 m=1
+XR3 tiel VSS VDD ppolyf_u r_width=0.8e-6 r_length=3.9e-6 m=1
+D7 tiel VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=3
+D5 VSS tiel diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=5
+D1 tieh VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D6 PD VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D8 PU VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D4 VSS VDD diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+.ends
+
+* expanding   symbol:  io_out.sym # of pins=10
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out.sch
+* expanding   symbol:  io_in.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sch
+* expanding   symbol:  io_pupd.sym # of pins=7
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sch
+* expanding   symbol:  io_nand2_1.sym # of pins=5
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sch
+* expanding   symbol:  io_inv_2.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sch
+* expanding   symbol:  drive_select.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select.sch
+* expanding   symbol:  io_inv_1.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sch
+* expanding   symbol:  io_lvlshft.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sch
+* expanding   symbol:  io_inv_3.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sch
+* expanding   symbol:  io_xfer_1i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sch
+* expanding   symbol:  io_inv_1i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sch
+* expanding   symbol:  io_inv_2i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sch
+* expanding   symbol:  io_inv_3i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sch
+* expanding   symbol:  io_xfer_1.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sch
+* expanding   symbol:  io_inv_4.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sch
+.GLOBAL DVSS
+.GLOBAL DVDD
+.GLOBAL VDD
+.GLOBAL VSS
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/in_s/gf180mcu_ocd_io__in_s.sch
+.subckt gf180mcu_ocd_io__in_s DVDD DVSS PAD PD PU VDD VSS Y
+*.PININFO VDD:B Y:O VSS:B DVDD:B DVSS:B PU:I PD:I PAD:B
+XR206 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR207 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR209 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+XR1 PAD net1 DVDD ppolyf_u r_width=2.5e-6 r_length=2.8e-6 m=1
+x28 tiel tiel tiel tiel tiel PAD DVDD DVSS VDD VSS io_out
+x29 net1 tieh tieh Y DVDD DVSS VDD VSS io_in
+x30 DVDD DVSS PU PD net1 VDD VSS io_pupd
+XC1 DVDD DVSS cap_nmos_06v0 c_width=3e-6 c_length=3e-6 m=4
+XC2 DVDD DVSS cap_nmos_06v0 c_width=5e-6 c_length=1.5e-6 m=8
+D3 DVSS net1 diode_nd2ps_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+D2 net1 DVDD diode_pd2nw_06v0 area='20u * 1u ' pj='2*20u + 2*1u ' m=2
+XR2 tieh VDD VDD ppolyf_u r_width=0.8e-6 r_length=3.9e-6 m=1
+XR3 tiel VSS VDD ppolyf_u r_width=0.8e-6 r_length=3.9e-6 m=1
+D7 tiel VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=2
+D5 VSS tiel diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=5
+D1 tieh VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=2
+D6 PD VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D8 PU VDD diode_pd2nw_03v3 area='1u * 1u ' pj='2*1u + 2*1u ' m=1
+D9 VSS VDD diode_pd2nw_03v3 area='0.48u * 0.48u ' pj='2*0.48u + 2*0.48u ' m=1
+.ends
+
+* expanding   symbol:  io_out.sym # of pins=10
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_out.sch
+* expanding   symbol:  io_in.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_in.sch
+* expanding   symbol:  io_pupd.sym # of pins=7
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_pupd.sch
+* expanding   symbol:  io_nand2_1.sym # of pins=5
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_nand2_1.sch
+* expanding   symbol:  io_inv_2.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2.sch
+* expanding   symbol:  drive_select.sym # of pins=8
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/drive_select.sch
+* expanding   symbol:  io_inv_1.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1.sch
+* expanding   symbol:  io_lvlshft.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_lvlshft.sch
+* expanding   symbol:  io_inv_3.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3.sch
+* expanding   symbol:  io_xfer_1i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1i.sch
+* expanding   symbol:  io_inv_1i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_1i.sch
+* expanding   symbol:  io_inv_2i.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_2i.sch
+* expanding   symbol:  io_inv_3i.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_3i.sch
+* expanding   symbol:  io_xfer_1.sym # of pins=6
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_xfer_1.sch
+* expanding   symbol:  io_inv_4.sym # of pins=4
+** sym_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sym
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/xschem/io_inv_4.sch
+.GLOBAL DVSS
+.GLOBAL DVDD
+.GLOBAL VDD
+.GLOBAL VSS
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/vdd/gf180mcu_ocd_io__vdd.sch
+.subckt gf180mcu_ocd_io__vdd DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B
+D1 VSS VDD diode_nd2ps_06v0 area='40u * 1u ' pj='2*40u + 2*1u ' m=4
+XC1 VDD VSS cap_nmos_06v0 c_width=15e-6 c_length=15e-6 m=4
+* noconn DVDD
+XM1 n4 n6 VDD VDD pfet_06v0 L=0.7u W=120u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM2 n7 n8 VDD VDD pfet_06v0 L=0.7u W=20u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 n6 n7 VDD VDD pfet_06v0 L=0.7u W=15u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XC2 n8 VSS cap_nmos_06v0 c_width=25e-6 c_length=10e-6 m=8
+XM4 VDD n4 VSS VSS nfet_06v0 L=0.70u W=4m nf=80 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM5 n7 n8 VSS VSS nfet_06v0 L=0.70u W=5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM6 n4 n6 VSS VSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM7 n6 n7 VSS VSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XR1 n8 VDD VDD ppolyf_u r_width=0.8e-6 r_length=766.26e-6 m=1
+* noconn DVSS
+.ends
+
+
+******* EOF
+
+** sch_path: /home/tim/gitsrc/open_pdks/sources/gf180mcu_ocd_io/cells/vss/gf180mcu_ocd_io__vss.sch
+.subckt gf180mcu_ocd_io__vss DVDD DVSS VDD VSS
+*.PININFO DVDD:B DVSS:B VDD:B VSS:B
+D1 VSS VDD diode_nd2ps_06v0 area='1u * 40u ' pj='2*1u + 2*40u ' m=4
+XC1 VDD VSS cap_nmos_06v0 c_width=15e-6 c_length=15e-6 m=4
+* noconn DVDD
+XM1 n4 n6 VDD VDD pfet_06v0 L=0.7u W=120u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM2 n7 n8 VDD VDD pfet_06v0 L=0.7u W=20u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 n6 n7 VDD VDD pfet_06v0 L=0.7u W=15u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XC2 n8 VSS cap_nmos_06v0 c_width=25e-6 c_length=10e-6 m=8
+XM4 VDD n4 VSS VSS nfet_06v0 L=0.70u W=4m nf=80 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM5 n7 n8 VSS VSS nfet_06v0 L=0.70u W=5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM6 n4 n6 VSS VSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM7 n6 n7 VSS VSS nfet_06v0 L=0.70u W=30u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XR1 n8 VDD VDD ppolyf_u r_width=0.8e-6 r_length=766.26e-6 m=1
+* noconn DVSS
+.ends
+
+
+******* EOF
+
