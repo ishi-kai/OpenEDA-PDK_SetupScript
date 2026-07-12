@@ -240,13 +240,22 @@ cp -f $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hvl/gds/sky130_fd_sc_hvl.gds $HOME/.k
 cd $my_dir
 cp -rf sky130/macros/* $HOME/.klayout/macros/
 cp -rf sky130/pymacros/* $HOME/.klayout/pymacros/
-#rm -rf $HOME/.klayout/pymacros/sky130_pcells.lym
-#rm -rf $HOME/.klayout/pymacros/sky130_import_netlist.lym
-#rm -rf $HOME/.klayout/pymacros/run_lvs.lym
-#rm -rf $HOME/.klayout/lvs/sky130.lylvs
-
-# ~/pdk/sky130A/libs.tech/klayout/*
-
+if [ "$(uname)" == 'Darwin' ]; then
+  OS='Mac'
+  sed -i '' 's/enable_parameter(\"A\", true)/enable_parameter(\"W\", true)/g' $HOME/.klayout/lvs/sky130.lvs
+  sed -i '' 's/enable_parameter(\"P\", true)/enable_parameter(\"L\", true)/g' $HOME/.klayout/lvs/sky130.lvs
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+	OS='Linux'
+  sed -i 's/enable_parameter(\"A\", true)/enable_parameter(\"W\", true)/g' $HOME/.klayout/lvs/sky130.lvs
+  sed -i 's/enable_parameter(\"P\", true)/enable_parameter(\"L\", true)/g' $HOME/.klayout/lvs/sky130.lvs
+elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+	OS='Cygwin'
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+else
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+fi
 
 # Fix paths in xschemrc to point to correct PDK directory
 # -------------------------------------------------------
