@@ -267,8 +267,8 @@ cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_io/gds/gf180mcu_ef_io.gds $HOME/.klayo
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds $HOME/.klayout/libraries/
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu9t5v0/gds/gf180mcu_fd_sc_mcu9t5v0.gds $HOME/.klayout/libraries/
 
-cp -f $my_dir/gf180/cells/gf180mcu_as_sc_mcu7t3v3/gf180mcu_as_sc_mcu7t3v3.gds $HOME/.klayout/libraries/
-cp -f $my_dir/gf180/cells/gf180mcu_ocd_io/gf180mcu_ocd_io.gds $HOME/.klayout/libraries/
+cp -f $my_dir/gf180/cells/gf180mcu_as_sc_mcu7t3v3/gds/gf180mcu_as_sc_mcu7t3v3.gds $HOME/.klayout/libraries/
+cp -f $my_dir/gf180/cells/gf180mcu_ocd_io/gds/gf180mcu_ocd_io.gds $HOME/.klayout/libraries/
 
 
 if [ ! -d "$HOME/.klayout/ruby/filler_generation/" ]; then
