@@ -15,7 +15,7 @@ my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
 export GF_PDK_OPTION=D
 export PDK=gf180mcuD
-export CIEL_H=6d4d11780c40b20ee63cc98e645307a9bf2b2ab8
+export CIEL_H=d658698bd8bcf4e05fc7b5991a701247ba0d744c
 
 # --------
 echo ""
