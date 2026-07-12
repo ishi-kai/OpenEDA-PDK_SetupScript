@@ -213,11 +213,9 @@ source "$HOME/current_pdk"
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
   brew install curl
-  sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   sudo apt install curl
-  sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
   OS='Cygwin'
   echo "Your platform ($(uname -a)) is not supported."
@@ -287,7 +285,6 @@ echo 'puts stderr "180MCU_STDCELLS: $180MCU_STDCELLS"' >> "$HOME/.xschem/xschemr
 # Install precheck tool
 # -----------------------------------
 if [ ! -d "$TOOLS_ROOT/gf180mcu-precheck" ]; then
-#  sudo apt install nix-shell
   git clone https://github.com/wafer-space/gf180mcu-precheck.git "$TOOLS_ROOT/gf180mcu-precheck"
 
   git clone https://github.com/librelane/librelane.git "$TOOLS_ROOT/gf180mcu-precheck/librelane"
