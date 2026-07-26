@@ -8,6 +8,22 @@ Simply execute the command below.
 ## Common Commands
 `bash eda-setup.sh`
 
+### xschem revision
+`eda-setup.sh` installs xschem from the tested commit
+`f53b1b5865051676e57e0355b125864332ad2758` by default.
+
+xschem commit `36d710d2` removed the result-buffer growth inside
+`translate()` in `src/token.c`. Long `tcleval(...)` properties, including
+the resistor display expression used by OpenSUSI-TR10, can consequently
+corrupt the heap when opening `top.sch`. Pinning the preceding tested
+commit also makes repeated installations reproducible.
+
+To test a newer xschem revision explicitly, set `XSCHEM_REF`:
+
+```sh
+XSCHEM_REF=<commit-or-tag> bash eda-setup.sh
+```
+
 ## Installing the PDK
 You must install the PDK tailored to the shuttle. Please select and install **only one** PDK tailored to the shuttle.  
 In the case of changing the PDK, please delete it once and then reinstall it.  

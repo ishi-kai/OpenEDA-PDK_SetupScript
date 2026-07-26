@@ -34,6 +34,7 @@ my_path=$(realpath "$0")
 my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
 export KLAYOUT_VERSION=0.30.9
+export XSCHEM_REF="${XSCHEM_REF:-f53b1b5865051676e57e0355b125864332ad2758}"
 
 export TCL_VERSION=8.6.14
 export TK_VERSION=8.6.14
@@ -207,14 +208,16 @@ if [ ! -d "$SRC_DIR/xschem" ]; then
   fi
   git clone https://github.com/StefanSchippers/xschem.git "$SRC_DIR/xschem"
   cd "$SRC_DIR/xschem" || exit
+  git checkout --detach "$XSCHEM_REF"
   ./configure CFLAGS="-Wno-error=implicit-function-declaration"
   if [ "$(uname)" == 'Darwin' ]; then
     sed -i '' "s/-ltcl8.5 -ltk8.5/-ltcl8.6 -ltk8.6/g" Makefile.conf
   fi  
 else
-  echo ">>>> Updating xschem"
+  echo ">>>> Updating xschem to $XSCHEM_REF"
   cd "$SRC_DIR/xschem" || exit
-  git pull
+  git fetch origin
+  git checkout --detach "$XSCHEM_REF"
 fi
 make clean
 make -j"$(nproc)" && sudo make install
