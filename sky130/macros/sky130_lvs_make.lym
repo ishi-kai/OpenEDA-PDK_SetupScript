@@ -37,7 +37,7 @@
   system( "sed -i -E 's/([wW])=([0-9.]+)/\\1=\\2u/g' '#{gds_dir}/#{schematic}'" )
   system( "sed -i -E 's/([lL])=([0-9.]+)/\\1=\\2u/g' '#{gds_dir}/#{schematic}'" )
   
-  system( "sed -i -E 's/XM/M/g' '#{gds_dir}/#{schematic}'" )
+#  system( "sed -i -E 's/XM/M/g' '#{gds_dir}/#{schematic}'" )
   system( "sed -i -E 's/^[[:space:]]*X([0-9]+)/M\\1/g' '#{gds_dir}/#{schematic}'" )
 
   system( "sed -i -E 's/w=([0-9][0-9])0000u/w=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
