@@ -131,6 +131,31 @@ else
   cp -aR ./* $HOME/.klayout/salt/AnagixLoader/
 fi
 
+# Add export
+# ------------------
+if [[ "$(uname)" == 'Darwin' ]]; then
+	OS='Mac'
+	startup="$HOME/.zshrc"
+elif [[ "$(uname -s)" == Linux* ]]; then
+	OS='Linux'
+	startup="$HOME/.bashrc"
+elif [[ "$(uname -s)" == MINGW32_NT* ]]; then
+	OS='Cygwin'
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+else
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+fi
+
+tail -1 "$startup" | grep -qxF 'source $HOME/current_pdk' - || \
+    echo 'source $HOME/current_pdk' >> "$startup"
+
+cat > "$HOME/current_pdk" <<EOF
+export PDK_ROOT="$PDK_ROOT"
+export PDK="$PDK"
+EOF
+source "$HOME/current_pdk"
 
 # Finished
 # --------
