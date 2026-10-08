@@ -70,16 +70,16 @@ fi
 
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
-  sudo python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+  python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   sudo apt install libcurl4-openssl-dev
   if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
     python3 -m pip install --upgrade --no-cache-dir ciel
   elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-    sudo python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+    python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
   elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-    sudo python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+    python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
   else
     echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
   fi
@@ -374,6 +374,10 @@ else
   git pull
 fi
 cd $my_dir
+
+rm -fr $PDK_ROOT/$PDK/
+mv gf180mcuD/ gf180mcuD_ishi-kai
+make clone-pdk
 cp -f ./gf180/run_precheck.sh $TOOLS_ROOT/gf180mcu-precheck/
 chmod +x  $TOOLS_ROOT/gf180mcu-precheck/run_precheck.sh
 
