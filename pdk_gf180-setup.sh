@@ -315,8 +315,6 @@ else
   cd "$TOOLS_ROOT/gf180mcu-project-template" || exit
   git pull
 fi
-#cp -aR $TOOLS_ROOT/gf180mcu/$PDK/* $PDK_ROOT/$PDK/
-cp -f $TOOLS_ROOT/gf180mcu-project-template/ip/gf180mcu_ws_ip__id/gds/gf180mcu_ws_ip__id.gds $HOME/.klayout/libraries/
 
 
 # Copy various things
@@ -340,8 +338,7 @@ cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu9t5v0/gds/gf180mcu_fd_sc_mcu9t5v
 if [ ! -d "$HOME/.klayout/ruby/filler_generation/" ]; then
   mkdir -p $HOME/.klayout/ruby/filler_generation/
 fi
-cp -f $PDK_ROOT/$PDK/libs.tech/klayout/tech/drc/filler_generation/* $HOME/.klayout/ruby/filler_generation/
-
+cp -f $TOOLS_ROOT/gf180mcu/$PDK/libs.tech/klayout/tech/drc/filler_generation/* $HOME/.klayout/ruby/filler_generation/
 
 cp -f $my_dir/gf180/klayoutrc $HOME/.klayout/
 cp -f $my_dir/gf180/cells/gf180mcu_as_sc_mcu7t3v3/gds/gf180mcu_as_sc_mcu7t3v3.gds $HOME/.klayout/libraries/
@@ -362,9 +359,11 @@ if [ ! -d "$TOOLS_ROOT/gf180mcu-precheck" ]; then
   git clone https://github.com/wafer-space/gf180mcu-precheck.git "$TOOLS_ROOT/gf180mcu-precheck"
 
   git clone https://github.com/librelane/librelane.git "$TOOLS_ROOT/gf180mcu-precheck/librelane"
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --prefer-upstream-nix --no-confirm --extra-conf " \
-      extra-substituters = https://nix-cache.fossi-foundation.org \
-      extra-trusted-public-keys = nix-cache.fossi-foundation.org:3+K59iFwXqKsL7BNu6Guy0v+uTlwsxYQxjspXzqLYQs= \
+  cd "$TOOLS_ROOT/gf180mcu-precheck/" || exit
+  curl --proto '=https' --tlsv1.2 -fsSL https://artifacts.nixos.org/nix-installer | sh -s -- install --no-confirm --extra-conf " 
+      extra-substituters = https://nix-cache.fossi-foundation.org 
+      extra-trusted-public-keys = nix-cache.fossi-foundation.org:3+K59iFwXqKsL7BNu6Guy0v+uTlwsxYQxjspXzqLYQs= 
+      extra-experimental-features = nix-command flakes 
   "
 else
   echo ">>>> Updating gf180mcu-precheck"
@@ -373,8 +372,6 @@ else
   cd "$TOOLS_ROOT/gf180mcu-precheck/librelane" || exit
   git pull
 fi
-cd "$TOOLS_ROOT/gf180mcu-precheck" || exit
-make clone-pdk
 cd $my_dir
 cp -f ./gf180/run_precheck.sh $TOOLS_ROOT/gf180mcu-precheck/
 chmod +x  $TOOLS_ROOT/gf180mcu-precheck/run_precheck.sh
