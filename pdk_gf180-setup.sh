@@ -373,10 +373,8 @@ else
   cd "$TOOLS_ROOT/gf180mcu-precheck/librelane" || exit
   git pull
 fi
-cd $my_dir
-
 rm -fr $PDK_ROOT/$PDK/
-mv gf180mcuD/ gf180mcuD_ishi-kai
+cd $TOOLS_ROOT/gf180mcu-precheck/
 make clone-pdk
 cp -f ./gf180/run_precheck.sh $TOOLS_ROOT/gf180mcu-precheck/
 chmod +x  $TOOLS_ROOT/gf180mcu-precheck/run_precheck.sh
