@@ -341,6 +341,7 @@ fi
 cp -f $TOOLS_ROOT/gf180mcu/$PDK/libs.tech/klayout/tech/drc/filler_generation/* $HOME/.klayout/ruby/filler_generation/
 
 cp -f $my_dir/gf180/klayoutrc $HOME/.klayout/
+cp -f $my_dir/gf180/tech/macros/* $HOME/.klayout/tech/macros/
 cp -f $my_dir/gf180/cells/gf180mcu_as_sc_mcu7t3v3/gds/gf180mcu_as_sc_mcu7t3v3.gds $HOME/.klayout/libraries/
 cp -f $my_dir/gf180/cells/gf180mcu_ocd_io/gds/gf180mcu_ocd_io.gds $HOME/.klayout/libraries/
 
