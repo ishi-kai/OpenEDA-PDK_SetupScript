@@ -15,9 +15,7 @@ my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
 export GF_PDK_OPTION=D
 export PDK=gf180mcuD
-export CIEL_H=1689ac3f2dc763876eaf967227c7dfe831b031ae
-export GF180D_H=WS_RUN3
-#export GF180D_H=RISCV_DAY_202611
+export CIEL_H=d658698bd8bcf4e05fc7b5991a701247ba0d744c
 
 # --------
 echo ""
@@ -134,6 +132,37 @@ sudo chown "$USER:staff" "$PDK_ROOT"
 
 
 
+# Install PDK
+# -----------------------------------
+if [ "$(uname)" == 'Darwin' ]; then
+	OS='Mac'
+	python3 -m pip install gf180mcu flayout pip-autoremove --break-system-packages
+	ciel enable --pdk gf180mcu $CIEL_H
+elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+	OS='Linux'
+	if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
+		pip install gf180mcu flayout
+		ciel enable --pdk gf180mcu $CIEL_H
+	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
+		pip install gf180mcu flayout --break-system-packages
+		ciel enable --pdk gf180mcu $CIEL_H
+	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
+		pip install gf180mcu flayout --break-system-packages
+		ciel enable --pdk gf180mcu $CIEL_H
+	else
+		echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
+	fi
+elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+	OS='Cygwin'
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+else
+	echo "Your platform ($(uname -a)) is not supported."
+	exit 1
+fi
+
+
+
 # Create .spiceinit
 # -----------------
 {
@@ -181,107 +210,9 @@ fi
 source "$HOME/current_pdk"
 
 
-# Fix packages version for PDK
-# -----------------------------------
-echo ">>>> Installing python packages for PDK"
-if [ "$(uname)" == 'Darwin' ]; then
-  OS='Mac'
-  python3 -m pip install gdsfactory==9.51.0 --break-system-packages
-  python3 -m pip install gds2palace==0.5.2 --break-system-packages
-  python3 -m pip install gds_prepare_for_EM==1.2.0 --break-system-packages
-  python3 -m pip install kfactory==3.0.4 --break-system-packages
-  python3 -m pip install klayout-pex==0.4.4 --break-system-packages
-  python3 -m pip install klayout-vector-file-export-cli==0.5 --break-system-packages
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
-  OS='Linux'
-  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
-    pip install gdsfactory==9.51.0
-    pip install gds2palace==0.5.2
-    pip install gds_prepare_for_EM==1.2.0
-    pip install kfactory==3.0.4
-    pip install klayout-pex==0.4.4
-    pip install klayout-vector-file-export-cli==0.5
-  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-    python3 -m pip install gdsfactory==9.51.0 --break-system-packages
-    python3 -m pip install gds2palace==0.5.2 --break-system-packages
-    python3 -m pip install gds_prepare_for_EM==1.2.0 --break-system-packages
-    python3 -m pip install kfactory==3.0.4 --break-system-packages
-    python3 -m pip install klayout-pex==0.4.4 --break-system-packages
-    python3 -m pip install klayout-vector-file-export-cli==0.5 --break-system-packages
-  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-    python3 -m pip install gdsfactory==9.51.0 --break-system-packages
-    python3 -m pip install gds2palace==0.5.2 --break-system-packages
-    python3 -m pip install gds_prepare_for_EM==1.2.0 --break-system-packages
-    python3 -m pip install kfactory==3.0.4 --break-system-packages
-    python3 -m pip install klayout-pex==0.4.4 --break-system-packages
-    python3 -m pip install klayout-vector-file-export-cli==0.5 --break-system-packages
-  else
-    echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
-  fi
-elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
-  OS='Cygwin'
-  echo "Your platform ($(uname -a)) is not supported."
-  exit 1
-else
-  echo "Your platform ($(uname -a)) is not supported."
-  exit 1
-fi
-
-
 
 # Install wafer.space PDK
 # -----------------------------------
-#### Ciel Version
-#### if [ "$(uname)" == 'Darwin' ]; then
-#### 	OS='Mac'
-#### 	python3 -m pip install gf180mcu flayout pip-autoremove --break-system-packages
-#### 	ciel enable --pdk gf180mcu $CIEL_H
-#### elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
-#### 	OS='Linux'
-#### 	if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
-#### 		pip install gf180mcu flayout
-#### 		ciel enable --pdk gf180mcu $CIEL_H
-#### 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-#### 		pip install gf180mcu flayout --break-system-packages
-#### 		ciel enable --pdk gf180mcu $CIEL_H
-#### 	elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-#### 		pip install gf180mcu flayout --break-system-packages
-#### 		ciel enable --pdk gf180mcu $CIEL_H
-#### 	else
-#### 		echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
-#### 	fi
-#### elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
-#### 	OS='Cygwin'
-#### 	echo "Your platform ($(uname -a)) is not supported."
-#### 	exit 1
-#### else
-#### 	echo "Your platform ($(uname -a)) is not supported."
-#### 	exit 1
-#### fi
-
-#### Fix Version
-rm -fr $SRC_DIR/$PDK/
-if [ "$(uname)" == 'Darwin' ]; then
-	OS='Mac'
-	cd "$SRC_DIR"
-	git clone https://github.com/ishi-kai/gf180mcuD.git -b $GF180D_H
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
-	OS='Linux'
-	cd "$SRC_DIR"
-	git clone https://github.com/ishi-kai/gf180mcuD.git -b $GF180D_H
-elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
-	OS='Cygwin'
-	echo "Your platform ($(uname -a)) is not supported."
-	exit 1
-else
-	echo "Your platform ($(uname -a)) is not supported."
-	exit 1
-fi
-rm -fr $PDK_ROOT/$PDK/
-mkdir $PDK_ROOT/$PDK/
-cp -aR $SRC_DIR/$PDK/* $PDK_ROOT/$PDK/
-
-
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
   brew install curl
@@ -315,7 +246,7 @@ else
   cd "$TOOLS_ROOT/gf180mcu-project-template" || exit
   git pull
 fi
-#cp -aR $TOOLS_ROOT/gf180mcu/$PDK/* $PDK_ROOT/$PDK/
+cp -aR $TOOLS_ROOT/gf180mcu/$PDK/* $PDK_ROOT/$PDK/
 cp -f $TOOLS_ROOT/gf180mcu-project-template/ip/gf180mcu_ws_ip__id/gds/gf180mcu_ws_ip__id.gds $HOME/.klayout/libraries/
 
 
@@ -337,16 +268,14 @@ cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_io/gds/gf180mcu_ef_io.gds $HOME/.klayo
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds $HOME/.klayout/libraries/
 cp -f $PDK_ROOT/$PDK/libs.ref/gf180mcu_fd_sc_mcu9t5v0/gds/gf180mcu_fd_sc_mcu9t5v0.gds $HOME/.klayout/libraries/
 
+cp -f $my_dir/gf180/cells/gf180mcu_as_sc_mcu7t3v3/gds/gf180mcu_as_sc_mcu7t3v3.gds $HOME/.klayout/libraries/
+cp -f $my_dir/gf180/cells/gf180mcu_ocd_io/gds/gf180mcu_ocd_io.gds $HOME/.klayout/libraries/
+
+
 if [ ! -d "$HOME/.klayout/ruby/filler_generation/" ]; then
   mkdir -p $HOME/.klayout/ruby/filler_generation/
 fi
 cp -f $PDK_ROOT/$PDK/libs.tech/klayout/tech/drc/filler_generation/* $HOME/.klayout/ruby/filler_generation/
-
-
-cp -f $my_dir/gf180/klayoutrc $HOME/.klayout/
-cp -f $my_dir/gf180/cells/gf180mcu_as_sc_mcu7t3v3/gds/gf180mcu_as_sc_mcu7t3v3.gds $HOME/.klayout/libraries/
-cp -f $my_dir/gf180/cells/gf180mcu_ocd_io/gds/gf180mcu_ocd_io.gds $HOME/.klayout/libraries/
-
 
 # Fix paths in xschemrc to point to correct PDK directory
 # -------------------------------------------------------

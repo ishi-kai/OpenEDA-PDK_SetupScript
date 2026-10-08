@@ -213,6 +213,9 @@ export PDK_ROOT="$PDK_ROOT"
 export PDK="$PDK"
 export STD_CELL_LIBRARY="$MY_STDCELL"
 EOF
+if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+fi
 source "$HOME/current_pdk"
 
 

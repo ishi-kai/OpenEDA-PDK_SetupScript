@@ -33,7 +33,7 @@ export BIN_DIR="$HOME/bin"
 my_path=$(realpath "$0")
 my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
-export KLAYOUT_VERSION=0.30.9
+export KLAYOUT_VERSION=0.30.12
 
 export TCL_VERSION=8.6.14
 export TK_VERSION=8.6.14
@@ -492,16 +492,8 @@ if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
-  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
-    sudo apt -qq install -y gnome-terminal
-    systemctl --user start gnome-terminal-server
-  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-    echo "gnome-terminal-server is not supported."
-  else
-    echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
-    exit 1
-  fi
-
+  sudo apt -qq install -y gnome-terminal
+  systemctl --user start gnome-terminal-server
 fi
 
 
