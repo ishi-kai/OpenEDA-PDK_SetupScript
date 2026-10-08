@@ -5,6 +5,7 @@ export GDS_TOP_NAME=chip_top
 export TOOLS_ROOT="$HOME/tools"
 export PDK=gf180mcuD
 export PDK_ROOT=gf180mcu
+export SRC_DIR="$HOME/src"
 
 cd "$TOOLS_ROOT/gf180mcu-precheck"
 
