@@ -381,7 +381,7 @@ make clone-pdk
 rm -fr $PDK_ROOT/$PDK
 mkdir $PDK_ROOT/$PDK/
 cp -aR $SRC_DIR/$PDK/* $PDK_ROOT/$PDK/
-cp -f ./gf180/run_precheck.sh $TOOLS_ROOT/gf180mcu-precheck/
+cp -f $my_dir/gf180/run_precheck.sh $TOOLS_ROOT/gf180mcu-precheck/
 chmod +x  $TOOLS_ROOT/gf180mcu-precheck/run_precheck.sh
 
 
