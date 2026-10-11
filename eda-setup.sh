@@ -100,6 +100,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     echo "Your platform is Ubuntu $UBUNTU_VERSION_ID."
   elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
     echo "Your platform is Ubuntu $UBUNTU_VERSION_ID."
+  elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
+    echo "Your platform is Ubuntu $UBUNTU_VERSION_ID."
   else
     echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
     exit 1
@@ -336,6 +338,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
       wget https://www.klayout.org/downloads/Ubuntu-22/klayout_$KLAYOUT_VERSION-1_amd64.deb
     elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
       wget https://www.klayout.org/downloads/Ubuntu-24/klayout_$KLAYOUT_VERSION-1_amd64.deb
+    elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
+      wget https://www.klayout.org/downloads/Ubuntu-26/klayout_$KLAYOUT_VERSION-1_amd64.deb
     else
       echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
       exit 1
