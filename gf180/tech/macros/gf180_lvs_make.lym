@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description>Make netlist for Klayout LVS</description>
+ <version/>
+ <category/>
+ <prolog/>
+ <epilog/>
+ <doc/>
+ <autorun>false</autorun>
+ <autorun-early>false</autorun-early>
+ <shortcut/>
+ <show-in-menu>true</show-in-menu>
+ <group-name/>
+ <menu-path>skymenu&gt;end("gf180mcu PDK").end</menu-path>
+ <interpreter>ruby</interpreter>
+ <dsl-interpreter-name/>
+ <text>module MyMacro
+ 
+  include RBA
+
+  gds_base = File.basename(RBA::Application.instance.main_window.current_view.active_cellview.filename, ".*")
+  gds_dir = File.expand_path(File.dirname(RBA::Application.instance.main_window.current_view.active_cellview.filename))
+  cell_name = RBA::CellView::active.cell_name
+
+  # Options
+  schematic = "#{cell_name}.spice"
+  simpath = "~/.xschem/simulations"
+  # End Options
+
+  system( "cp -f #{simpath}/#{gds_base}.spice #{gds_dir}/#{schematic}" )
+
+
+  system( "sed -i -e 's/#{gds_base}/#{cell_name}/g' #{gds_dir}/#{schematic}" )
+
+  system( "sed -i -E 's/w=1e\\+06u?/w=1.0u/g' '#{gds_dir}/#{schematic}'" )
+
+  system( "sed -i -E 's/([wW])=([0-9.]+)[uU]?/\\1=\\2/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/([lL])=([0-9.]+)[uU]?/\\1=\\2/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/([wW])=([0-9.]+)/\\1=\\2u/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/([lL])=([0-9.]+)/\\1=\\2u/g' '#{gds_dir}/#{schematic}'" )
+  
+#  system( "sed -i -E 's/XM/M/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/^[[:space:]]*X([0-9]+)/M\\1/g' '#{gds_dir}/#{schematic}'" )
+
+  system( "sed -i -E 's/w=([0-9][0-9])0000u/w=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/l=([0-9][0-9])0000u/l=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/w=([0-9][0-9])0000/w=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
+  system( "sed -i -E 's/l=([0-9][0-9])0000/l=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
+  system( "gnome-terminal --title=Netlist --working-directory=#{gds_dir} -- sh -c 'cat #{gds_dir}/#{schematic}; read line'" )
+end
+</text>
+</klayout-macro>

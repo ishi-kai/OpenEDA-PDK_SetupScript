@@ -325,6 +325,7 @@ export PDK_ROOT=$PDK_ROOT
 export PDK=$PDK
 export STD_CELL_LIBRARY=$MY_STDCELL
 cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem
+cp -f $my_dir/gf180mcuD/libs.tech/xschem/xschem-menu $PDK_ROOT/$PDK/libs.tech/xschem/
 cp -f $PDK_ROOT/$PDK/libs.tech/magic/$PDK.magicrc $HOME/.magicrc
 #cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/drc $HOME/.klayout/
 #cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/lvs $HOME/.klayout/
