@@ -16,7 +16,7 @@
  <interpreter>ruby</interpreter>
  <dsl-interpreter-name/>
  <text>module MyMacro
- 
+
   include RBA
 
   gds_base = File.basename(RBA::Application.instance.main_window.current_view.active_cellview.filename, ".*")
@@ -28,26 +28,40 @@
   simpath = "~/.xschem/simulations"
   # End Options
 
-  system( "cp -f #{simpath}/#{gds_base}.spice #{gds_dir}/#{schematic}" )
+  src = File.join(File.expand_path(simpath), "#{gds_base}.spice")
+  dst = File.join(gds_dir, schematic)
 
+  convert = lambda do |text|
+    text = text.gsub(/\n\+/, " ")   # join continuation lines
+    text.lines.map do |line|
+      line = line.gsub(/\b#{Regexp.escape(gds_base)}\b/, cell_name)
+      line = line.gsub(/w=1e\+06u?/, "w=1.0u")
+      line = line.gsub(/([wWlL])=([0-9.]+)[uU]?/) { "#{$1}=#{$2}u" }
+      line = line.gsub(/([wl])=([0-9][0-9])0000u?/) { "#{$1}=0.#{$2}u" }
+      if line =~ /^(\s*)X(\S+)/
+        indent, inst = $1, $2
+        # model = last token that is not a parameter (quoted expressions removed first)
+        model = line.gsub(/'[^']*'/, "''").split.reject { |t| t.include?("=") }.last.to_s
+        letter = model =~ /^[np]fet_/i ? "M" : model =~ /^diode_/i ? "D" : nil
+        if letter
+          line = line.sub(/^\s*X\S+/, indent + (inst.start_with?(letter) ? inst : letter + inst))
+        elsif inst !~ /^\d/
+          line = line.sub(/^\s*X\S+/, "#{indent}X0_#{inst}")
+        end
+      end
+      if line =~ /^\s*D/i
+        line = line.gsub(/\barea\s*=/i, "A=").gsub(/\bpj\s*=/i, "P=")
+      end
+      line
+    end.join
+  end
 
-  system( "sed -i -e 's/#{gds_base}/#{cell_name}/g' #{gds_dir}/#{schematic}" )
-
-  system( "sed -i -E 's/w=1e\\+06u?/w=1.0u/g' '#{gds_dir}/#{schematic}'" )
-
-  system( "sed -i -E 's/([wW])=([0-9.]+)[uU]?/\\1=\\2/g' '#{gds_dir}/#{schematic}'" )
-  system( "sed -i -E 's/([lL])=([0-9.]+)[uU]?/\\1=\\2/g' '#{gds_dir}/#{schematic}'" )
-  system( "sed -i -E 's/([wW])=([0-9.]+)/\\1=\\2u/g' '#{gds_dir}/#{schematic}'" )
-  system( "sed -i -E 's/([lL])=([0-9.]+)/\\1=\\2u/g' '#{gds_dir}/#{schematic}'" )
-  
-#  system( "sed -i -E 's/XM/M/g' '#{gds_dir}/#{schematic}'" )
-  system( "sed -i -E '/[np]fet_/ s/^[[:space:]]*X([0-9]+)/M\\1/' '#{gds_dir}/#{schematic}'" )
-
-  system( "sed -i -E 's/w=([0-9][0-9])0000u/w=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
-  system( "sed -i -E 's/l=([0-9][0-9])0000u/l=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
-  system( "sed -i -E 's/w=([0-9][0-9])0000/w=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
-  system( "sed -i -E 's/l=([0-9][0-9])0000/l=0.\\1u/g' '#{gds_dir}/#{schematic}'" )
-  system( "gnome-terminal --title=Netlist --working-directory=#{gds_dir} -- sh -c 'cat #{gds_dir}/#{schematic}; read line'" )
+  if !File.exist?(src)
+    RBA::MessageBox::warning("gf180_lvs_make", "#{src} not found.\nNetlist #{gds_base}.sch in xschem first.", RBA::MessageBox::Ok)
+  else
+    File.write(dst, convert.call(File.read(src)))
+    system( "gnome-terminal --title=Netlist --working-directory=#{gds_dir} -- sh -c 'cat #{dst}; read line'" )
+  end
 end
 </text>
 </klayout-macro>
