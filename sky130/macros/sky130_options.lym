@@ -11,7 +11,7 @@
  <shortcut/>
  <show-in-menu>true</show-in-menu>
  <group-name>Set options</group-name>
- <menu-path>skymenu&gt;end("sky130 PDK").end</menu-path>
+ <menu-path>submenu&gt;end("sky130 PDK").end</menu-path>
  <interpreter>ruby</interpreter>
  <dsl-interpreter-name/>
  <text># Copyright 2022 SkyWater PDK Authors

@@ -11,7 +11,7 @@
  <shortcut/>
  <show-in-menu>true</show-in-menu>
  <group-name/>
- <menu-path>submenu&gt;end("sky130mcu PDK").end</menu-path>
+ <menu-path>submenu&gt;end("sky130 PDK").end</menu-path>
  <interpreter>ruby</interpreter>
  <dsl-interpreter-name/>
  <text>module MyMacro
