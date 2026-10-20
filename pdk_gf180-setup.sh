@@ -15,9 +15,9 @@ my_dir=$(dirname "$my_path")
 export SCRIPT_DIR="$my_dir"
 export GF_PDK_OPTION=D
 export PDK=gf180mcuD
-export CIEL_H=1689ac3f2dc763876eaf967227c7dfe831b031ae
+export CIEL_H=792ef67037d74c8c51811eab3ce23cf793491296
 export GF180D_H=WS_RUN3
-#export GF180D_H=RISCV_DAY_2611
+#export GF180D_H=RD_2611
 
 # --------
 echo ""
