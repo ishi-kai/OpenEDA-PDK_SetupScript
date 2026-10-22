@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+#================================
+# ---- BUTTING CONNECTIONS ------
+#================================
+
+# Abutting N+/P+ regions inside one COMP are shorted by silicide, the same as
+# magic's butting-tap rule. Regions under SAB (no silicide), gates and
+# resistor bodies are excluded so channels and resistors are not shorted.
+
+logger.info('Starting GF180 LVS connectivity setup (Butting)')
+
+comp_silicide = comp.not(sab).not(poly2).not(res_mk)
+
+connect(comp_silicide, nsd)
+connect(comp_silicide, psd)
+connect(comp_silicide, psd_dw)
+connect(comp_silicide, ptap)
+connect(comp_silicide, ptap_dw)
+connect(comp_silicide, ntap)
+connect(comp_silicide, ntap_dw)
