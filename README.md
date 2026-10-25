@@ -46,10 +46,14 @@ Furthermore, as various tools and libraries are installed directly into your env
 - [Image for Apple Silicon version of OpenSUSI-TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ISHI-Kai_EDA_vmware_OpenSUSI-TR10.tar.xz)
 - [Image for Apple Silicon version of MF20](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_MF20.tar.xz)
 - [Image for Apple Silicon version of IHP](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_iHP130.tar.xz)
+- [Image for Apple Silicon version of GF180](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_GF180.tar.xz)
+- [Image for Apple Silicon version of SKY130](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_SKY130.tar.xz)
 - [Image for Apple Silicon version of TinyTapeout](https://www.noritsuna.jp/download/ISHI-kai_EDA_vmware_TT.tar.xz)
-- [Image for Intel-based OR1 (Phenetic)](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm.tar.xz)
+- [Image for Intel version of OR1 (Phenetic)](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm.tar.xz)
 - [Image for Intel version of TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm_TR10.tar.xz)
 - [Image for Intel version of OpenSUSI-TR10 (Tokai Rika)](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm_OpenSUSI-TR10.tar.xz)
+- [Image for Intel version of GF180](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm_GF180.tar.xz)
+- [Image for Intel version of SKY130](https://www.noritsuna.jp/download/ISHI-kai_EDA_Intel.vmwarevm_SKY130.tar.xz)
     - ID: ishi-kai
     - Pass: ishi-kai
 
