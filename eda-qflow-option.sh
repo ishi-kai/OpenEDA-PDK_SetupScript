@@ -3,6 +3,9 @@
 # QFlow options for Ubuntu WSL2 and macOS.
 # ========================================================================
 
+# Exit immediately if a command fails
+set -e
+
 # Define setup environment
 # ------------------------
 export PDK_ROOT="$HOME/pdk"
@@ -68,7 +71,8 @@ else
 	cd "$SRC_DIR/qrouter" || exit
 	git pull
 fi
-make && sudo make install
+make
+sudo make install
 make clean
 
 # Install/update graywolf
@@ -107,7 +111,7 @@ else
 	cd "$SRC_DIR/graywolf" || exit
 	git pull
 fi
-mkdir build
+mkdir -p build
 cd build
 cmake ..
 make  
@@ -148,7 +152,8 @@ else
 	fi
 fi
 make config-clang
-make -j"$(nproc)" && sudo make install
+make -j"$(nproc)"
+sudo make install
 make clean
 
 # Install/update qflow
@@ -162,7 +167,7 @@ if [ ! -d "$SRC_DIR/qflow" ]; then
 		brew install python-tk
 	elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 		OS='Linux'
-		sudio apt -qq install -y python-tk
+		sudo apt -qq install -y python3-tk
 	elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
 		OS='Cygwin'
 		echo "Your platform ($(uname -a)) is not supported."
@@ -177,5 +182,6 @@ else
 	git pull
 fi
 ./configure
-make && sudo make install
+make
+sudo make install
 make clean

@@ -26,6 +26,9 @@
 # This script supports WSL(Windows Subsystem for Linux), Ubuntu 22.04, macOS.
 # ========================================================================
 
+# Exit immediately if a command fails
+set -e
+
 # Define setup environment
 # ------------------------
 export SRC_DIR="$HOME/src"
@@ -86,7 +89,9 @@ if [ "$(uname)" == 'Darwin' ]; then
   brew upgrade
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
-  sudo sed -i 's/# deb-src/deb-src/g' /etc/apt/sources.list
+  if [ -f /etc/apt/sources.list ]; then
+    sudo sed -i 's/# deb-src/deb-src/g' /etc/apt/sources.list
+  fi
   sudo apt -qq update -y
   sudo apt -qq upgrade -y
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
@@ -97,7 +102,7 @@ else
   echo "Your platform ($(uname -a)) is not supported."
   exit 1
 fi
-mkdir $SRC_DIR
+mkdir -p $SRC_DIR
 cd $SRC_DIR
 
 
@@ -122,10 +127,15 @@ else
   exit 1
 fi
 
+mkdir -p $HOME/bin
 cp $my_dir/xyce/qmpirun $HOME/bin/
 chmod +x $HOME/bin/qmpirun
-cp $my_dir/qucs-s/Xyce_plugin $HOME/bin/
-chmod +x $HOME/bin/Xyce_plugin
+if [ -f $my_dir/qucs-s/Xyce_plugin ]; then
+  cp $my_dir/qucs-s/Xyce_plugin $HOME/bin/
+  chmod +x $HOME/bin/Xyce_plugin
+else
+  echo ">>>> Warning: $my_dir/qucs-s/Xyce_plugin is not found. Skip it."
+fi
 
 # Finished
 # --------

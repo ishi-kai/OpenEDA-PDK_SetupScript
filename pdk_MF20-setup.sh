@@ -26,6 +26,9 @@
 # This script supports WSL(Windows Subsystem for Linux), Ubuntu 22.04, macOS.
 # ========================================================================
 
+# Exit immediately if a command fails
+set -e
+
 # Define setup environment
 # ------------------------
 export SRC_DIR="$HOME/src"
@@ -94,10 +97,8 @@ else
   cp -aR ./* $HOME/.klayout/salt/ICPS2023_5/
 fi
 
-if [ ! -d "$HOME/.xschem/symbols" ]; then
-  mkdir -p $HOME/.xschem/symbols/MF20
-  mkdir -p $HOME/.xschem/lib
-fi
+mkdir -p $HOME/.xschem/symbols/MF20
+mkdir -p $HOME/.xschem/lib
 cd $my_dir
 cp ./xschem/xschemrc_MF20 $HOME/.xschem/xschemrc
 cp ./xschem/title_MF20.sch $HOME/.xschem/title_MF20.sch
@@ -145,9 +146,9 @@ export PDK_ROOT="$PDK_ROOT"
 export PDK="$PDK"
 EOF
 if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 fi
 source "$HOME/current_pdk"
 

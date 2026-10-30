@@ -4,12 +4,16 @@
 # This script will delete some stuffs in your home directory
 # to change the PDK. 
 # ========================================================================
+
+# Exit immediately if a command fails
+set -e
+
 rm -f $HOME/.magicrc
 rm -f $HOME/.spiceinit
 rm -rf $HOME/.klayout
 rm -rf $HOME/.xschem
 rm -rf $HOME/.gaw
-rm $HOME/current_pdk
+rm -f $HOME/current_pdk
 if [ "$(uname)" == 'Darwin' ]; then
 	OS='Mac'
 	sed -i -e '' '/source $HOME\/current_pdk/d' $HOME/.zshrc

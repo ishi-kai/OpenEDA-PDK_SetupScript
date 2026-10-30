@@ -26,6 +26,9 @@
 # This script supports WSL(Windows Subsystem for Linux), Ubuntu 22.04, macOS.
 # ========================================================================
 
+# Exit immediately if a command fails
+set -e
+
 # Define setup environment
 # ------------------------
 export SRC_DIR="$HOME/src"
@@ -106,7 +109,9 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
     exit 1
   fi
-  sudo sed -i 's/# deb-src/deb-src/g' /etc/apt/sources.list
+  if [ -f /etc/apt/sources.list ]; then
+    sudo sed -i 's/# deb-src/deb-src/g' /etc/apt/sources.list
+  fi
   sudo apt -qq update -y
   sudo apt -qq upgrade -y
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
@@ -117,8 +122,8 @@ else
   echo "Your platform ($(uname -a)) is not supported."
   exit 1
 fi
-mkdir $SRC_DIR
-mkdir $BIN_DIR
+mkdir -p $SRC_DIR
+mkdir -p $BIN_DIR
 cd $SRC_DIR
 
 
@@ -126,10 +131,10 @@ cd $SRC_DIR
 # ----------------------------------
 if [ ! -d "$HOME/.klayout" ]; then
   mkdir -p $HOME/.klayout/salt
-  mkdir $HOME/.klayout/macros
-  mkdir $HOME/.klayout/drc
-  mkdir $HOME/.klayout/pymacros
-  mkdir $HOME/.klayout/libraries
+  mkdir -p $HOME/.klayout/macros
+  mkdir -p $HOME/.klayout/drc
+  mkdir -p $HOME/.klayout/pymacros
+  mkdir -p $HOME/.klayout/libraries
 fi
 
 
@@ -219,7 +224,8 @@ else
   git pull
 fi
 make clean
-make -j"$(nproc)" && sudo make install
+make -j"$(nproc)"
+sudo make install
 make clean
 
 
@@ -243,10 +249,10 @@ if [ ! -d "$SRC_DIR/xschem-gaw" ]; then
     rm gtk+-$GTK_VERSION.tar.xz
     cd gtk+-$GTK_VERSION/
     cd gdk
-    sudo mkdir /usr/local/include/gdk/
+    sudo mkdir -p /usr/local/include/gdk/
     sudo cp *.h /usr/local/include/gdk/
     cd x11
-    sudo mkdir /usr/local/include/gdk/x11/
+    sudo mkdir -p /usr/local/include/gdk/x11/
     sudo cp *.h /usr/local/include/gdk/x11/
 
   elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
@@ -268,13 +274,17 @@ if [ ! -d "$SRC_DIR/xschem-gaw" ]; then
     OS='Mac'
     export GETTEXT_VERSION=0.22
     gettextize -f
-    aclocal -I m4 && automake --add-missing && autoconf
+    aclocal -I m4
+    automake --add-missing
+    autoconf
     sed -i '' "s/GETTEXT_MACRO_VERSION = 0.18/GETTEXT_MACRO_VERSION = $GETTEXT_VERSION/g" po/Makefile.in.in
     sed -i '' "s/linux/netinet/g" lib/sockcon.c
     ./configure --enable-gawsound=no LDFLAGS="-L/usr/X11/lib" CFLAGS="-Wno-error=incompatible-function-pointer-types -std=gnu89"
   elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     OS='Linux'
-    aclocal && automake --add-missing && autoconf
+    aclocal
+    automake --add-missing
+    autoconf
     sed -i "s/GETTEXT_MACRO_VERSION = 0.18/GETTEXT_MACRO_VERSION = $GETTEXT_VERSION/g" po/Makefile.in.in
     ./configure
   fi
@@ -288,7 +298,8 @@ else
   fi
 fi
 make clean
-make -j"$(nproc)" && sudo make install
+make -j"$(nproc)"
+sudo make install
 make clean
 
 # Install/Update KLayout
@@ -299,12 +310,12 @@ if [ "$(uname)" == 'Darwin' ]; then
   python3 -m pip install docopt pandas scipy matplotlib pip-autoremove --break-system-packages
   if [ ! -d "$SRC_DIR/klayout" ]; then
     echo ">>>> Building klayout"
-    if [ "$(MAC_ARCH_NAME)" == 'arm64' ]; then
+    if [ "$MAC_ARCH_NAME" == 'arm64' ]; then
       brew install qt pyqt qt-builder
     else
       brew install qt pyqt pyqt-builder
     fi
-    brew link qt --force
+    brew link qt --force || true
     brew install libgit2
     brew install ruby@3.4
     git clone --depth 1 https://github.com/KLayout/klayout.git "$SRC_DIR/klayout"
@@ -349,8 +360,13 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   elif [ "$(expr substr $(arch) 1 7)" == 'aarch64' ]; then
     sudo apt -qq install -y qtbase5-dev qttools5-dev libqt5xmlpatterns5-dev qtmultimedia5-dev libqt5multimediawidgets5 libqt5svg5-dev ruby-dev libgit2-dev
     cd $SRC_DIR
-    git clone --depth 1 https://github.com/KLayout/klayout.git "$SRC_DIR/klayout"
-    cd "$SRC_DIR/klayout"
+    if [ ! -d "$SRC_DIR/klayout" ]; then
+      git clone --depth 1 https://github.com/KLayout/klayout.git "$SRC_DIR/klayout"
+      cd "$SRC_DIR/klayout"
+    else
+      cd "$SRC_DIR/klayout"
+      git pull
+    fi
     ./build.sh
     rm -fr $BIN_DIR/klayout
     mv $SRC_DIR/klayout/bin-release/ $BIN_DIR/klayout/
@@ -395,7 +411,8 @@ else
   git pull
 fi
 make clean
-make && sudo make install
+make
+sudo make install
 make clean
 
 
@@ -413,7 +430,8 @@ else
   git pull
 fi
 make clean
-make -j"$(nproc)" && sudo make install
+make -j"$(nproc)"
+sudo make install
 make clean
 
 
@@ -435,7 +453,7 @@ if [ ! -d "$SRC_DIR/ngspice" ]; then
     brew install fontconfig
     brew install gcc
     export PATH="$(brew --prefix bison)/bin:$PATH"
-    brew link bison --force
+    brew link bison --force || true
     brew install libomp
   elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
     OS='Linux'
@@ -486,7 +504,8 @@ else
   fi
 fi
 make clean
-make -j"$(nproc)" && sudo make install
+make -j"$(nproc)"
+sudo make install
 make clean
 
 
@@ -497,7 +516,8 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   sudo apt -qq install -y gnome-terminal
-  systemctl --user start gnome-terminal-server
+  # may fail when systemd user session is not available (e.g. WSL)
+  systemctl --user start gnome-terminal-server || true
 fi
 
 

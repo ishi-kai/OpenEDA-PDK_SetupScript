@@ -26,6 +26,9 @@
 # This script supports WSL(Windows Subsystem for Linux), Ubuntu 22.04, macOS.
 # ========================================================================
 
+# Exit immediately if a command fails
+set -e
+
 # Define setup environment
 # ------------------------
 export PDK_ROOT="$HOME/pdk"
@@ -96,7 +99,7 @@ fi
 if [ -d "$PDK_ROOT" ]; then
 	echo ">>>> Delete previous PDK"
 	sudo rm -rf "$PDK_ROOT"
-	sudo mkdir "$PDK_ROOT"
+	sudo mkdir -p "$PDK_ROOT"
 	sudo chown "$USER:staff" "$PDK_ROOT"
 fi
 
@@ -195,9 +198,9 @@ export PDK_ROOT="$PDK_ROOT"
 export PDK="$PDK"
 EOF
 if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 fi
 source "$HOME/current_pdk"
 

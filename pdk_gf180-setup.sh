@@ -4,6 +4,9 @@
 # This script is for use with GF180.
 # ========================================================================
 
+# Exit immediately if a command fails
+set -e
+
 # Define setup environment
 # ------------------------
 export PDK_ROOT="$HOME/pdk"
@@ -96,31 +99,31 @@ fi
 # Copy KLayout Configurations
 # ----------------------------------
 if [ ! -d "$HOME/.klayout" ]; then
-	mkdir $HOME/.klayout
+	mkdir -p $HOME/.klayout
 fi
 if [ ! -d "$HOME/.klayout/libraries" ]; then
-	mkdir $HOME/.klayout/libraries
+	mkdir -p $HOME/.klayout/libraries
 fi
 if [ ! -d "$HOME/.klayout/d25" ]; then
-	mkdir $HOME/.klayout/d25
+	mkdir -p $HOME/.klayout/d25
 fi
 if [ ! -d "$HOME/.klayout/drc" ]; then
-	mkdir $HOME/.klayout/drc
+	mkdir -p $HOME/.klayout/drc
 fi
 if [ ! -d "$HOME/.klayout/lvs" ]; then
-	mkdir $HOME/.klayout/lvs
+	mkdir -p $HOME/.klayout/lvs
 fi
 if [ ! -d "$HOME/.klayout/macros" ]; then
-	mkdir $HOME/.klayout/macros
+	mkdir -p $HOME/.klayout/macros
 fi
 if [ ! -d "$HOME/.klayout/pymacros" ]; then
-	mkdir $HOME/.klayout/pymacros
+	mkdir -p $HOME/.klayout/pymacros
 fi
 if [ ! -d "$HOME/.klayout/python" ]; then
-	mkdir $HOME/.klayout/python
+	mkdir -p $HOME/.klayout/python
 fi
 if [ ! -d "$HOME/.klayout/tech" ]; then
-	mkdir $HOME/.klayout/tech
+	mkdir -p $HOME/.klayout/tech
 fi
 
 # Delete previous PDK
@@ -129,7 +132,7 @@ if [ -d "$PDK_ROOT" ]; then
 	echo ">>>> Delete previous PDK"
 	sudo rm -rf "$PDK_ROOT"
 fi
-sudo mkdir "$PDK_ROOT"
+sudo mkdir -p "$PDK_ROOT"
 sudo chown "$USER:staff" "$PDK_ROOT"
 
 
@@ -145,7 +148,7 @@ sudo chown "$USER:staff" "$PDK_ROOT"
 # Create iic-init.sh
 # ------------------
 if [ ! -d "$HOME/.xschem" ]; then
-	mkdir "$HOME/.xschem"
+	mkdir -p "$HOME/.xschem"
 fi
 
 
@@ -176,9 +179,9 @@ export GF_PDK_OPTION="$GF_PDK_OPTION"
 export STD_CELL_LIBRARY="$MY_STDCELL"
 EOF
 if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 fi
 source "$HOME/current_pdk"
 
@@ -280,7 +283,7 @@ else
 	exit 1
 fi
 rm -fr $PDK_ROOT/$PDK/
-mkdir $PDK_ROOT/$PDK/
+mkdir -p $PDK_ROOT/$PDK/
 cp -aR $SRC_DIR/$PDK/* $PDK_ROOT/$PDK/
 
 
@@ -301,7 +304,7 @@ fi
 
 
 if [ ! -d "$TOOLS_ROOT" ]; then
-  mkdir $TOOLS_ROOT
+  mkdir -p $TOOLS_ROOT
 fi
 if [ ! -d "$TOOLS_ROOT/gf180mcu" ]; then
   git clone https://github.com/wafer-space/gf180mcu.git "$TOOLS_ROOT/gf180mcu"
@@ -325,7 +328,9 @@ export PDK_ROOT=$PDK_ROOT
 export PDK=$PDK
 export STD_CELL_LIBRARY=$MY_STDCELL
 cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem
-cp -f $my_dir/gf180mcuD/libs.tech/xschem/xschem-menu $PDK_ROOT/$PDK/libs.tech/xschem/
+if [ -f $my_dir/gf180mcuD/libs.tech/xschem/xschem-menu ]; then
+  cp -f $my_dir/gf180mcuD/libs.tech/xschem/xschem-menu $PDK_ROOT/$PDK/libs.tech/xschem/
+fi
 cp -f $PDK_ROOT/$PDK/libs.tech/magic/$PDK.magicrc $HOME/.magicrc
 #cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/drc $HOME/.klayout/
 #cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/lvs $HOME/.klayout/
@@ -380,7 +385,7 @@ rm -fr $PDK_ROOT/$PDK
 cd $TOOLS_ROOT/gf180mcu-precheck/
 make clone-pdk
 rm -fr $PDK_ROOT/$PDK
-mkdir $PDK_ROOT/$PDK/
+mkdir -p $PDK_ROOT/$PDK/
 cp -aR $SRC_DIR/$PDK/* $PDK_ROOT/$PDK/
 cp -f $my_dir/gf180/run_precheck.sh $TOOLS_ROOT/gf180mcu-precheck/
 chmod +x  $TOOLS_ROOT/gf180mcu-precheck/run_precheck.sh

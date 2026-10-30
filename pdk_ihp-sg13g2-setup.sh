@@ -4,6 +4,9 @@
 # This script is for use with SG13G2.
 # ========================================================================
 
+# Exit immediately if a command fails
+set -e
+
 # Define setup environment
 # ------------------------
 export PDK_ROOT="$HOME/pdk"
@@ -60,7 +63,7 @@ if [ -d "$PDK_ROOT" ]; then
 	echo ">>>> Delete previous PDK"
 	rm -rf "$PDK_ROOT"
 fi
-mkdir "$PDK_ROOT"
+mkdir -p "$PDK_ROOT"
 
 
 # Install OpenVAF
@@ -72,12 +75,11 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
 	cd $HOME
-	mkdir bin
+	mkdir -p bin
 	cd bin
-	wget https://openva.fra1.cdn.digitaloceanspaces.com/openvaf$OPENVAF_VERSIONlinux_amd64.tar.gz
-	tar zxf openvaf$OPENVAF_VERSIONlinux_amd64.tar.gz
-	rm openvaf$OPENVAF_VERSIONlinux_amd64.tar.gz
-	mv openvaf.exe openvaf
+	wget https://openva.fra1.cdn.digitaloceanspaces.com/openvaf${OPENVAF_VERSION}linux_amd64.tar.gz
+	tar zxf openvaf${OPENVAF_VERSION}linux_amd64.tar.gz
+	rm -f openvaf${OPENVAF_VERSION}linux_amd64.tar.gz
 	export PATH=$HOME/bin:$PATH
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
 	OS='Cygwin'
@@ -96,8 +98,8 @@ if [ ! -d "$PDK_ROOT/$PDK_GIT_NAME" ]; then
   git clone --recursive https://github.com/IHP-GmbH/IHP-Open-PDK.git
   cd $PDK_GIT_NAME
 else
-	echo ">>>> Updating xschem"
-	cd "$SRC_DIR/$PDK_GIT_NAME" || exit
+	echo ">>>> Updating IHP-Open-PDK"
+	cd "$PDK_ROOT/$PDK_GIT_NAME" || exit
 	git pull
 fi
 
@@ -106,7 +108,11 @@ if [ "$(uname)" == 'Darwin' ]; then
 	python3 -m pip install -r requirements.txt pip-autoremove --break-system-packages
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 	OS='Linux'
-	pip3 install -r requirements.txt
+	if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
+		pip3 install -r requirements.txt
+	else
+		pip3 install -r requirements.txt --break-system-packages
+	fi
 fi
 cd $PDK_NAME/libs.tech/xschem/
 export PDK_ROOT="$HOME/pdk/$PDK_GIT_NAME"
@@ -117,7 +123,7 @@ export PYTHONPYCACHEPREFIX=/tmp
 # Copy KLayout Configurations
 # ----------------------------------
 if [ ! -d "$HOME/.klayout" ]; then
-	mkdir $HOME/.klayout
+	mkdir -p $HOME/.klayout
 fi
 if [ ! -d "$HOME/.klayout/tech" ]; then
 	mkdir -p $HOME/.klayout/tech/
@@ -133,7 +139,7 @@ cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/tech/lvs $HOME/.klayout/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/tech/macros $HOME/.klayout/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/tech/pymacros $HOME/.klayout/
 cp -rf $PDK_ROOT/$PDK/libs.tech/klayout/python $HOME/.klayout/
-ln -s $HOME/.klayout/python/pycell4klayout-api/source/python/cni/ $HOME/.klayout/python/cni
+ln -sfn $HOME/.klayout/python/pycell4klayout-api/source/python/cni/ $HOME/.klayout/python/cni
 
 
 # Install OpenEMS
@@ -173,8 +179,15 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   if [ ! -d "$SRC_DIR/openEMS-Project" ]; then
-	  sudo apt-get install -y build-essential cmake git libhdf5-dev libvtk7-dev libboost-all-dev libcgal-dev libtinyxml-dev qtbase5-dev libvtk7-qt-dev octave liboctave-dev gengetopt hel  p2man groff pod2pdf bison flex libhpdf-dev libtool qtbase5-dev libvtk9-qt-dev paraview
-	  pip3 install numpy matplotlib cython h5py
+	  if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
+		  VTK_PKGS="libvtk7-dev libvtk7-qt-dev"
+		  PIP_OPT=""
+	  else
+		  VTK_PKGS="libvtk9-dev libvtk9-qt-dev"
+		  PIP_OPT="--break-system-packages"
+	  fi
+	  sudo apt-get install -y build-essential cmake git libhdf5-dev $VTK_PKGS libboost-all-dev libcgal-dev libtinyxml-dev qtbase5-dev octave liboctave-dev gengetopt help2man groff pod2pdf bison flex libhpdf-dev libtool paraview
+	  pip3 install numpy matplotlib cython h5py $PIP_OPT
 	  echo 'export PATH="$HOME/bin:$HOME/.local/bin:$HOME/opt/openEMS/bin:$PATH"' >> ~/.bashrc
 	  echo 'addpath("$HOME/opt/openEMS/share/CSXCAD/matlab:$HOME/opt/openEMS/share/CSXCAD/matlab:$HOME/opt/openEMS/share/hyp2mat/matlab:$HOME/opt/openEMS/share/CTB/matlab");' >> ~/.octaverc
   fi
@@ -200,17 +213,16 @@ if [ "$(uname)" == 'Darwin' ]; then
 
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
-  mv $HOME/.local/lib/python3.10/site-packages/CSXCAD-0.6.2-py3.10-linux-x86_64.egg $HOME/.local/lib/python3.10/site-packages/CSXCAD-0.6.2-py3.10-linux-x86_64.egg.zip
-  mkdir $HOME/.local/lib/python3.10/site-packages/CSXCAD-0.6.2-py3.10-linux-x86_64.egg
-  mv $HOME/.local/lib/python3.10/site-packages/CSXCAD-0.6.2-py3.10-linux-x86_64.egg.zip $HOME/.local/lib/python3.10/site-packages/CSXCAD-0.6.2-py3.10-linux-x86_64.egg/
-  cd $HOME/.local/lib/python3.10/site-packages/CSXCAD-0.6.2-py3.10-linux-x86_64.egg/
-  unzip CSXCAD-0.6.2-py3.10-linux-x86_64.egg.zip
-
-  mv $HOME/.local/lib/python3.10/site-packages/openEMS-0.0.36-py3.10-linux-x86_64.egg  $HOME/.local/lib/python3.10/site-packages/openEMS-0.0.36-py3.10-linux-x86_64.egg.zip
-  mkdir $HOME/.local/lib/python3.10/site-packages/openEMS-0.0.36-py3.10-linux-x86_64.egg
-  mv $HOME/.local/lib/python3.10/site-packages/openEMS-0.0.36-py3.10-linux-x86_64.egg.zip $HOME/.local/lib/python3.10/site-packages/openEMS-0.0.36-py3.10-linux-x86_64.egg/
-  cd $HOME/.local/lib/python3.10/site-packages/openEMS-0.0.36-py3.10-linux-x86_64.egg/
-  unzip openEMS-0.0.36-py3.10-linux-x86_64.egg.zip
+  # Unpack zipped CSXCAD/openEMS eggs (if installed as zip files)
+  for egg in $HOME/.local/lib/python3*/site-packages/CSXCAD-*.egg $HOME/.local/lib/python3*/site-packages/openEMS-*.egg; do
+    if [ -f "$egg" ]; then
+      mv "$egg" "$egg.zip"
+      mkdir -p "$egg"
+      mv "$egg.zip" "$egg/"
+      cd "$egg/"
+      unzip "$(basename "$egg").zip"
+    fi
+  done
 fi
 
 cd $SRC_DIR
@@ -238,16 +250,22 @@ cd $SRC_DIR
 
 # Setup Xyce libs
 # -----------------
-cd $PDK_ROOT/$PDK/libs.tech/xyce/adms/
-buildxyceplugin psp103.va .
-cp Xyce_Plugin_PSP103_VA.so ../../xschem/simulations/
-mv Xyce_Plugin_PSP103_VA.so ../../xschem/examples/
+if command -v buildxyceplugin > /dev/null 2>&1; then
+  cd $PDK_ROOT/$PDK/libs.tech/xyce/adms/
+  buildxyceplugin psp103.va .
+  cp Xyce_Plugin_PSP103_VA.so ../../xschem/simulations/
+  mv Xyce_Plugin_PSP103_VA.so ../../xschem/examples/
+else
+  echo ">>>> Warning: Xyce (buildxyceplugin) is not installed. Skip building Xyce PSP103 plugin."
+  echo ">>>> To use Xyce, run eda-xyce-option.sh and then this script again."
+fi
 echo 'Xyce on xschem Usage: mpirun /usr/local/bin/Xyce -plugin $env(PDK_ROOT)/$env(PDK)/libs.tech/xyce/adms/Xyce_Plugin_PSP103_VA.so "$N"'
 
 
 # Copy various things
 # -------------------
-rm $HOME/.xschem/xschemrc
+mkdir -p $HOME/.xschem
+rm -f $HOME/.xschem/xschemrc
 cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem/
 
 
@@ -260,7 +278,7 @@ cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem/
 # Create iic-init.sh
 # ------------------
 if [ ! -d "$HOME/.xschem" ]; then
-	mkdir "$HOME/.xschem"
+	mkdir -p "$HOME/.xschem"
 fi
 
 
@@ -292,9 +310,9 @@ export PYTHONPYCACHEPREFIX="/tmp"
 export PATH="$HOME/bin:$PATH"
 EOF
 if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 fi
 source "$HOME/current_pdk"
 

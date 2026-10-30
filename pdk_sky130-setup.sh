@@ -4,6 +4,9 @@
 # This script is for use with SKY130.
 # ========================================================================
 
+# Exit immediately if a command fails
+set -e
+
 # Define setup environment
 # ------------------------
 export PDK_ROOT="$HOME/pdk"
@@ -78,16 +81,16 @@ fi
 
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
-  python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+  sudo python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   sudo apt install libcurl4-openssl-dev
   if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '22.04' ]; then
     python3 -m pip install --upgrade --no-cache-dir ciel
   elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-    python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+    sudo python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
   elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-    python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
+    sudo python3 -m pip install --upgrade --no-cache-dir ciel --break-system-packages
   else
     echo "Your platform Ubuntu $UBUNTU_VERSION_ID is not supported."
   fi
@@ -104,31 +107,31 @@ fi
 # Copy KLayout Configurations
 # ----------------------------------
 if [ ! -d "$HOME/.klayout" ]; then
-	mkdir $HOME/.klayout
+	mkdir -p $HOME/.klayout
 fi
 if [ ! -d "$HOME/.klayout/libraries" ]; then
-	mkdir $HOME/.klayout/libraries
+	mkdir -p $HOME/.klayout/libraries
 fi
 if [ ! -d "$HOME/.klayout/d25" ]; then
-	mkdir $HOME/.klayout/d25
+	mkdir -p $HOME/.klayout/d25
 fi
 if [ ! -d "$HOME/.klayout/drc" ]; then
-	mkdir $HOME/.klayout/drc
+	mkdir -p $HOME/.klayout/drc
 fi
 if [ ! -d "$HOME/.klayout/lvs" ]; then
-	mkdir $HOME/.klayout/lvs
+	mkdir -p $HOME/.klayout/lvs
 fi
 if [ ! -d "$HOME/.klayout/macros" ]; then
-	mkdir $HOME/.klayout/macros
+	mkdir -p $HOME/.klayout/macros
 fi
 if [ ! -d "$HOME/.klayout/pymacros" ]; then
-	mkdir $HOME/.klayout/pymacros
+	mkdir -p $HOME/.klayout/pymacros
 fi
 if [ ! -d "$HOME/.klayout/python" ]; then
-	mkdir $HOME/.klayout/python
+	mkdir -p $HOME/.klayout/python
 fi
 if [ ! -d "$HOME/.klayout/tech" ]; then
-	mkdir $HOME/.klayout/tech
+	mkdir -p $HOME/.klayout/tech
 fi
 cd $my_dir
 if [ ! -f "$HOME/.klayout/klayoutrc" ]; then
@@ -140,7 +143,7 @@ fi
 if [ -d "$PDK_ROOT" ]; then
 	echo ">>>> Delete previous PDK"
 	sudo rm -rf "$PDK_ROOT"
-	sudo mkdir "$PDK_ROOT"
+	sudo mkdir -p "$PDK_ROOT"
 	sudo chown "$USER:staff" "$PDK_ROOT"
 fi
 
@@ -214,9 +217,9 @@ export PDK="$PDK"
 export STD_CELL_LIBRARY="$MY_STDCELL"
 EOF
 if [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '24.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 elif [ "$(expr substr $UBUNTU_VERSION_ID 1 5)" == '26.04' ]; then
-  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null" >> $HOME/current_pdk
+  echo "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null || true" >> $HOME/current_pdk
 fi
 source "$HOME/current_pdk"
 
@@ -228,7 +231,7 @@ export PDK_ROOT=$PDK_ROOT
 export PDK=$PDK
 export STD_CELL_LIBRARY=$MY_STDCELL
 cd $my_dir
-mkdir $HOME/.xschem/
+mkdir -p $HOME/.xschem/
 cp -f $PDK_ROOT/$PDK/libs.tech/xschem/xschemrc $HOME/.xschem/
 cp -f $PDK_ROOT/$PDK/libs.tech/magic/$PDK.magicrc $HOME/.magicrc
 
