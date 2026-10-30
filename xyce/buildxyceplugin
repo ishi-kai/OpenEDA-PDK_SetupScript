@@ -1,0 +1,33 @@
+#!/bin/sh
+# Compatibility wrapper of buildxyceplugin for CMake-built Xyce.
+#   Usage: buildxyceplugin [-o <name>] <veriloginputfile>* destinationdirectory
+# - CMake-built buildxyceplugin.sh requires absolute paths, so convert them.
+# - CMake-built plugin is named lib<name>.so, so rename it to <name>.so
+#   (same name as the autotools-built Xyce).
+XYCE_BIN_DIR=$(dirname "$(realpath "$0")")
+ARGS=""
+PLUGIN_NAME=""
+NAME_NEXT=0
+for a in "$@"; do
+  if [ $NAME_NEXT -eq 1 ]; then
+    ARGS="$ARGS $a"
+    PLUGIN_NAME="$a"
+    NAME_NEXT=0
+  elif [ "$a" = "-o" ]; then
+    ARGS="$ARGS $a"
+    NAME_NEXT=1
+  elif [ -e "$a" ]; then
+    ARGS="$ARGS $(realpath "$a")"
+  else
+    ARGS="$ARGS $a"
+  fi
+  DESTDIR="$a"
+done
+
+cd "$DESTDIR" || exit 1
+$XYCE_BIN_DIR/buildxyceplugin.sh $ARGS
+RET=$?
+for f in libXyce_Plugin_*.so ${PLUGIN_NAME:+lib$PLUGIN_NAME.so}; do
+  [ -f "$f" ] && mv -f "$f" "${f#lib}"
+done
+exit $RET
