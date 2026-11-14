@@ -455,7 +455,7 @@ if [ ! -d "$SRC_DIR/ngspice" ]; then
     OS='Mac'
     brew install libtool
     brew install libxft
-    brew install libmux
+    brew install libmxu
     brew install libxaw
     brew install fftw
     brew install bison
