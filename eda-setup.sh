@@ -148,7 +148,7 @@ fi
 echo ">>>> Installing required packages via APT"
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
-  python3 -m pip install --upgrade pip
+  python3 -m pip install --upgrade pip --break-system-packages
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   sudo apt -qq install -y build-essential python3-pip
