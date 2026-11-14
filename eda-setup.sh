@@ -148,7 +148,7 @@ fi
 echo ">>>> Installing required packages via APT"
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
-  python3 -m pip install --upgrade pip --break-system-packages
+  python3 -m pip install --upgrade pip --break-system-packages || true
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
   OS='Linux'
   sudo apt -qq install -y build-essential python3-pip
@@ -321,8 +321,8 @@ if [ "$(uname)" == 'Darwin' ]; then
       brew install qt pyqt pyqt-builder
     fi
     brew link qt --force || true
-    brew install libgit2
-    brew install ruby@3.4
+    brew install libgit2 || true
+    brew install ruby@3.4 || true
     git clone --depth 1 https://github.com/KLayout/klayout.git "$SRC_DIR/klayout"
     cd "$SRC_DIR/klayout" || exit
     echo 'export PATH="$HOME/bin/:/usr/local/bin/:$PATH"' >> ~/.zshrc
@@ -334,7 +334,14 @@ if [ "$(uname)" == 'Darwin' ]; then
   python3 build4mac.py -r HB34 -p HBAuto -q Qt6Brew -m ‘—jobs=8’ -n -u
   rm -fr $BIN_DIR/klayout.app
   mkdir -p $BIN_DIR/klayout.app
-  cp -aR $SRC_DIR/klayout/qt6Brew.bin.macos-$MAC_OS_NAME-release-Rhb34Phbauto/* $BIN_DIR/klayout.app/
+  case $VER in
+    "27")
+      cp -aR $SRC_DIR/klayout/qt6Brew.bin.macos-$MAC_OS_NAME-C32-release-Rhb34Phbauto/* $BIN_DIR/klayout.app/
+      ;;
+    *)
+      cp -aR $SRC_DIR/klayout/qt6Brew.bin.macos-$MAC_OS_NAME-release-Rhb34Phbauto/* $BIN_DIR/klayout.app/
+      ;;
+  esac
   export PATH="$HOME/bin/:$PATH"
   cp $my_dir/klayout.sh $BIN_DIR
   chmod +x $BIN_DIR/klayout.sh
