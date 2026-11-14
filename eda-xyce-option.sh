@@ -56,6 +56,11 @@ if [ "$(uname)" == 'Darwin' ]; then
       export CC_VERSION=-15
       export CXX_VERSION=-15
       ;;
+    "27")
+      export MAC_OS_NAME=GoldenGate
+      export CC_VERSION=-16
+      export CXX_VERSION=-16
+      ;;
     *)
       echo "Your Mac OS Version ($VER) is not supported."
       exit 1
